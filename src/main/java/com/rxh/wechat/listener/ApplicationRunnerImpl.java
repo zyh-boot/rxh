@@ -1,6 +1,6 @@
 package com.rxh.wechat.listener;
 
-import com.rxh.wechat.WechatAppApplication;
+import com.rxh.wechat.WeChatAppApplication;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
                 "    \\  \\:\\         |  |:|       \\  \\:\\\n" +
                 "     \\__\\/         |__|/         \\__\\/";
 
-        Logger logger = LoggerFactory.getLogger(WechatAppApplication.class);
+       Logger logger = LoggerFactory.getLogger(WeChatAppApplication.class);
         System.out.println(logo);
         logger.info("application success....");
 //        System.out.println("");
