@@ -1,14 +1,31 @@
 server:
-  port: 9090
+  port: 9091
   servlet:
     context-path: /rxh
+
+mybatis:
+  type-aliases-package: com.rxh.wechat.entity
+  mapper-locations: classpath:/mapper/*.xml
 spring:
   profiles:
     active: dev
-demo:
-  name: zyh
-# 设置文件前置路径
+  #设置文件前置路径
 #  thymeleaf:
-#    prefix: classpath:/pages/
+  #    prefix: classpath:/templates/
+  redis:
+    host: localhost
+    password:
+    port: 6379
+    database: 0
+    jedis:
+      pool:
+        max-active: 8
+        min-idle: 0
+        max-wait: -1
+        max-idle: 8
+    timeout: 30000
+
+
+
 
 

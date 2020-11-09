@@ -3,8 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>首页</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 </head>
 <body>
     <h1>Hello Word!!! </h1>
+    <div>
+        用户:<a id="name" href="userInfo"></a>
+        <button id="logout">退出</button>
+    </div>
 </body>
+<script>
+
+    $(function () {
+        var user = '[[${data}]]'
+        var href = "userInfo"
+        if(user == ""){
+            user = "未登录"
+            href = 'login'
+        }
+        $("#name").html(user)
+        $("#name").attr("href",href)
+
+        $("#logout").on("click",function () {
+            window.location.href = "logout"
+        })
+    })
+</script>
 </html>

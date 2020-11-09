@@ -1,4 +1,4 @@
-package com.rxh.wechat.comment.annotation;
+package com.rxh.wechat.common.annotation;
 
 import java.lang.annotation.*;
 

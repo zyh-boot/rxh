@@ -1,11 +1,13 @@
 # rxh
 
 #### 介绍
-接口文档
-
-#### 软件架构
-软件架构说明
-
+#####接口文档: 
+BootStrap风格: http://localhost:9091/rxh/doc.html  
+Swagger-ui风格: http://localhost:9091/rxh/swagger-ui.html
+#### Alibaba监控
+http://127.0.0.1:9091/rxh/druid/  
+user_name : admin  
+password : admin
 
 #### 安装教程
 

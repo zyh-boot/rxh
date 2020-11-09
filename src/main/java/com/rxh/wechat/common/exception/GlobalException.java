@@ -1,7 +1,8 @@
-package com.rxh.wechat.exception;
+package com.rxh.wechat.common.exception;
 
-import com.rxh.wechat.comment.util.JsonResult;
+import com.rxh.wechat.common.util.JsonResult;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -78,6 +79,17 @@ public class GlobalException {
     @ExceptionHandler({Exception.class})
     public JsonResult otherException(Exception e) {
         return resultFormat(11, "错误信息: 缺省异常!" + e.getMessage(), e);
+    }
+
+    @ExceptionHandler
+    public JsonResult ErrorHandler(AuthorizationException e) {
+        log.error("没有通过权限验证！", e);
+       return resultFormat(12, "错误信息: 没有通过权限验证!" + e.getMessage(), e);
+    }
+
+    @ExceptionHandler(CustomizeException.class)
+    public JsonResult customizeException(Exception e) {
+        return resultFormat(10001, e.getMessage(), e);
     }
 
     /**
