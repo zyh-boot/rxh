@@ -1,8 +1,6 @@
 package com.rxh.wechat.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.rxh.wechat.common.shiro.entity.SysUser;
+import com.rxh.complat.common.shiro.entity.SysUser;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,13 +20,10 @@ public class UserViewController {
     public ModelAndView dad(){
         ModelAndView index = new ModelAndView("index");
         SysUser principal = (SysUser) SecurityUtils.getSubject().getPrincipal();
-        index.addObject("data",principal.getUsername());
+        if(principal != null){
+            index.addObject("data",principal.getUsername());
+        }
         return index;
-//        return "index";
     }
 
-//    @RequestMapping("login")
-//    public String index(User user) {
-//        return "pages/login/login";
-//    }
 }

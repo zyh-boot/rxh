@@ -1,13 +1,11 @@
 package com.rxh.wechat.controller;
 
-import com.rxh.wechat.common.util.JsonResult;
-import com.rxh.wechat.common.util.RedisUtil;
-import com.rxh.wechat.common.exception.CustomizeException;
+import com.rxh.complat.common.util.JsonResult;
+import com.rxh.complat.common.util.RedisUtil;
+import com.rxh.complat.common.exception.CustomizeException;
 import com.rxh.wechat.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;

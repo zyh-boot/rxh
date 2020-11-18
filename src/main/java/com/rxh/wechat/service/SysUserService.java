@@ -1,9 +1,7 @@
 package com.rxh.wechat.service;
 
 
-import com.rxh.wechat.common.shiro.entity.SysUser;
-
-import java.util.List;
+import com.rxh.complat.common.shiro.entity.SysUser;
 
 /**
  * 运营后台用户表(SysUser)表服务接口

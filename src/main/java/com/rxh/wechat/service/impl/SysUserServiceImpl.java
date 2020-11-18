@@ -1,14 +1,12 @@
 package com.rxh.wechat.service.impl;
 
-import com.rxh.wechat.common.shiro.entity.SysUser;
+import com.rxh.complat.common.shiro.entity.SysUser;
 import com.rxh.wechat.mapper.SysUserMapper;
 import com.rxh.wechat.service.SysUserService;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * 运营后台用户表(SysUser)表服务实现类

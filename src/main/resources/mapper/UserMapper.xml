@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rxh.wechat.mapper.SysUserMapper">
 
-    <resultMap id="SysUserMap" type="com.rxh.wechat.common.shiro.entity.SysUser">
+    <resultMap id="SysUserMap" type="com.rxh.complat.common.shiro.entity.SysUser">
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="username" column="username" jdbcType="VARCHAR"/>
         <result property="password" column="password" jdbcType="VARCHAR"/>
@@ -11,13 +11,13 @@
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="deleteStatus" column="delete_status" jdbcType="VARCHAR"/>
-        <collection property="sysRoles" ofType="com.rxh.wechat.common.shiro.entity.SysRole">
+        <collection property="sysRoles" ofType="com.rxh.complat.common.shiro.entity.SysRole">
             <result property="id" column="rid" jdbcType="INTEGER"/>
             <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="deleteStatus" column="delete_status" jdbcType="VARCHAR"/>
-            <collection property="sysPermissions" ofType="com.rxh.wechat.common.shiro.entity.SysPermission"  >
+            <collection property="sysPermissions" ofType="com.rxh.complat.common.shiro.entity.SysPermission"  >
                 <id property="id" column="pid" jdbcType="INTEGER"/>
                 <result property="menuCode" column="menu_code" jdbcType="VARCHAR"/>
                 <result property="menuName" column="menu_name" jdbcType="VARCHAR"/>

@@ -1,8 +1,8 @@
 package com.rxh.wechat.controller;
 
-import com.rxh.wechat.common.shiro.entity.SysUser;
-import com.rxh.wechat.common.util.JsonResult;
-import com.rxh.wechat.common.util.RedisUtil;
+import com.rxh.complat.common.shiro.entity.SysUser;
+import com.rxh.complat.common.util.JsonResult;
+import com.rxh.complat.common.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
@@ -42,7 +43,7 @@ public class LoginController {
 
     @PostMapping("dologin")
     @ResponseBody
-    public JsonResult<Object> doLogin(SysUser user,boolean rememberMe) {
+    public JsonResult<Object> doLogin(SysUser user, boolean rememberMe, HttpServletRequest request) {
         HashMap<String, String> hashMap = new HashMap<>();
         JsonResult<Object> result = new JsonResult<>();
 
@@ -50,9 +51,10 @@ public class LoginController {
             result.message("请输入密码账户");
             return result;
         }
+
         //用户认证信息
         Subject subject = SecurityUtils.getSubject();
-
+//        subject.getSession().setTimeout(5*1000L);
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(
                 user.getUsername(),
                 user.getPassword()
