@@ -3,8 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <title>首页</title>
+    <link rel="stylesheet" href="./static/css/img.css">
+    <link rel="stylesheet" href="./static/layui/css/layui.css">
+    <!--    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>-->
+    <script src="./static/js/jquery.js"></script>
+    <script src="./static/js/login.js"></script>
 </head>
+<style type="text/css">
+    .img-wrap {
+        position: relative;
+        display: inline-block;
+        /*border: 1px red solid;*/
+        font-size: 0;
+    }
+
+    .img-wrap .close {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        z-index: 100;
+        /*background-color: #FFF;*/
+        padding: 5px 2px 2px;
+        color: #000;
+        font-weight: bold;
+        cursor: pointer;
+        /*opacity: .2;*/
+        text-align: center;
+        font-size: 22px;
+        line-height: 10px;
+        border-radius: 50%;
+        background: url("./static/images/cole.png") no-repeat;
+        background-size: cover;
+        background-position: center;
+        display: inline-block;
+        width: 50px;
+        height: 60px;
+        opacity: 1;
+    }
+
+    /*.img-wrap:hover .close {*/
+    /*    opacity: 1;*/
+    /*}*/
+</style>
+<script>
+
+</script>
 <body>
+<div>
     <h1>Hello Word!!! </h1>
+    <div>
+        用户:<a id="name" href="userInfo"></a>
+        <button id="logout">退出</button>
+    </div>
+    <div>
+        <span>分类:</span>
+        <a href="shopping/index" class="layui-btn layui-btn-normal">商城</a>
+        <a href="opencv/index" class="layui-btn layui-btn-normal">openCV视觉</a>
+    </div>
+    搜索: <input name="search" id="search"> <input type="button" onclick="sendSearch()" value="搜索">
+    <div id="text"></div>
+    <input id="length" style="" type="hidden">
+    <input id="token" type="hidden">
+    <div id="captcha" style="position: relative;">
+        <img src="" class="undefined" width="400" height="200" id="ig1">
+        <div class="refreshIcon"></div>
+        <img class="block" style="left: 0px;" id="ig2">
+        <div class="sliderContainer">
+            <div class="sliderMask" style="width: 0px;">
+                <div class="slider" style="left: 0px;"><span class="sliderIcon"></span></div>
+            </div>
+            <span class="sliderText">向右滑动填充拼图</span></div>
+    </div>
+
+</div>
 </body>
+
+<script type="text/javascript">
+    $(function(){
+        // var url="https://api.map.baidu.com/location/ip?ak=9ZoZG72yUPnlUDgWGwPCUQuacI4X1u7D";//百度
+        // $.ajax({
+        //     url:url,
+        //     type: 'POST',
+        //     dataType: 'JSONP',
+        //     async: false,
+        //     cache: true,  //是否缓存 可以为false
+        //     success: function (data) {
+        //         alert(JSON.stringify(data));
+        //     },
+        //     error: function (data) {
+        //         //  alert(JSON.stringify(data));
+        //     }
+        // });
+    })
+</script>
 </html>

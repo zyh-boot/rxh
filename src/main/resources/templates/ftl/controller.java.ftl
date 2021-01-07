@@ -33,42 +33,42 @@ import org.springframework.web.bind.annotation.*;
     * 查询详情
     */
     @GetMapping("detail")
-    public CommonResponse add(Long id) throws CommonException{
-        try {
-            return getCommonResponse(i${entity}Service.selectOne(id));
-        } catch (Exception e) {
-            String message = "查询失败";
-            log.error(message, e);
-            throw new CommonException(message);
-        }
+    public JsonResult add(Long id) throws CommonException{
+    try {
+    return new JsonResult((i${entity}Service.selectOne(id))).success();
+    } catch (Exception e) {
+    String message = "查询失败";
+    log.error(message, e);
+    throw new CustomizeException(message);
+    }
     }
 
     /**
     * 分页查询
     */
     @GetMapping("pageList")
-    public CommonResponse pageList(${entity} obj,QueryRequest query)  throws CommonException{
-        try {
-            return  getTableData(i${entity}Service.page(obj,query));
-        } catch (Exception e) {
-            String message = "分页查询失败";
-            log.error(message, e);
-            throw new CommonException(message);
-        }
+    public JsonResult pageList(${entity} obj,QueryRequest query)  throws CommonException{
+    try {
+    return  getTableData(i${entity}Service.page(obj,query));
+    } catch (Exception e) {
+    String message = "分页查询失败";
+    log.error(message, e);
+    throw new CommonException(message);
+    }
     }
 
     /**
     * 查询列表
     */
     @GetMapping("list")
-    public CommonResponse pageList(${entity} obj)  throws CommonException{
-        try {
-            return getCommonResponse(i${entity}Service.list(obj));
-        } catch (Exception e) {
-            String message = "列表查询失败";
-            log.error(message, e);
-            throw new CommonException(message);
-        }
+    public JsonResult pageList(${entity} obj)  throws CommonException{
+    try {
+    return getJsonResult(i${entity}Service.list(obj));
+    } catch (Exception e) {
+    String message = "列表查询失败";
+    log.error(message, e);
+    throw new CommonException(message);
+    }
     }
 
     /**
@@ -76,14 +76,14 @@ import org.springframework.web.bind.annotation.*;
     */
     @PostMapping("")
     @PreAuthorize("hasRole('${entity?uncap_first}:add')")
-    public CommonResponse add(${entity} obj) throws CommonException{
-        try {
-            return getCommonResponse(i${entity}Service.add(obj));
-        } catch (Exception e) {
-            String message = "新增失败";
-            log.error(message, e);
-            throw new CommonException(message);
-        }
+    public JsonResult add(${entity} obj) throws CommonException{
+    try {
+    return getJsonResult(i${entity}Service.add(obj));
+    } catch (Exception e) {
+    String message = "新增失败";
+    log.error(message, e);
+    throw new CommonException(message);
+    }
     }
 
 
@@ -92,14 +92,14 @@ import org.springframework.web.bind.annotation.*;
     */
     @PutMapping("")
     @PreAuthorize("hasRole('${entity?uncap_first}:mod')")
-    public CommonResponse update(${entity} obj) throws CommonException{
-        try {
-            return getCommonResponse(i${entity}Service.update(obj));
-        } catch (Exception e) {
-            String message = "修改失败";
-            log.error(message, e);
-            throw new CommonException(message);
-        }
+    public JsonResult update(${entity} obj) throws CommonException{
+    try {
+    return getJsonResult(i${entity}Service.update(obj));
+    } catch (Exception e) {
+    String message = "修改失败";
+    log.error(message, e);
+    throw new CommonException(message);
+    }
     }
 
     /**
@@ -109,22 +109,22 @@ import org.springframework.web.bind.annotation.*;
     */
     @DeleteMapping("")
     @PreAuthorize("hasRole('${entity?uncap_first}:del')")
-    public CommonResponse delete(String ids) throws CommonException{
-        try {
-            if (StringUtils.isNotBlank(ids)) {
-                if (ids.contains(StringPool.COMMA)) {
-                    i${entity}Service.batchDel(ids);
-                } else {
-                    i${entity}Service.delete(Long.valueOf(ids));
-                }
-            }
-            return new CommonResponse().success();
-        } catch (Exception e) {
-            String message = "删除失败";
-            log.error(message, e);
-            throw new CommonException(message);
-        }
+    public JsonResult delete(String ids) throws CommonException{
+    try {
+    if (StringUtils.isNotBlank(ids)) {
+    if (ids.contains(StringPool.COMMA)) {
+    i${entity}Service.batchDel(ids);
+    } else {
+    i${entity}Service.delete(Long.valueOf(ids));
+    }
+    }
+    return new JsonResult().success();
+    } catch (Exception e) {
+    String message = "删除失败";
+    log.error(message, e);
+    throw new CommonException(message);
+    }
     }
 
-}
+    }
 </#if>
