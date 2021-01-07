@@ -87,7 +87,7 @@ public class GlobalException {
        return resultFormat(12, "错误信息: 没有通过权限验证!" + e.getMessage(), e);
     }
 
-    @ExceptionHandler(CustomizeException.class)
+    @ExceptionHandler(MyException.class)
     public JsonResult customizeException(Exception e) {
         return resultFormat(10001, e.getMessage(), e);
     }

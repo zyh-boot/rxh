@@ -94,7 +94,7 @@ public class PagesViewController {
      */
     @RequestMapping("register")
     public String register() {
-        return basePackage + "my-register";
+        return basePackage + "register";
     }
 
     /**

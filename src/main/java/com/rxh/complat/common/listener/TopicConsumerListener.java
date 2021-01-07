@@ -6,24 +6,33 @@ import org.springframework.stereotype.Component;
 
 import javax.jms.TextMessage;
 
-@Component
+//@Component
 public class TopicConsumerListener {
+    //topic模式的消费者  非持久化
+    @JmsListener(destination = MqConstant.DEFAULT, containerFactory = "topicListener")
+    public void readActiveQueueDefault(String message, TextMessage textMessage) {
+        System.out.println("topic接受到：default" + message);
+    }
+
     //topic模式的消费者
     @JmsListener(destination = MqConstant.TEST, containerFactory = "topicListenertest")
     public void readActiveQueue(String message, TextMessage textMessage) {
         System.out.println("topic接受到：test" + message);
-    } //topic模式的消费者
+    }
 
+    //topic模式的消费者
     @JmsListener(destination = MqConstant.ZYH, containerFactory = "topicListenerzyh")
     public void readActiveQueue1(String message, TextMessage textMessage) {
         System.out.println("topic接受到：zyh" + message);
-    } //topic模式的消费者
+    }
 
+    //topic模式的消费者
     @JmsListener(destination = MqConstant.DOG, containerFactory = "topicListenerdog")
     public void readActiveQueue2(String message, TextMessage textMessage) {
         System.out.println("topic接受到：dog" + message);
-    } //topic模式的消费者
+    }
 
+    //topic模式的消费者
     @JmsListener(destination = MqConstant.CAT, containerFactory = "topicListenercat")
     public void readActiveQueue3(String message, TextMessage textMessage) {
         System.out.println("topic接受到：cat" + message);

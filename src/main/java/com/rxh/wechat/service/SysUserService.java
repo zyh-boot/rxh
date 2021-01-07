@@ -18,6 +18,7 @@ public interface SysUserService {
      * @return 实例对象
      */
     SysUser queryByName(String name);
+    String addUser(SysUser sysUser);
 
 
 

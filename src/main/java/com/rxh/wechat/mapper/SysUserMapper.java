@@ -10,4 +10,5 @@ import com.rxh.complat.common.shiro.entity.SysUser;
  */
 public interface SysUserMapper {
     SysUser queryByName(String name);
+    String addUser(SysUser sysUser);
 }

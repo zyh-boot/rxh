@@ -3,6 +3,7 @@ package com.rxh.wechat.controller;
 import com.rxh.complat.common.shiro.entity.SysUser;
 import com.rxh.complat.common.util.JsonResult;
 import com.rxh.complat.common.util.RedisUtil;
+import com.rxh.wechat.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -35,11 +36,15 @@ import java.util.HashMap;
 public class LoginController {
 
     @GetMapping("login")
-    public String loginView(){
+    public String loginView() {
         return "pages/login";
     }
+
     @Autowired
     RedisUtil redisUtil;
+    @Autowired
+    SysUserService userService;
+
 
     @PostMapping("dologin")
     @ResponseBody
@@ -65,7 +70,7 @@ public class LoginController {
             usernamePasswordToken.setRememberMe(rememberMe);
             subject.login(usernamePasswordToken);
             SysUser sysUser = (SysUser) subject.getPrincipal();
-            redisUtil.set("user:"+user.getUsername(),sysUser);
+            redisUtil.set("user:" + user.getUsername(), sysUser);
         } catch (UnknownAccountException e) {
             log.error("用户名不存在！", e);
             result.message("用户名不存在！");
@@ -79,14 +84,15 @@ public class LoginController {
             result.message("没有权限");
             return result;
         }
-        hashMap.put("url","home");
+        hashMap.put("url", "home");
         result.success(hashMap).message("login success");
         return result;
     }
 
     @RequestMapping("logout")
-    public void logout(HttpSession session, SessionStatus sessionStatus){
+    public void logout(HttpSession session, SessionStatus sessionStatus) {
         session.invalidate();
         sessionStatus.setComplete();
     }
+
 }

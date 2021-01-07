@@ -22,9 +22,13 @@ import javax.jms.Topic;
  * @Date 2020/11/18 11:09
  *
  */
-@Configuration
+//@Configuration
 public class ActiviteMqConfig {
 
+    /**
+     * 提取配置文件参数信息
+     *
+     */
     @Value("${spring.activemq.broker-url}")
     private String brokerUrl;
 
@@ -39,6 +43,7 @@ public class ActiviteMqConfig {
 
     @Value("${spring.activemq.topic-name}")
     private String topicName;
+
 
     @Bean(name = "queue")
     public Queue queue() {
@@ -67,6 +72,7 @@ public class ActiviteMqConfig {
     public JmsListenerContainerFactory<?> queueJmsListenerContainerFactory(ConnectionFactory connectionFactory) {
         SimpleJmsListenerContainerFactory factory = new SimpleJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
+        //是否启用发布订阅模式 true为发布订阅 false为点对点
         factory.setPubSubDomain(false);
 
         return factory;
@@ -78,12 +84,12 @@ public class ActiviteMqConfig {
         SimpleJmsListenerContainerFactory factory = new SimpleJmsListenerContainerFactory();
 
         factory.setConnectionFactory(connectionFactory);
-        factory.setSubscriptionDurable(true);
-        factory.setClientId("topdemo");
+        //是否启用发布订阅模式 true为发布订阅 false为点对点
         factory.setPubSubDomain(true);
         return factory;
     }
 
+    //订阅-发布持久化设置.
     @Bean("topicListenertest")
     public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory1(ConnectionFactory connectionFactory) {
         SimpleJmsListenerContainerFactory factory = new SimpleJmsListenerContainerFactory();

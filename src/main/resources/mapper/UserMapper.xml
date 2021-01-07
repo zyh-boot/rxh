@@ -41,5 +41,9 @@
         WHERE u.username = #{name}
 
     </select>
+   <insert id="addUser" parameterType="com.rxh.wechat.entity.SysUser">
+       insert into sys_user  (id,username,password,nickname,role_id,create_time,update_time)
+       values #{id},#{username},#{password},#{nickname},#{role_id},#{create_time},#{update_time}
+   </insert>
 
 </mapper>

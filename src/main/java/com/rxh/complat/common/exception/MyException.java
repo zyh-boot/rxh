@@ -9,9 +9,9 @@ import java.io.Serializable;
  * @Date 2020/10/9 16:53
  *
  */
-public class CustomizeException extends Exception implements Serializable {
+public class MyException extends Exception implements Serializable {
 
-    public CustomizeException(String message) {
+    public MyException(String message) {
         super(message);
     }
 

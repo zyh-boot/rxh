@@ -31,5 +31,11 @@ public class SysUserServiceImpl implements SysUserService {
         return this.sysUserDao.queryByName(name);
     }
 
+    @Override
+    public String addUser(SysUser sysUser) {
+        String s = this.sysUserDao.addUser(sysUser);
+        return s;
+    }
+
 
 }

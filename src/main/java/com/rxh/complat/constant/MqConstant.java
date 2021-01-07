@@ -8,6 +8,7 @@ package com.rxh.complat.constant;
  *
  */
 public class MqConstant {
+    public static final String DEFAULT = "com.default";
     public static final String TEST = "com.test";
     public static final String ZYH = "com.zyh";
     public static final String DOG = "com.dog";

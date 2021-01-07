@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>首页</title>
-    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="./static/css/img.css">
+    <link rel="stylesheet" href="./static/layui/css/layui.css">
+    <!--    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>-->
+    <script src="./static/js/jquery.js"></script>
+    <script src="./static/js/login.js"></script>
 </head>
 <style type="text/css">
     .img-wrap {
@@ -12,6 +16,7 @@
         /*border: 1px red solid;*/
         font-size: 0;
     }
+
     .img-wrap .close {
         position: absolute;
         top: 2px;
@@ -27,7 +32,7 @@
         font-size: 22px;
         line-height: 10px;
         border-radius: 50%;
-        background:url("./static/images/cole.png") no-repeat;
+        background: url("./static/images/cole.png") no-repeat;
         background-size: cover;
         background-position: center;
         display: inline-block;
@@ -35,53 +40,16 @@
         height: 60px;
         opacity: 1;
     }
+
     /*.img-wrap:hover .close {*/
     /*    opacity: 1;*/
     /*}*/
 </style>
 <script>
 
-    $(function () {
-        var user = '[[${data}]]'
-        var href = "userInfo"
-        if(user == ""){
-            user = "未登录"
-            href = 'login'
-        }
-        $("#name").html(user)
-        $("#name").attr("href",href)
-
-        $("#logout").on("click",function () {
-            window.location.href = "logout"
-        })
-
-        $(".close").on("click",function () {
-            // $(this).parent().hide()
-            $(this).parent().remove()
-        })
-
-        $(".btn").click(function () {
-            // $(this).parent().hide()
-
-            var str = "  <div class=\"close\" ></div>\n" +
-                "<!--        <img src=\"./static/images/cole.png\"  />-->\n" +
-                "\n" +
-                "        <img src=\"./static/images/2.jpg\" data-id=\"123\">"
-
-                 + "<script >$('.close').on('click',function () {$(this).parent().remove()})<\/script>"
-                $(".img-wrap").html(str)
-        })
-        $.get("/rxh/test", "", function(data) {
-            console.log(data)
-            for(s in data){
-                s = JSON.parse(data[s]);
-                console.log(s.id)
-            }
-            // $().html(data);
-        });
-    })
 </script>
 <body>
+<div>
     <h1>Hello Word!!! </h1>
     <div>
         用户:<a id="name" href="userInfo"></a>
@@ -89,13 +57,43 @@
     </div>
     <div>
         <span>分类:</span>
-        <a href="shopping/index">商城</a>
+        <a href="shopping/index" class="layui-btn layui-btn-normal">商城</a>
+        <a href="opencv/index" class="layui-btn layui-btn-normal">openCV视觉</a>
     </div>
-    <span class="btn">123</span>
+    搜索: <input name="search" id="search"> <input type="button" onclick="sendSearch()" value="搜索">
+    <div id="text"></div>
+    <input id="length" style="" type="hidden">
+    <input id="token" type="hidden">
+    <div id="captcha" style="position: relative;">
+        <img src="" class="undefined" width="400" height="200" id="ig1">
+        <div class="refreshIcon"></div>
+        <img class="block" style="left: 0px;" id="ig2">
+        <div class="sliderContainer">
+            <div class="sliderMask" style="width: 0px;">
+                <div class="slider" style="left: 0px;"><span class="sliderIcon"></span></div>
+            </div>
+            <span class="sliderText">向右滑动填充拼图</span></div>
+    </div>
 
-    <span class="img-wrap">
-        <script type='text/javascript'>$('.close').on('click',function () {$(this).parent().remove()})</script>
-    </span>
+</div>
 </body>
 
+<script type="text/javascript">
+    $(function(){
+        // var url="https://api.map.baidu.com/location/ip?ak=9ZoZG72yUPnlUDgWGwPCUQuacI4X1u7D";//百度
+        // $.ajax({
+        //     url:url,
+        //     type: 'POST',
+        //     dataType: 'JSONP',
+        //     async: false,
+        //     cache: true,  //是否缓存 可以为false
+        //     success: function (data) {
+        //         alert(JSON.stringify(data));
+        //     },
+        //     error: function (data) {
+        //         //  alert(JSON.stringify(data));
+        //     }
+        // });
+    })
+</script>
 </html>

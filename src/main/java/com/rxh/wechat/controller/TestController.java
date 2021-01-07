@@ -2,7 +2,7 @@ package com.rxh.wechat.controller;
 
 import com.rxh.complat.common.util.JsonResult;
 import com.rxh.complat.common.util.RedisUtil;
-import com.rxh.complat.common.exception.CustomizeException;
+import com.rxh.complat.common.exception.MyException;
 import com.rxh.wechat.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +25,7 @@ public class TestController {
 
 
     @GetMapping(value = "qw")
-    public JsonResult getM(String msg) throws CustomizeException {
+    public JsonResult getM(String msg) throws MyException {
         HashMap<Object, Object> hashMap = new HashMap<>();
         hashMap.put("name", "tom");
         hashMap.put("age", "123");
@@ -39,14 +39,14 @@ public class TestController {
     RedisUtil redisUtil;
 
 //    @GetMapping(value = "add")
-    public JsonResult redisadd(String msg, HttpServletRequest request) throws CustomizeException {
+    public JsonResult redisadd(String msg, HttpServletRequest request) throws MyException {
         HttpSession session = request.getSession();
         session.setAttribute("hello", "12312132");
         return new JsonResult(200);
     }
 
     @GetMapping(value = "get")
-    public JsonResult get(String msg, HttpServletRequest request) throws CustomizeException {
+    public JsonResult get(String msg, HttpServletRequest request) throws MyException {
         HttpSession session = request.getSession();
         return new JsonResult().set(200, session.getAttribute("hello").toString());
     }
