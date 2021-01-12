@@ -184,7 +184,12 @@
             <version>2.5.0</version>
         </dependency>
 
-
+        <!-- jsoup依赖  HTML元素快速解析-->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.8.3</version>
+        </dependency>
     </dependencies>
 
     <build>

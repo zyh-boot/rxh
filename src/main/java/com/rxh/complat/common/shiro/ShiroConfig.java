@@ -24,7 +24,7 @@ import java.util.Map;
  * @Date 2020/10/20 17:12
  *
  */
-//@Configuration
+@Configuration
 @Slf4j
 public class ShiroConfig {
 

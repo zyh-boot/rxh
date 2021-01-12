@@ -9,7 +9,7 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 spring:
   profiles:
-    active: pro
+    active: blog
   #设置文件前置路径
 #  thymeleaf:
   #    prefix: classpath:/templates/

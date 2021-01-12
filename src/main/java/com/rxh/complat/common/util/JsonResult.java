@@ -25,6 +25,8 @@ public class JsonResult<T> {
      * 返回状态信息
      */
     private String msg;
+
+    private HashMap param;
     /**
      * 返回数据
      */
@@ -87,6 +89,11 @@ public class JsonResult<T> {
         this.data = data;
         this.msg = getString(msg);
         return this;
+    }
+
+
+    public void addParam(String key,T data){
+        this.param.put(key,data);
     }
 
     public JsonResult success(T data){

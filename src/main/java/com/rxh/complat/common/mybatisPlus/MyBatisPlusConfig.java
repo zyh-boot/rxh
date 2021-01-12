@@ -51,7 +51,7 @@ public class MyBatisPlusConfig {
      */
     static {
         YamlPropertiesFactoryBean factoryBean = new YamlPropertiesFactoryBean();
-        factoryBean.setResources(new ClassPathResource("application-dev.yml"));
+        factoryBean.setResources(new ClassPathResource("application-shiro.yml"));
         factoryBean.afterPropertiesSet();
         Properties object = factoryBean.getObject();
 
