@@ -18,7 +18,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 运营后台用户表(SysUser)表控制层
+ * 运营后台用户表(Member)表控制层
  *
  * @author zyh
  * @Date 2021-01-06 14:39:53
@@ -42,14 +42,14 @@ public class LineSysUserController  {
 
     @GetMapping
     public Object selectAll(String size,String curPage) {
-//        Page<SysUser> page = new Page<>();
+//        Page<Member> page = new Page<>();
 //        page.setSize(Integer.parseInt(size));
 //        page.setCurrent(Integer.parseInt(curPage));
         PageHelper.startPage(Integer.parseInt(curPage),Integer.parseInt(size));
         List<SysUser> list = lineUserService.findAll(Integer.parseInt(curPage),Integer.parseInt(size));
         PageInfo<SysUser> page1 = PageInfo.of(list);
 
-//        Page<SysUser> page1 = this.lineUserService.page(page,null);
+//        Page<Member> page1 = this.lineUserService.page(page,null);
         return page1;
     }
 
@@ -70,7 +70,7 @@ public class LineSysUserController  {
 ////     * @return 新增结果
 ////     */
 ////    @PostMapping
-////    public Object insert(@RequestBody SysUser sysUser) {
+////    public Object insert(@RequestBody Member sysUser) {
 ////        return this.lineUserService.save(sysUser);
 ////    }
 

@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 运营后台用户表(SysUser)表实体类
+ * 运营后台用户表(Member)表实体类
  *
  * @author zyh
  * @Date 2020-11-10 15:17:08

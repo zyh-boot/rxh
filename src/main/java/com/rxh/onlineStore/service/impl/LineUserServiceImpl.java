@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 运营后台用户表(SysUser)表服务实现类
+ * 运营后台用户表(Member)表服务实现类
  *
  * @author zyh
  * @Date 2021-01-06 11:25:54

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <div>
+        <form class="layui-form layui-form-pane" action="" id="comment-form"
+              style="display: block;padding: 8px 30px ">
+            <div class="layui-form-item">
+                <img src="/static/blog/images/favicon.ico" class="layui-col-lg1"
+                     style="margin: 5px 5px 0 0;height: 30px;width: 30px">
+                <div class="layui-col-lg11" style="width: 96%">
+                                                     <textarea id="comment" name="comment" lay-verify="comment"
+                                                               placeholder="对作者说点什么"
+                                                               autocomplete="off"
+                                                               class=" comment-close open layui-textarea"
+                                                               maxlength="1000"></textarea>
+                </div>
+                <div style="float: right;margin-top: 5px">
+                    <span style="color: #999aaa">还可以输入<nm>1000</nm>字符</span>
+                    <button type="button"
+                            class="layui-btn layui-btn-primary  layui-btn-radius"
+                            id="redom-txt">
+                        "速评一下"
+                    </button>
+                    <button type="button"
+                            class="layui-btn layui-btn-danger  layui-btn-radius"
+                            id="submit">
+                        发表评论
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

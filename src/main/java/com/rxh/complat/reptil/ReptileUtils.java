@@ -255,7 +255,6 @@ public class ReptileUtils {
                 Thread.sleep(1000);
                 outputStream.flush();
                 outputStream.close();
-
             }
             flag = true;
         } catch (IOException | InterruptedException e) {

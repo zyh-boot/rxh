@@ -73,6 +73,8 @@ public class ReptileController {
         JsonResult<Object> result = new JsonResult<>();
         JSONObject htmlList = getHtmlList(url);
         String baseUrl = htmlList.getString("baseUrl");
+        ReptileUtils.createFile(savePath+"/loadPath.txt",baseUrl.getBytes());
+
         HashSet<String> list = htmlList.getObject("list", HashSet.class);
         getBlog(baseUrl, savePath, list);
 
@@ -175,7 +177,7 @@ public class ReptileController {
 
         long start = System.currentTimeMillis();
         for (String name : href) {
-            byte[] bytes = ReptileUtils.extractTags(utl);
+            byte[] bytes = ReptileUtils.extractTags(utl+name);
             if (bytes == null) {
                 continue;
             }

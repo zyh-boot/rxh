@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>图片验证</title>
+    <link rel="stylesheet" href="./static/css/img.css">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="./static/js/img.js"></script>
+</head>
+<body>
+<div id="container">
+
+    <div id="captcha"></div>
+    <script type="text/javascript">
+        jigsaw.init({
+            el: document.getElementById('captcha'),
+        })
+    </script>
+</div>
+
+</body>
+</html>

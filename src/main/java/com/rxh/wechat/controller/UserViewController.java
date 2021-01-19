@@ -1,6 +1,6 @@
 package com.rxh.wechat.controller;
 
-import com.rxh.complat.common.shiro.entity.SysUser;
+import com.rxh.complat.common.shiro.entity.Member;
 import com.rxh.complat.common.util.JsonResult;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
@@ -19,33 +19,44 @@ import org.springframework.web.servlet.ModelAndView;
 public class UserViewController {
 
     @RequestMapping("home")
-    public ModelAndView dad(){
+    public ModelAndView dad() {
         ModelAndView index = new ModelAndView("index");
-        SysUser principal = (SysUser) SecurityUtils.getSubject().getPrincipal();
-        if(principal != null){
-            index.addObject("data",principal.getUsername());
+        Member principal = (Member) SecurityUtils.getSubject().getPrincipal();
+        if (principal != null) {
+            index.addObject("data", principal.getUsername());
         }
         return index;
     }
+
     @RequestMapping("index")
-    public String index(){
+    public String index() {
         return "index";
     }
+
     @RequestMapping("header")
-    public String header(){
+    public String header() {
         return "pages/complate/header";
+    }
+
+    @RequestMapping("test")
+    public String test() {
+        return "pages/test";
+    }
+    @RequestMapping("mk")
+    public String mk() {
+        return "pages/simple";
     }
 
     @RequestMapping("isLogin")
     @ResponseBody
-    public JsonResult<Object> isLogin(){
+    public JsonResult<Object> isLogin() {
         JsonResult<Object> result = new JsonResult<>();
         result.code(400);
-        SysUser principal = (SysUser)SecurityUtils.getSubject().getPrincipal();
-        if(principal == null){
+        Member principal = (Member) SecurityUtils.getSubject().getPrincipal();
+        if (principal == null) {
             result.message("未登录");
             result.data("");
-        }else {
+        } else {
             result.code(200);
             result.message("登录成功");
             result.data(principal.getUsername());

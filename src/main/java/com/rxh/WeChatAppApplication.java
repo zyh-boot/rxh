@@ -15,7 +15,8 @@ import org.springframework.jms.annotation.EnableJms;
 //开启MQ
 @EnableJms
 //Mybatis扫描包
-@MapperScan(basePackages = {"com.rxh.wechat.mapper","com.rxh.onlineStore.mapper"})
+//@MapperScan(basePackages = {"com.rxh.wechat.mapper","com.rxh.onlineStore.mapper"})
+@MapperScan(basePackages = {"com.rxh.*.mapper"})
 public class WeChatAppApplication {
 
     public static void main(String[] args) {

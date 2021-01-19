@@ -1,0 +1,467 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>文章</title>
+    <meta name="keywords" content="blog"/>
+    <meta name="description" content="blog"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/static/js/jquery.min.js"></script>
+    <link rel="shortcut icon" href="/static/blog/images/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/static/fonts/fontawesome-webfont/css/font-awesome.css">
+    <script type="text/javascript" src="/static/layui/layui.all.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/static/blog/js/modernizr.js"></script>
+    <![endif]-->
+</head>
+<style>
+    .open {
+        height: 64px;
+        background-color: #fff;
+        -webkit-box-shadow: 0 0 6px 0 #5094d5;
+        box-shadow: 0 0 6px 0 #5094d5;
+        border: 1px solid #5094d5;
+        resize: none
+    }
+
+    .comment-close {
+        display: block;
+        width: 100%;
+        padding: 6px 8px;
+        background: rgba(248, 249, 251, 0.8);
+        border: 1px solid #dadde0;
+        border-radius: 4px;
+        resize: none !important;
+        height: 36px;
+        font-size: 14px;
+        line-height: 22px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-transition: height .3s ease-in-out;
+        transition: height .3s ease-in-out;
+    }
+    .a{
+        color: #1E9FFF ;
+        cursor: pointer;
+    }
+    .a:hover{
+        color: #ff4d4d ;
+        cursor: pointer;
+    }
+
+    .center{
+        height: 36px;padding: 7px 0;font-size: 15px;
+    }
+    .replay-box{
+        position: relative;
+        padding: 0 30px;
+    }
+</style>
+<body>
+<!--top begin-->
+<div id="headerTmp">
+</div>
+<!--top end-->
+<div>
+
+    <div style="padding: 20px; background-color: #F2F2F2;">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md3">
+                <div class="layui-card">
+                    <div class="layui-card-header" style="height: 10%">
+                        <div class="layui-row">
+                            <a href="userInfo" id="name" class="layui-col-md12">
+                                <img src="/static/blog/images/hm.jpg"
+                                     style="height: 50px;width: 50px; padding: 10px 10px"
+                                     class="layui-nav-img">
+                                <span class="name">我的名片</span>
+                                <style>
+                                    .name {
+                                        font-size: 22px;
+                                        margin: 10px;
+                                        color: #89919a;
+                                        font-weight: normal;
+                                        padding-bottom: 10px;
+                                    }
+                                </style>
+                            </a>
+                        </div>
+
+                    </div>
+                    <div class="layui-card-body">
+                        <div class="layui-row" style="margin-top: 20px">
+                            <span class="layui-col-md2 layui-col-md-offset1">9</span>
+                            <span class="layui-col-md2">13万+</span>
+                            <span class="layui-col-md2">300万+</span>
+                            <span class="layui-col-md2">1024</span>
+                            <span class="layui-col-md2">3</span>
+                        </div>
+                        <div class="layui-row">
+                            <span class="layui-col-md2 layui-col-md-offset1">原创</span>
+                            <span class="layui-col-md2">周排名</span>
+                            <span class="layui-col-md2">总排名</span>
+                            <span class="layui-col-md2">访问</span>
+                            <span class="layui-col-md2">等级</span>
+                        </div>
+
+                        <div class="layui-row" style="margin-top: 20px">
+                            <span class="layui-col-md2 layui-col-md-offset1">9</span>
+                            <span class="layui-col-md2">13万+</span>
+                            <span class="layui-col-md2">300万+</span>
+                            <span class="layui-col-md2">1024</span>
+                            <span class="layui-col-md2">3</span>
+                        </div>
+                        <div class="layui-row">
+                            <span class="layui-col-md2 layui-col-md-offset1">原创</span>
+                            <span class="layui-col-md2">周排名</span>
+                            <span class="layui-col-md2">总排名</span>
+                            <span class="layui-col-md2">访问</span>
+                            <span class="layui-col-md2">等级</span>
+                        </div>
+
+                        <div class="layui-row" style="margin-top: 10px">
+                            <!--                      <button type="button" class="layui-btn layui-btn-normal layui-btn-radius">私信</button>-->
+                            <div class="layui-col-md3">
+                                <button type="button" class="layui-btn layui-btn-normal   layui-btn-radius"
+                                        style="width: 300px">关注
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card">
+                    <div class="layui-card-body">
+                        <div class="layui-form-item">
+
+                            <form class="layui-form layui-form-pane" action="">
+                                <div class="layui-input-inline">
+                                    <input style="width: 208px" type="text" name="username" lay-verify="required"
+                                           placeholder="请输入"
+                                           autocomplete="off" class="layui-input">
+                                </div>
+                                <label class="layui-form-label">
+                                    <i class="layui-icon layui-icon-search" style="font-size: 30px;"></i>
+                                </label>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card">
+                    <div class="layui-card-header">热门文章</div>
+                    <div class="layui-card-body" id="hotArticle">
+                        <div>
+                            <span>ElasticSearch之排序使用-ES常用排序方法</span>
+                            <i class="fa fa-eye" aria-hidden="true" style="color: #999"></i>
+                            <span style="color: #999">10240</span>
+                        </div>
+                        <div>
+                            <span> Elasticsearch之高亮进阶-高性能高亮器， 让Elasticsearch飞一会儿</span>
+                            <i class="fa fa-eye" aria-hidden="true" style="color: #999"></i>
+                            <span style="color: #999">8242</span>
+                        </div>
+                        <div>
+                            <span> ElasticSerach之分词器进阶-短语搜索不准确bug及修复实现</span>
+                            <i class="fa fa-eye" aria-hidden="true" style="color: #999"></i>
+                            <span style="color: #999">3933</span>
+                        </div>
+                        <div>
+                            <span> ElasticSearch之分词器进阶-修复ansj分词器bug</span>
+                            <i class="fa fa-eye" aria-hidden="true" style="color: #999"></i>
+                            <span style="color: #999">3843</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md9">
+                <div class="layui-card">
+                    <!--          <div class="layui-card-header">卡片面板</div>-->
+                    <div class="layui-card-body">
+                        <!--lbox begin-->
+                        <div class="content_box whitebg">
+                            <h1 class="con_tilte">个人博客，属于我的小世界！</h1>
+                            <p class="bloginfo"></p>
+                            <p class="con_info"><b>简介</b>个人博客，用来做什么？我刚开始就把它当做一个我吐槽心情的地方，也就相当于一个网络记事本，写上一些关于自己生活工作中的小情小事，也会放上一些照片，音乐。每天工作回家后就能访问自己的网站，一边听着音乐，一边写写文章。
+                            </p>
+                            <div class="con_text">
+                            </div>
+                            <hr>
+
+                            <div class="layui-row" style="padding: 10px 20px;background: #f7f7f7;">
+                                <div class="layui-col-md1">
+                                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                                    <span>
+                                    点赞
+                                </span>
+                                </div>
+                                <div class="layui-col-md1">
+                                    <i class="layui-icon layui-icon-reply-fill" aria-hidden="true"></i>
+                                    <span>
+                                    评论
+                                </span>
+                                </div>
+                                <div class="layui-col-md1">
+                                    <i class="layui-icon layui-icon-share" aria-hidden="true"></i>
+                                    <span>
+                                    分享
+                                </span>
+                                </div>
+                                <div class="layui-col-md1">
+                                    <i class="layui-icon layui-icon-star-fill" aria-hidden="true"></i>
+                                    <span>
+                                    收藏
+                                </span>
+                                </div>
+
+                            </div>
+                            <hr style="height: 3px;background-color: #f7f7f7">
+                            <div class="layui-row">
+                                <div class="layui-col-md12">
+                                    <div class="layui-card">
+                                        <div class="layui-card-header" id="com-show">
+                                            <form class="layui-form layui-form-pane" action="">
+                                                <div class="layui-form-item">
+                                                    <img src="/static/blog/images/favicon.ico" class="layui-col-lg1"
+                                                         style="margin: 5px 5px 0 0;height: 30px;width: 30px">
+                                                    <div class="layui-col-lg10">
+                                                        <textarea id="text" name="comment" lay-verify="comment"
+                                                                  placeholder="对作者说点什么" autocomplete="off"
+                                                                  class="layui-input comment-close"></textarea>
+                                                    </div>
+
+                                                    <label class="layui-form-label" id="comm-label"
+                                                           style="background-color: #ccccd7;cursor: pointer;">
+                                                        <span>评论</span>
+                                                    </label>
+
+                                                </div>
+                                            </form>
+                                            <form class="layui-form layui-form-pane" action="" id="comment-form"
+                                                  style="display: none">
+                                                <div class="layui-form-item">
+                                                    <img src="/static/blog/images/favicon.ico" class="layui-col-lg1"
+                                                         style="margin: 5px 5px 0 0;height: 30px;width: 30px">
+                                                    <div class="layui-col-lg11" style="width: 96%">
+                                                     <textarea id="comment" name="comment" lay-verify="comment"
+                                                               placeholder="对作者说点什么"
+                                                               autocomplete="off"
+                                                               class=" comment-close open layui-textarea"
+                                                               maxlength="1000"></textarea>
+                                                    </div>
+                                                    <div style="float: right;margin-top: 5px">
+                                                        <span style="color: #999aaa">还可以输入<nm>1000</nm>字符</span>
+                                                        <button type="button"
+                                                                class="layui-btn layui-btn-primary  layui-btn-radius"
+                                                                id="redom-txt">
+                                                            "速评一下"
+                                                        </button>
+                                                        <button type="button"
+                                                                class="layui-btn layui-btn-danger  layui-btn-radius"
+                                                                id="submit">
+                                                            发表评论
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="layui-card-body comment-body">
+                                            <ul>
+                                                <li class="comment-line-box">
+                                                    <div class="layui-row">
+                                                        <a>
+                                                            <img src="/static/blog/images/favicon.ico"
+                                                                 class="layui-col-lg1"
+                                                                 style="margin: 5px 5px 0 0;height: 30px;width: 30px">
+                                                        </a>
+                                                        <div class="center">
+                                                            <a><span >shiro </span></a>
+                                                            <span>:</span>
+                                                            <span> </span>
+                                                            <span>测试数据</span>
+                                                            <span class="date" title="2020-11-09 12:00:49">2月前</span>
+                                                            <span>
+                                                                <a class="a" data-type="reply" data-flag="true">回复</a>
+                                                                <a class="a">
+                                                                    <span data-type="report">举报</span></a></span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="replay-box">
+                                                    <div class="layui-row">
+                                                        <a>
+                                                            <img src="/static/blog/images/favicon.ico"
+                                                                 class="layui-col-lg1"
+                                                                 style="margin: 5px 5px 0 0;height: 30px;width: 30px">
+                                                        </a>
+                                                        <div class="center">
+                                                            <a><span >shiro </span></a>
+                                                            <span>:</span>
+                                                            <span> </span>
+                                                            <span>测试数据</span>
+                                                            <span class="date" title="2020-11-09 12:00:49">2月前</span>
+                                                            <span>
+                                                                <a class="a" data-type="reply" data-flag="true">回复</a>
+                                                                <a class="a">
+                                                                    <span data-type="report">举报</span></a></span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--                            <p class="share"><b>转载：</b>感谢您对XXX个人博客网站平台的认可，以及对我们原创作品以及文章的青睐，非常欢迎各位朋友分享到个人站长或者朋友圈，但转载请说明文章出处“来源杨青个人博客”。-->
+                            <!--                            </p>-->
+                            <p><span class="diggit">很赞哦！ (74)</span></p>
+
+                        </div>
+                        <div class="whitebg">
+                            <h2 class="htitle">相关文章</h2>
+                            <ul class="otherlink">
+                                <li><a href="/download/div/2018-04-22/815.html" title="html5个人博客模板《黑色格调》">html5个人博客模板《黑色格调》</a>
+                                </li>
+                                <li><a href="/download/div/2018-04-18/814.html" title="html5个人博客模板主题《清雅》">html5个人博客模板主题《清雅》</a>
+                                </li>
+                                <li><a href="/download/div/2018-03-18/807.html"
+                                       title="html5个人博客模板《绅士》">html5个人博客模板《绅士》</a></li>
+                                <li><a href="/download/div/2018-02-22/798.html" title="html5时尚个人博客模板-技术门户型">html5时尚个人博客模板-技术门户型</a>
+                                </li>
+                                <li><a href="/download/div/2017-09-08/789.html" title="html5个人博客模板主题《心蓝时间轴》">html5个人博客模板主题《心蓝时间轴》</a>
+                                </li>
+                                <li><a href="/download/div/2017-07-16/785.html"
+                                       title="古典个人博客模板《江南墨卷》">古典个人博客模板《江南墨卷》</a></li>
+                                <li><a href="/download/div/2017-07-13/783.html" title="古典风格-个人博客模板">古典风格-个人博客模板</a></li>
+                                <li><a href="/download/div/2015-06-28/748.html" title="个人博客《草根寻梦》—手机版模板">个人博客《草根寻梦》—手机版模板</a>
+                                </li>
+                                <li><a href="/download/div/2015-04-10/746.html" title="【活动作品】柠檬绿兔小白个人博客模板">【活动作品】柠檬绿兔小白个人博客模板</a>
+                                </li>
+                                <li><a href="/jstt/bj/2015-01-09/740.html" title="【匆匆那些年】总结个人博客经历的这四年…">【匆匆那些年】总结个人博客经历的这四年…</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="whitebg gbook">
+                            <h2 class="htitle">文章评论</h2>
+                            <ul>
+                            </ul>
+                        </div>
+                    </div>
+                    <!--lbox end-->
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+</article>
+
+
+</article>
+
+<a href="#">
+    <!--    <div class="top">-->
+    <!--        <i class="layui-icon layui-icon-top" style="font-size: 40px;background-color: #9F9F9F;color: " aria-hidden="true"></i>-->
+    <!--    </div>-->
+    <ul class="layui-fixbar">
+        <li class="layui-icon layui-fixbar-top" lay-type="top" style="display: list-item;"></li>
+    </ul>
+</a>
+</body>
+
+<script type="text/javascript" src="/static/blog/js/load.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        var layer = layui.layer
+        getInfo();
+        $("#text").on("focus", function () {
+            formHide(this)
+        })
+        $("#comm-label").on("click", function () {
+            formHide()
+        })
+        $("#comment").on("blur", function () {
+            formShow()
+        })
+        $("#submit").on("click", function () {
+            let comment = $("#comment").val();
+            if (comment.length == 0) {
+                layer.open({
+                    content: '填写评价'
+                });
+            }
+        })
+
+    })
+
+    function formHide() {
+        $("#com-show").css("height", "157px")
+        let form = $("#com-show").find("form");
+        $(form[0]).hide()
+        $(form[1]).show()
+        $("#comment").val($("#text").val())
+    }
+
+    function formShow() {
+        $("#com-show").css("height", "")
+        let form = $("#com-show").find("form");
+        $(form[1]).hide()
+        $(form[0]).show()
+        $("#text").val($("#comment").val())
+    }
+
+    function getInfo() {
+        $.get("/article/[[${id}]]", {}, function (result) {
+            console.log(result)
+            $(".con_text").html(result.data.content)
+            $(".con_tilte").html(result.data.title)
+            // $(".con_tilte").html(result.data.author)
+
+            let userInfo = "<i class=\"avatar\">" +
+                "<img src=\"/static/blog/images/avatar.jpg\"></i>" +
+                "<span>" + result.data.author + "</span>" +
+                "<span>" + result.data.createTime + "</span>" +
+                "<span>【<a href=\"/\">程序人生</a>】</span>" +
+                "<span>109990人已围观</span>";
+            $(".bloginfo").html(userInfo)
+            // $(".diggit").html("很赞哦！ ("+result.data.likesNum+")")
+
+        })
+    }
+
+    function otherLink() {
+        //查询elsearch 获取前10个分词检索结果
+    }
+
+    function createCommon(data) {
+
+    }
+    function createReply(data) {
+            let li = " <li class=\"replay-box\">\n" +
+                "                                                    <div class=\"layui-row\">\n" +
+                "                                                        <a>\n" +
+                "                                                            <img src=\"/static/blog/images/favicon.ico\"\n" +
+                "                                                                 class=\"layui-col-lg1\"\n" +
+                "                                                                 style=\"margin: 5px 5px 0 0;height: 30px;width: 30px\">\n" +
+                "                                                        </a>\n" +
+                "                                                        <div class=\"center\">\n" +
+                "                                                            <a><span >shiro </span></a>\n" +
+                "                                                            <span>:</span>\n" +
+                "                                                            <span> </span>\n" +
+                "                                                            <span>测试数据</span>\n" +
+                "                                                            <span class=\"date\" title=\"2020-11-09 12:00:49\">2月前</span>\n" +
+                "                                                            <span>\n" +
+                "                                                                <a class=\"a\" data-type=\"reply\" data-flag=\"true\">回复</a>\n" +
+                "                                                                <a class=\"a\">\n" +
+                "                                                                    <span data-type=\"report\">举报</span></a></span>\n" +
+                "                                                        </div>\n" +
+                "                                                    </div>\n" +
+                "                                                </li>";
+    }
+
+
+</script>
+</html>

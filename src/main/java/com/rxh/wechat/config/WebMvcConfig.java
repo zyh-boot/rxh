@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 
 /**
  *
- * @Description: springMVC过滤
+ * @Description: springMVC过滤 WebMvcConfigurationSupport
  * @Author Zhang YuHui 
  * @Date 2020/10/5 16:06
  *
@@ -43,11 +43,12 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
      * @Description 配置页面请求视图
      * @author Zhang YuHui
      * @date 2020/10/11 15:09
-     *       
+     *
      * @param registry
      * @return void
      */
-    @Override protected void addViewControllers(ViewControllerRegistry registry) {
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
         super.addViewControllers(registry);
         registry.addViewController("/").setViewName("index");
     }
