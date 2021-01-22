@@ -11,7 +11,8 @@ spring:
   profiles:
     active: blog
   #设置文件前置路径
-#  thymeleaf:
+  thymeleaf:
+    cache: false
   #    prefix: classpath:/templates/
   redis:
     host: localhost
@@ -37,5 +38,5 @@ mybatis-plus:
 pagehelper:
   helper-dialect: mysql
   reasonable: true
-  support-methods-arguments: true
+#  support-methods-arguments: true
   params: count=countSql

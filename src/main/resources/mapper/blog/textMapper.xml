@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rxh.blog.mapper.TreeVOMapper">
+
+
+    <resultMap id="treeVoMap" type="com.rxh.blog.Utiles.TreeVO">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="pid" property="pid" jdbcType="INTEGER" />
+        <collection property="list" ofType="com.rxh.blog.Utiles.TreeVO"
+                    column="id" select="findTreeByPid"/>
+    </resultMap>
+
+    <!--级联查询父菜单-->
+    <select id="selectAllTree" resultMap="treeVoMap" >
+         select * from test where pid = 0
+    </select>
+
+    <!--级联查询子菜单-->
+    <select id="findTreeByPid" resultType="com.rxh.blog.Utiles.TreeVO" >
+         select * from test where pid = #{id}
+    </select>
+
+    <resultMap type="com.rxh.blog.entity.Comment" id="ReplayMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <result property="articleId" column="article_id" jdbcType="VARCHAR"/>
+        <result property="articleTitle" column="article_title" jdbcType="VARCHAR"/>
+        <result property="parentCommentId" column="parent_comment_id" jdbcType="VARCHAR"/>
+        <result property="parentCommentUserId" column="parent_comment_user_id" jdbcType="VARCHAR"/>
+        <result property="replyCommentId" column="reply_comment_id" jdbcType="VARCHAR"/>
+        <result property="replyCommentUserId" column="reply_comment_user_id" jdbcType="VARCHAR"/>
+        <result property="replyCommentUserName" column="reply_comment_user_name" jdbcType="VARCHAR"/>
+        <result property="commentLevel" column="comment_level" jdbcType="INTEGER"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="praiseNum" column="praise_num" jdbcType="INTEGER"/>
+        <result property="topStatus" column="top_status" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updataTime" column="updata_time" jdbcType="TIMESTAMP"/>
+        <collection property="replyComments" ofType="com.rxh.blog.entity.Comment">
+            <result property="id" column="id1" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id1" jdbcType="VARCHAR"/>
+            <result property="userName" column="user_name1" jdbcType="VARCHAR"/>
+            <result property="articleId" column="article_id1" jdbcType="VARCHAR"/>
+            <result property="articleTitle" column="article_title1" jdbcType="VARCHAR"/>
+            <result property="parentCommentId" column="parent_comment_id1" jdbcType="VARCHAR"/>
+            <result property="parentCommentUserId" column="parent_comment_user_id1" jdbcType="VARCHAR"/>
+            <result property="replyCommentId" column="reply_comment_id1" jdbcType="VARCHAR"/>
+            <result property="replyCommentUserId" column="reply_comment_user_id1" jdbcType="VARCHAR"/>
+            <result property="replyCommentUserName" column="reply_comment_user_name1" jdbcType="VARCHAR"/>
+            <result property="commentLevel" column="comment_level1" jdbcType="INTEGER"/>
+            <result property="content" column="content1" jdbcType="VARCHAR"/>
+            <result property="status" column="status1" jdbcType="INTEGER"/>
+            <result property="praiseNum" column="praise_num1" jdbcType="INTEGER"/>
+            <result property="topStatus" column="top_status1" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time1" jdbcType="TIMESTAMP"/>
+            <result property="updataTime" column="updata_time1" jdbcType="TIMESTAMP"/>
+        </collection>
+    </resultMap>
+
+    <select id="findAllComment" resultMap="ReplayMap" >
+          select
+          id, user_id, user_name, article_id, article_title, parent_comment_id, parent_comment_user_id, reply_comment_id, reply_comment_user_id, comment_level, content, status, praise_num, top_status, create_time, updata_time
+        from blog.comment
+    </select>
+   <select id="findReplay" resultMap="ReplayMap" >
+         SELECT
+         a.*,
+            b.id id1, b.user_id user_id1,b.user_name user_name1,
+             b.article_id article_id, b.article_title article_title1,
+              b.parent_comment_id parent_comment_id1, b.parent_comment_user_id parent_comment_user_id1,
+               b.reply_comment_id reply_comment_id1, b.reply_comment_user_id reply_comment_user_id1,b.reply_comment_user_name reply_comment_user_name1,
+                b.comment_level comment_level1,b.content content1, b.status status, b.praise_num praise_num,
+                b.top_status top_status, b.create_time create_time1, b.updata_time updata_time1
+            FROM COMMENT a
+            LEFT JOIN COMMENT b
+            ON b.`parent_comment_id` = a.`id`
+            WHERE a.`comment_level` = '1'
+    </select>
+
+
+
+
+
+</mapper>

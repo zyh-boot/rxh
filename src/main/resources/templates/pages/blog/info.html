@@ -1,4 +1,5 @@
 <!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
 <html>
 <head>
     <meta charset="utf-8">
@@ -40,19 +41,24 @@
         -webkit-transition: height .3s ease-in-out;
         transition: height .3s ease-in-out;
     }
-    .a{
-        color: #1E9FFF ;
-        cursor: pointer;
-    }
-    .a:hover{
-        color: #ff4d4d ;
+
+    .a {
+        color: #1E9FFF;
         cursor: pointer;
     }
 
-    .center{
-        height: 36px;padding: 7px 0;font-size: 15px;
+    .a:hover {
+        color: #ff4d4d;
+        cursor: pointer;
     }
-    .replay-box{
+
+    .center {
+        height: 36px;
+        padding: 7px 0;
+        font-size: 15px;
+    }
+
+    .replay-box {
         position: relative;
         padding: 0 30px;
     }
@@ -236,7 +242,7 @@
                                                 </div>
                                             </form>
                                             <form class="layui-form layui-form-pane" action="" id="comment-form"
-                                                  style="display: none">
+                                                  style="display: none" th:fragment="comment-form">
                                                 <div class="layui-form-item">
                                                     <img src="/static/blog/images/favicon.ico" class="layui-col-lg1"
                                                          style="margin: 5px 5px 0 0;height: 30px;width: 30px">
@@ -260,55 +266,14 @@
                                                             发表评论
                                                         </button>
                                                     </div>
+                                                    <input type="hidden" id="comment_replyId" name="comment_replyId">
+                                                    <input type="hidden" id="comment_userId" name="comment_userId">
+                                                    <input type="hidden" id="article_id" name="article_id">
                                                 </div>
                                             </form>
                                         </div>
-                                        <div class="layui-card-body comment-body">
-                                            <ul>
-                                                <li class="comment-line-box">
-                                                    <div class="layui-row">
-                                                        <a>
-                                                            <img src="/static/blog/images/favicon.ico"
-                                                                 class="layui-col-lg1"
-                                                                 style="margin: 5px 5px 0 0;height: 30px;width: 30px">
-                                                        </a>
-                                                        <div class="center">
-                                                            <a><span >shiro </span></a>
-                                                            <span>:</span>
-                                                            <span> </span>
-                                                            <span>测试数据</span>
-                                                            <span class="date" title="2020-11-09 12:00:49">2月前</span>
-                                                            <span>
-                                                                <a class="a" data-type="reply" data-flag="true">回复</a>
-                                                                <a class="a">
-                                                                    <span data-type="report">举报</span></a></span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="replay-box">
-                                                    <div class="layui-row">
-                                                        <a>
-                                                            <img src="/static/blog/images/favicon.ico"
-                                                                 class="layui-col-lg1"
-                                                                 style="margin: 5px 5px 0 0;height: 30px;width: 30px">
-                                                        </a>
-                                                        <div class="center">
-                                                            <a><span >shiro </span></a>
-                                                            <span>:</span>
-                                                            <span> </span>
-                                                            <span>测试数据</span>
-                                                            <span class="date" title="2020-11-09 12:00:49">2月前</span>
-                                                            <span>
-                                                                <a class="a" data-type="reply" data-flag="true">回复</a>
-                                                                <a class="a">
-                                                                    <span data-type="report">举报</span></a></span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-
-                                        </div>
-                                    </div>
+<!--                                        <div th:text="${contents}"></div>-->
+                                        <div class="layui-card-body comment-body" id="comment_replay"></div>
                                 </div>
                             </div>
 
@@ -375,7 +340,8 @@
 
 <script type="text/javascript">
     $(function () {
-        var layer = layui.layer
+        var layer = layui.layer;
+        var laypage = layui.laypage;
         getInfo();
         $("#text").on("focus", function () {
             formHide(this)
@@ -383,9 +349,9 @@
         $("#comm-label").on("click", function () {
             formHide()
         })
-        $("#comment").on("blur", function () {
-            formShow()
-        })
+        // $("#comment").on("blur", function () {
+        //     formShow()
+        // })
         $("#submit").on("click", function () {
             let comment = $("#comment").val();
             if (comment.length == 0) {
@@ -393,8 +359,33 @@
                     content: '填写评价'
                 });
             }
+
+            $.ajax({
+                url: "/comment",
+                type: 'POST',
+                data: {
+                    articleId: "[[${id}]]",
+                    articleTitle: $(".con_tilte").html(),
+                    content: $("#comment").val(),
+                },
+                // async: false,
+                cache: false,  //是否缓存 可以为false
+                success: function (data) {
+
+                    console.log("打他>>>>>>>>>>",data)
+                    alert(data.msg);
+                    formShow()
+                    showCommon()
+                },
+                error: function (data) {
+                    console.log("error>>>>>>>>>>",data)
+                    //  alert(JSON.stringify(data));
+                }
+            });
+
         })
 
+        showCommon(3,1)
     })
 
     function formHide() {
@@ -432,6 +423,16 @@
         })
     }
 
+    function showCommon(size,page) {
+        $.get("./replay",{
+            size:size,
+            curPage:page
+        },function(result){
+            $("#comment_replay").html(result)
+            console.log(result)
+        })
+    }
+
     function otherLink() {
         //查询elsearch 获取前10个分词检索结果
     }
@@ -439,28 +440,8 @@
     function createCommon(data) {
 
     }
-    function createReply(data) {
-            let li = " <li class=\"replay-box\">\n" +
-                "                                                    <div class=\"layui-row\">\n" +
-                "                                                        <a>\n" +
-                "                                                            <img src=\"/static/blog/images/favicon.ico\"\n" +
-                "                                                                 class=\"layui-col-lg1\"\n" +
-                "                                                                 style=\"margin: 5px 5px 0 0;height: 30px;width: 30px\">\n" +
-                "                                                        </a>\n" +
-                "                                                        <div class=\"center\">\n" +
-                "                                                            <a><span >shiro </span></a>\n" +
-                "                                                            <span>:</span>\n" +
-                "                                                            <span> </span>\n" +
-                "                                                            <span>测试数据</span>\n" +
-                "                                                            <span class=\"date\" title=\"2020-11-09 12:00:49\">2月前</span>\n" +
-                "                                                            <span>\n" +
-                "                                                                <a class=\"a\" data-type=\"reply\" data-flag=\"true\">回复</a>\n" +
-                "                                                                <a class=\"a\">\n" +
-                "                                                                    <span data-type=\"report\">举报</span></a></span>\n" +
-                "                                                        </div>\n" +
-                "                                                    </div>\n" +
-                "                                                </li>";
-    }
+
+
 
 
 </script>

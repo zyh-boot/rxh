@@ -5,16 +5,17 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 文章评论表(Comment)表实体类
  *
  * @author zyh
- * @Date 2021-01-19 15:47:20
+ * @Date 2021-01-22 11:29:43
  */
 @SuppressWarnings("serial")
 public class Comment extends Model<Comment> implements Serializable {
-    private static final long serialVersionUID = -26269505334890642L;
+    private static final long serialVersionUID = -19574891095288864L;
     //评论id
     private String id;
     //评论人userId
@@ -33,6 +34,8 @@ public class Comment extends Model<Comment> implements Serializable {
     private String replyCommentId;
     //被回复的评论用户id
     private String replyCommentUserId;
+    //被回复的用户名
+    private String replyCommentUserName;
     //评论等级[ 1 一级评论 默认 ，2 二级评论]
     private Integer commentLevel;
     //评论的内容
@@ -47,7 +50,16 @@ public class Comment extends Model<Comment> implements Serializable {
     private Date createTime;
     //更新时间
     private Date updataTime;
+    //二级评论
+    private List<Comment> replyComments;
 
+    public List<Comment> getReplyComments() {
+        return replyComments;
+    }
+
+    public void setReplyComments(List<Comment> replyComments) {
+        this.replyComments = replyComments;
+    }
 
     public String getId() {
         return id;
@@ -119,6 +131,14 @@ public class Comment extends Model<Comment> implements Serializable {
 
     public void setReplyCommentUserId(String replyCommentUserId) {
         this.replyCommentUserId = replyCommentUserId;
+    }
+
+    public String getReplyCommentUserName() {
+        return replyCommentUserName;
+    }
+
+    public void setReplyCommentUserName(String replyCommentUserName) {
+        this.replyCommentUserName = replyCommentUserName;
     }
 
     public Integer getCommentLevel() {
