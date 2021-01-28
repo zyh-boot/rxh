@@ -1,10 +1,9 @@
 package com.rxh.blog.entity;
 
 
-import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 发布号作者表(Article)表实体类
@@ -13,7 +12,8 @@ import java.util.Date;
  * @Date 2021-01-15 10:07:00
  */
 @SuppressWarnings("serial")
-public class Article extends Model<Article> implements Serializable {
+@Data
+public class Article extends BaseEntity implements Serializable {
     private static final long serialVersionUID = -78305265327413140L;
 
     private String id;
@@ -31,13 +31,15 @@ public class Article extends Model<Article> implements Serializable {
     private String authorId;
     //附件保存路径
     private String enclosure;
-    //创建时间
-    private Date createTime;
-    //更新时间
-    private Date updateTime;
-    //是否有效  1.有效  2无效
-    private String deleteStatus;
+//    //创建时间
+//    private Date createTime;
+//    //更新时间
+//    private Date updateTime;
+//    //是否有效  1.有效  2无效
+//    private String status;
 
+
+//    private List<>
 
     public String getId() {
         return id;
@@ -103,37 +105,30 @@ public class Article extends Model<Article> implements Serializable {
         this.enclosure = enclosure;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+//    public Date getCreateTime() {
+//        return createTime;
+//    }
+//
+//    public void setCreateTime(Date createTime) {
+//        this.createTime = createTime;
+//    }
+//
+//    public Date getUpdateTime() {
+//        return updateTime;
+//    }
+//
+//    public void setUpdateTime(Date updateTime) {
+//        this.updateTime = updateTime;
+//    }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getDeleteStatus() {
-        return deleteStatus;
-    }
-
-    public void setDeleteStatus(String deleteStatus) {
-        this.deleteStatus = deleteStatus;
-    }
-
-    /**
-     * 获取主键值
-     *
-     * @return 主键值
-     */
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
-    }
+//    /**
+//     * 获取主键值
+//     *
+//     * @return 主键值
+//     */
+//    @Override
+//    protected Serializable pkVal() {
+//        return this.id;
+//    }
 }

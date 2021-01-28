@@ -14,6 +14,7 @@ public interface TreeVOMapper extends BaseMapper<TreeVOMapper> {
   
      
     List<TreeVO> selectAllTree() ;
+    boolean updataId(String id) ;
 
     List<Comment> findAllComment();
     List<Comment> findReplay();

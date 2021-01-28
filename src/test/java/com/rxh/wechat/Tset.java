@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -30,11 +31,11 @@ public class Tset {
     @Autowired
     EsSearchService esSearchService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
     @Test
-    public void show() throws IOException {
-
-//        esSearchService.createIndex("zyhtes","5","1","pinyin");
-        Base64PreFix.getBase64("C:\\Users\\zyh\\Pictures\\Camera Roll\\zyh.docx");
+    public  void show() throws IOException {
+        redisTemplate.opsForValue().set("test123","asdadadasdasd");
     }
 
     @Test
@@ -42,5 +43,6 @@ public class Tset {
         String s = Md5Utils.md5Encode("中华人民共和国", "");
         System.out.println(s);
     }
+
 
 }

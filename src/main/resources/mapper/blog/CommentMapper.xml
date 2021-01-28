@@ -18,8 +18,8 @@
         <result property="status" column="status" jdbcType="INTEGER"/>
         <result property="praiseNum" column="praise_num" jdbcType="INTEGER"/>
         <result property="topStatus" column="top_status" jdbcType="INTEGER"/>
-        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-        <result property="updataTime" column="updata_time" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="create_time" jdbcType="OTHER"/>
+        <result property="updateTime" column="update_time" jdbcType="OTHER"/>
     </resultMap>
     <resultMap type="com.rxh.blog.entity.Comment" id="ReplayMap">
         <result property="id" column="id" jdbcType="VARCHAR"/>
@@ -37,8 +37,8 @@
         <result property="status" column="status" jdbcType="INTEGER"/>
         <result property="praiseNum" column="praise_num" jdbcType="INTEGER"/>
         <result property="topStatus" column="top_status" jdbcType="INTEGER"/>
-        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-        <result property="updataTime" column="updata_time" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="create_time" jdbcType="OTHER"/>
+        <result property="updateTime" column="update_time" jdbcType="OTHER"/>
         <collection property="replyComments" ofType="com.rxh.blog.entity.Comment">
             <result property="id" column="id1" jdbcType="VARCHAR"/>
             <result property="userId" column="user_id1" jdbcType="VARCHAR"/>
@@ -55,32 +55,59 @@
             <result property="status" column="status1" jdbcType="INTEGER"/>
             <result property="praiseNum" column="praise_num1" jdbcType="INTEGER"/>
             <result property="topStatus" column="top_status1" jdbcType="INTEGER"/>
-            <result property="createTime" column="create_time1" jdbcType="TIMESTAMP"/>
-            <result property="updataTime" column="updata_time1" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time1" jdbcType="OTHER"/>
+            <result property="updateTime" column="update_time1" jdbcType="OTHER"/>
         </collection>
     </resultMap>
     <!--查询单个-->
     <select id="queryById" resultMap="CommentMap">
-        select
-          id, user_id, user_name, article_id, article_title, parent_comment_id, parent_comment_user_id, reply_comment_id, reply_comment_user_id, reply_comment_user_name,comment_level, content, status, praise_num, top_status, create_time, updata_time
+        select id,
+               user_id,
+               user_name,
+               article_id,
+               article_title,
+               parent_comment_id,
+               parent_comment_user_id,
+               reply_comment_id,
+               reply_comment_user_id,
+               reply_comment_user_name,
+               comment_level,
+               content,
+               status,
+               praise_num,
+               top_status,
+               create_time,
+               update_time
         from blog.comment
         where id = #{id}
     </select>
 
     <!--查询指定行数据-->
     <select id="queryReplay" resultMap="ReplayMap">
-        SELECT
-         a.*,
-            b.id id1, b.user_id user_id1,b.user_name user_name1,
-             b.article_id article_id, b.article_title article_title1,
-              b.parent_comment_id parent_comment_id1, b.parent_comment_user_id parent_comment_user_id1,
-               b.reply_comment_id reply_comment_id1, b.reply_comment_user_id reply_comment_user_id1,b.reply_comment_user_name reply_comment_user_name1,
-                b.comment_level comment_level1,b.content content1, b.status status, b.praise_num praise_num,
-                b.top_status top_status, b.create_time create_time1, b.updata_time updata_time1
-            FROM COMMENT a
-            LEFT JOIN COMMENT b
-            ON b.`parent_comment_id` = a.`id`
-            WHERE a.`comment_level` = '1'
+        SELECT a.*,
+               b.id                      id1,
+               b.user_id                 user_id1,
+               b.user_name               user_name1,
+               b.article_id              article_id1,
+               b.article_title           article_title1,
+               b.parent_comment_id       parent_comment_id1,
+               b.parent_comment_user_id  parent_comment_user_id1,
+               b.reply_comment_id        reply_comment_id1,
+               b.reply_comment_user_id   reply_comment_user_id1,
+               b.reply_comment_user_name reply_comment_user_name1,
+               b.comment_level           comment_level1,
+               b.content                 content1,
+               b.status                  status1,
+               b.praise_num              praise_num1,
+               b.top_status              top_status1,
+               b.create_time             create_time1,
+               b.update_time             update_time1
+        FROM COMMENT a
+                 LEFT JOIN COMMENT b
+                           ON b.`parent_comment_id` = a.`id` AND b.`status` = '1'
+        WHERE a.`comment_level` = '1'
+          AND a.`status` = '1'
+        AND a.`article_id` = #{id}
     </select>
 
     <!--通过实体作为筛选条件查询-->
@@ -88,7 +115,7 @@
         select
         id, user_id, user_name, article_id, article_title, parent_comment_id, parent_comment_user_id, reply_comment_id,
         reply_comment_user_id, reply_comment_user_name, comment_level, content, status, praise_num, top_status,
-        create_time, updata_time
+        create_time, update_time
         from blog.comment
         <where>
             <if test="id != null and id != ''">
@@ -139,8 +166,8 @@
             <if test="createTime != null">
                 and create_time = #{createTime}
             </if>
-            <if test="updataTime != null">
-                and updata_time = #{updataTime}
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
             </if>
         </where>
     </select>
@@ -152,10 +179,10 @@
         </selectKey>
         insert into blog.comment(id, user_id, user_name, article_id, article_title, parent_comment_id,
         parent_comment_user_id, reply_comment_id, reply_comment_user_id, reply_comment_user_name, comment_level,
-        content, status, praise_num, top_status, create_time, updata_time)
+        content, praise_num, top_status)
         values (#{id}, #{userId}, #{userName}, #{articleId}, #{articleTitle}, #{parentCommentId},
         #{parentCommentUserId}, #{replyCommentId}, #{replyCommentUserId}, #{replyCommentUserName}, #{commentLevel},
-        #{content}, #{status}, #{praiseNum}, #{topStatus}, #{createTime}, #{updataTime})
+        #{content}, #{praiseNum}, #{topStatus})
     </insert>
 
     <insert id="insertBatch" useGeneratedKeys="true">
@@ -164,26 +191,26 @@
         </selectKey>
         insert into blog.comment(id, user_id, user_name, article_id, article_title, parent_comment_id,
         parent_comment_user_id, reply_comment_id, reply_comment_user_id, reply_comment_user_name, comment_level,
-        content, status, praise_num, top_status, create_time, updata_time)
+        content, status, praise_num, top_status, create_time, update_time)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.id}, #{entity.userId}, #{entity.userName}, #{entity.articleId}, #{entity.articleTitle},
             #{entity.parentCommentId}, #{entity.parentCommentUserId}, #{entity.replyCommentId},
             #{entity.replyCommentUserId}, #{entity.replyCommentUserName}, #{entity.commentLevel}, #{entity.content},
-            #{entity.status}, #{entity.praiseNum}, #{entity.topStatus}, #{entity.createTime}, #{entity.updataTime})
+            #{entity.status}, #{entity.praiseNum}, #{entity.topStatus}, #{entity.createTime}, #{entity.updateTime})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
         insert into blog.comment(user_id, user_name, article_id, article_title, parent_comment_id,
         parent_comment_user_id, reply_comment_id, reply_comment_user_id, reply_comment_user_name, comment_level,
-        content, status, praise_num, top_status, create_time, updata_time)
+        content, status, praise_num, top_status, create_time, update_time)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.userId}, #{entity.userName}, #{entity.articleId}, #{entity.articleTitle},
             #{entity.parentCommentId}, #{entity.parentCommentUserId}, #{entity.replyCommentId},
             #{entity.replyCommentUserId}, #{entity.replyCommentUserName}, #{entity.commentLevel}, #{entity.content},
-            #{entity.status}, #{entity.praiseNum}, #{entity.topStatus}, #{entity.createTime}, #{entity.updataTime})
+            #{entity.status}, #{entity.praiseNum}, #{entity.topStatus}, #{entity.createTime}, #{entity.updateTime})
         </foreach>
         on duplicate key update
         user_id = values(user_id) , user_name = values(user_name) , article_id = values(article_id) , article_title =
@@ -191,7 +218,7 @@
         values(parent_comment_user_id) , reply_comment_id = values(reply_comment_id) , reply_comment_user_id =
         values(reply_comment_user_id) , reply_comment_user_name = values(reply_comment_user_name) , comment_level =
         values(comment_level) , content = values(content) , status = values(status) , praise_num = values(praise_num) ,
-        top_status = values(top_status) , create_time = values(create_time) , updata_time = values(updata_time)
+        top_status = values(top_status) , create_time = values(create_time) , update_time = values(update_time)
     </insert>
 
     <!--通过主键修改数据-->
@@ -240,19 +267,22 @@
             <if test="topStatus != null">
                 top_status = #{topStatus},
             </if>
-            <if test="createTime != null">
-                create_time = #{createTime},
-            </if>
-            <if test="updataTime != null">
-                updata_time = #{updataTime},
-            </if>
         </set>
         where id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from blog.comment where id = #{id}
+        delete
+        from blog.comment
+        where id = #{id}
     </delete>
-
+    <!--逻辑删除删除-->
+    <update id="deleteLogic">
+        UPDATE COMMENT c1
+            LEFT JOIN COMMENT c2
+        ON c1.`id` = c2.`reply_comment_id`
+            SET c1.`status`='0', c2.`status`='0'
+        WHERE c1.`id` = #{id}
+    </update>
 </mapper>

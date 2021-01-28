@@ -1,10 +1,7 @@
 package com.rxh.blog.entity;
 
 
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,7 +11,7 @@ import java.util.List;
  * @Date 2021-01-22 11:29:43
  */
 @SuppressWarnings("serial")
-public class Comment extends Model<Comment> implements Serializable {
+public class Comment extends BaseEntity implements Serializable {
     private static final long serialVersionUID = -19574891095288864L;
     //评论id
     private String id;
@@ -40,16 +37,16 @@ public class Comment extends Model<Comment> implements Serializable {
     private Integer commentLevel;
     //评论的内容
     private String content;
-    //状态 (1 有效，0 逻辑删除)
-    private Integer status;
+//    //状态 (1 有效，0 逻辑删除)
+//    private Integer status;
     //点赞数
     private Integer praiseNum;
     //置顶状态[ 1 置顶，0 不置顶 默认 ]
     private Integer topStatus;
-    //创建时间
-    private Date createTime;
-    //更新时间
-    private Date updataTime;
+//    //创建时间
+//    private Date createTime;
+//    //更新时间
+//    private Date updateTime;
     //二级评论
     private List<Comment> replyComments;
 
@@ -157,13 +154,13 @@ public class Comment extends Model<Comment> implements Serializable {
         this.content = content;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
+//    public Integer getStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(Integer status) {
+//        this.status = status;
+//    }
 
     public Integer getPraiseNum() {
         return praiseNum;
@@ -181,29 +178,29 @@ public class Comment extends Model<Comment> implements Serializable {
         this.topStatus = topStatus;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdataTime() {
-        return updataTime;
-    }
-
-    public void setUpdataTime(Date updataTime) {
-        this.updataTime = updataTime;
-    }
+//    public Date getCreateTime() {
+//        return createTime;
+//    }
+//
+//    public void setCreateTime(Date createTime) {
+//        this.createTime = createTime;
+//    }
+//
+//    public Date getupdateTime() {
+//        return updateTime;
+//    }
+//
+//    public void setupdateTime(Date updateTime) {
+//        this.updateTime = updateTime;
+//    }
 
     /**
      * 获取主键值
      *
      * @return 主键值
      */
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
-    }
+//    @Override
+//    protected Serializable pkVal() {
+//        return this.id;
+//    }
 }

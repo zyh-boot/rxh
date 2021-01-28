@@ -24,4 +24,15 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             Page page1 = articleMapper.selectPage(page, new LambdaQueryWrapper<Article>());
             return page1;
         }
+
+    @Override
+    public boolean setTop(String id) {
+        boolean b = articleMapper.setTop(id);
+        return b;
+    }
+
+    @Override
+    public Article getTop(String id) {
+        return articleMapper.getTop(id);
+    }
 }

@@ -1,19 +1,15 @@
 package com.rxh.blog.controller;
 
-import com.github.pagehelper.PageInfo;
 import com.rxh.blog.entity.Article;
-import com.rxh.blog.entity.Comment;
 import com.rxh.blog.service.ArticleService;
 import com.rxh.blog.service.CommentService;
 import com.rxh.complat.common.shiro.entity.Member;
 import com.rxh.complat.common.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 /**
  *
@@ -36,7 +32,7 @@ public class BlogViewController {
     }
 
     @RequestMapping("header")
-    public String header() {
+    public String   header() {
         return "pages/blog/header";
     }
 
@@ -79,19 +75,6 @@ public class BlogViewController {
         return view;
     }
 
-    @RequestMapping("replay")
-    public String replay(String size, String curPage, Model model) {
-        PageInfo replay = commentService.findReplay(size, curPage);
-        model.addAttribute("contents",replay.getList());
-        model.addAttribute("total",replay.getTotal());
-        model.addAttribute("curpage",curPage);
-        model.addAttribute("size",size);
-        return "pages/blog/tmplate::comment_replay";
-    }
-    @RequestMapping("replayTmp")
-    public String replayTmp() {
-        return "pages/blog/tmplate::comment_replay";
-    }
 
     @RequestMapping("jstl")
     public ModelAndView jstl() {
@@ -107,8 +90,8 @@ public class BlogViewController {
         return "pages/blog/user";
     }
 
-    @RequestMapping("articleInfo")
-    public ModelAndView articleInfo(String id) {
+    @RequestMapping("articleInfo/{id}")
+    public ModelAndView articleInfo(@PathVariable("id") String id) {
         ModelAndView view = new ModelAndView("pages/blog/info");
         view.addObject("id", id);
 //        List<Comment> list = commentService.queryAllByLimit("0","10");

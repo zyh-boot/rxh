@@ -342,7 +342,16 @@ about
 	info.html
 	
 */
-.con_tilte { font-size: 22px; margin-top: 20px }
+.con_tilte {
+    /*font-size: 22px;*/
+    /*margin-top: 20px*/
+    font-size: 28px;
+    word-wrap: break-word;
+    color: #222226;
+    font-weight: 600;
+    margin: 0;
+    word-break: break-all;
+}
 .con_nav { float: right; font-size: 14px; color: #666 }
 .con_nav a { color: #666 }
 .con_nav a:hover { color: #000 }

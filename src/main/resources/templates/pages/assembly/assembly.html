@@ -123,18 +123,36 @@
                     </div>
                 </div>
             </div>
-            <div class="layui-col-md12">
+            <div class="layui-col-md6">
                 <div class="layui-card">
-                    <div class="layui-card-header">标题</div>
+                    <div class="layui-card-header">博客速评录入</div>
                     <div class="layui-card-body">
-                        内容
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">速评内容</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="title" lay-verify="title" id="quickReiew" autocomplete="off"
+                                       placeholder="请输入速评内容" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <button type="button" class="layui-btn layui-btn-normal" id="reviewSubmit">
+                                提交
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">标题</div>
+                <div class="layui-card-body">
+                    内容
+                </div>
+            </div>
+        </div>
     </div>
-
-
+</div>
 
 
 </div>
@@ -156,7 +174,7 @@
 
         $("#load").on("click", function () {
             var DISABLED = 'layui-btn-disabled';
-            if($(this).hasClass(DISABLED)) return;
+            if ($(this).hasClass(DISABLED)) return;
 
             var n = 0;
             var timer = "";
@@ -196,5 +214,29 @@
             });
         })
     });
+
+    $(function (){
+        $("#reviewSubmit").on("click",function (result) {
+            let val = $("#quickReiew").val();
+            $.ajax({
+                url: "/comment/quickReview",
+                type: 'POST',
+                data: {
+                    review:val
+                },
+                // async: false,
+                cache: false,  //是否缓存 可以为false
+                success: function (data) {
+                    console.log("打他>>>>>>>>>>", data)
+                    alert(data.msg);
+                },
+                error: function (data) {
+                    console.log("error>>>>>>>>>>", data)
+                    //  alert(JSON.stringify(data));
+                }
+            });
+        })
+    })
 </script>
+
 </html>

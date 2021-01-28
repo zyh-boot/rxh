@@ -1,8 +1,5 @@
 package com.rxh.blog.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -40,5 +37,9 @@ public class TreeVOService {
 //        PageHelper.startPage(Integer.parseInt(page),Integer.parseInt(size));
 //        PageInfo<Comment> pageInfo = new PageInfo<>(allComment);
         return page1;
+    }
+
+    public boolean updataId(String id){
+        return treeVOMapper.updataId(id);
     }
 }

@@ -1,2 +1,2 @@
-$("#headerTmp").load("./header")
-$("#footerTmp").load("./footer")
+$("#headerTmp").load("/blog/header")
+$("#footerTmp").load("/blog/footer")

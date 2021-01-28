@@ -20,6 +20,11 @@
     <select id="findTreeByPid" resultType="com.rxh.blog.Utiles.TreeVO" >
          select * from test where pid = #{id}
     </select>
+    <update id="updataId" parameterType="string">
+        UPDATE test
+        SET NAME = '0'
+        WHERE id=#{id}
+    </update>
 
     <resultMap type="com.rxh.blog.entity.Comment" id="ReplayMap">
         <result property="id" column="id" jdbcType="VARCHAR"/>

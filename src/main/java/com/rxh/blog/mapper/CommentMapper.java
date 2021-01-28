@@ -2,7 +2,6 @@ package com.rxh.blog.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rxh.blog.entity.Comment;
 
 import java.util.List;
@@ -14,6 +13,8 @@ import java.util.List;
  * @Date 2021-01-19 15:47:21
  */
 public interface CommentMapper extends BaseMapper<Comment> {
-   List<Comment> queryReplay();
+   List<Comment> queryReplay(String id);
    Comment queryById(String id);
+   boolean deleteLogic(String id);
+   boolean insertBatch(List<Comment> entities);
 }

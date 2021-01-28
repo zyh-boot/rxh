@@ -13,4 +13,6 @@ import com.rxh.blog.entity.Article;
  */
 public interface ArticleService extends IService<Article>{
     Page<Article> selectPage(Page page);
+    boolean setTop(String id);
+    Article getTop(String id);
 }

@@ -10,25 +10,40 @@
         <result property="author" column="author" jdbcType="VARCHAR"/>
         <result property="authorId" column="author_id" jdbcType="VARCHAR"/>
         <result property="enclosure" column="enclosure" jdbcType="VARCHAR"/>
-        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-        <result property="deleteStatus" column="delete_status" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="OTHER"/>
+        <result property="updateTime" column="update_time" jdbcType="OTHER"/>
+        <result property="status" column="status" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="ArticleMap">
-        select
-          id, title, abstract_txt, content, author, author_id, enclosure, create_time, update_time, delete_status
+        select id,
+               title,
+               abstract_txt,
+               content,
+               author,
+               author_id,
+               enclosure,
+               create_time,
+               update_time,
+               delete_status
         from blog.article
         where id = #{id}
     </select>
 
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="ArticleMap">
-        select
-          id, title, abstract_txt, content, author, author_id, enclosure, create_time, update_time, delete_status
-        from blog.article
-        limit #{offset}, #{limit}
+        select id,
+               title,
+               abstract_txt,
+               content,
+               author,
+               author_id,
+               enclosure,
+               create_time,
+               update_time,
+               delete_status
+        from blog.article limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->
@@ -71,12 +86,14 @@
     </select>
 
     <!--新增所有列-->
-    <insert id="insert"  useGeneratedKeys="true">
+    <insert id="insert" useGeneratedKeys="true">
         <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
             select REPLACE(UUID(),'-','')
         </selectKey>
-        insert into blog.article(id,title, abstract_txt, content, author, author_id, enclosure, create_time, update_time, delete_status)
-        values (#{id},#{title}, #{abstractTxt}, #{content}, #{author}, #{authorId}, #{enclosure}, #{createTime}, #{updateTime}, #{deleteStatus})
+        insert into blog.article(id,title, abstract_txt, content, author, author_id, enclosure, create_time,
+        update_time, delete_status)
+        values (#{id},#{title}, #{abstractTxt}, #{content}, #{author}, #{authorId}, #{enclosure}, #{createTime},
+        #{updateTime}, #{deleteStatus})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
@@ -138,9 +155,20 @@
         where id = #{id}
     </update>
 
+    <!--设置置顶-->
+    <update id="setTop">
+        UPDATE article c1,article c2
+        SET c1.top_status = '1', c2.`top_status`='0'
+        WHERE c2.`top_status` = '1' AND c1.`id` = #{id}
+    </update>
+    <select id="getTop" resultMap="ArticleMap">
+        SELECT * FROM article WHERE top_status = '1' AND author_id = #{userID}
+    </select>
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from blog.article where id = #{id}
+        delete
+        from blog.article
+        where id = #{id}
     </delete>
 
 </mapper>

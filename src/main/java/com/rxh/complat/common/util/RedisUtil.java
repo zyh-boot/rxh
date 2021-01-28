@@ -1,5 +1,6 @@
 package com.rxh.complat.common.util;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RedisUtil {
 
-    private StringBuffer base = new StringBuffer("rxh:");
+    private  StringBuffer base = new StringBuffer("rxh:");
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -28,10 +29,10 @@ public class RedisUtil {
      * @description: 指定缓存超时时间
      * @author: zyh
      * @date: 2020/11/10
-     * @param null
+     * @param
      * @return:
      */
-    public boolean expire(String key, long time) {
+    public  boolean expire(String key, long time) {
         try {
             if (time > 0) {
                 redisTemplate.expire(key, time, TimeUnit.SECONDS);
@@ -51,7 +52,7 @@ public class RedisUtil {
      * @params key不为null
      * @return 返回0 永久有效  单位:(秒)
      */
-    public long getExpire(String key) {
+    public  long getExpire(String key) {
         return redisTemplate.getExpire(key);
     }
 
@@ -64,7 +65,7 @@ public class RedisUtil {
      * @params key
      * @return boolean
      */
-    public boolean hasKey(String key) {
+    public  boolean hasKey(String key) {
         try {
             return redisTemplate.hasKey(key);
         } catch (Exception e) {
@@ -81,7 +82,7 @@ public class RedisUtil {
      * @params key
      * @return boolean
      */
-    public boolean del(String key) {
+    public  boolean del(String key) {
         try {
             redisTemplate.delete(key);
             return true;
@@ -99,7 +100,7 @@ public class RedisUtil {
      * @params key
      * @return boolean
      */
-    public boolean delBatch(Collection key) {
+    public  boolean delBatch(Collection key) {
         try {
             redisTemplate.delete(key);
             return true;
@@ -121,12 +122,13 @@ public class RedisUtil {
      * @params time 缓存失效时间 单位:(秒) time < 0为永久保存
      * @return boolean
      */
-    public boolean set(String key, Object value, long... time) {
+    public  boolean set(String key, Object value, long... time) {
         try {
             if (time == null || time.length == 0) {
-                redisTemplate.opsForValue().set(base.append(key).toString(), value);
+                String json = JSON.toJSONString(value);
+                redisTemplate.opsForValue().set(key.toString(),json);
             } else {
-                redisTemplate.opsForValue().set(base.append(key).toString(), value, time[0], TimeUnit.SECONDS);
+                redisTemplate.opsForValue().set(key.toString(), value, time[0], TimeUnit.SECONDS);
             }
             return true;
         } catch (Exception e) {
@@ -143,8 +145,8 @@ public class RedisUtil {
      * @params key
      * @return java.lang.Object
      */
-    public Object get(String key) {
-        return key == null ? null : redisTemplate.opsForValue().get(key);
+    public  String get(String key) {
+        return key == null ? null : redisTemplate.opsForValue().get(key).toString();
     }
 
     //===============================Map====================================
@@ -158,7 +160,7 @@ public class RedisUtil {
      * @params item 为空时,返回key下所有键值对. 不为空时,返回对应的键值
      * @return java.lang.Object
      */
-    public Object hGet(String key, String... item) {
+    public  Object hGet(String key, String... item) {
         HashMap<Object, Object> hashMap = new HashMap<>();
         if (item == null) {
             return redisTemplate.opsForHash().entries(key);
@@ -178,7 +180,7 @@ public class RedisUtil {
      * @params item
      * @return boolean
      */
-    public boolean hmSet(String key, Map item) {
+    public  boolean hmSet(String key, Map item) {
         try {
             redisTemplate.opsForHash().putAll(key, item);
             return true;
@@ -198,7 +200,7 @@ public class RedisUtil {
      * @params time 时间 单位:(秒)
      * @return boolean
      */
-    public boolean hmSet(String key, Map item, long time) {
+    public  boolean hmSet(String key, Map item, long time) {
         try {
             redisTemplate.opsForHash().putAll(key, item);
             if (time > 0) {
@@ -221,7 +223,7 @@ public class RedisUtil {
      * @params value
      * @return boolean
      */
-    public boolean hSet(String key, String item, Object value) {
+    public  boolean hSet(String key, String item, Object value) {
         try {
             redisTemplate.opsForHash().put(key, item, value);
             return true;
@@ -242,7 +244,7 @@ public class RedisUtil {
      * @params time 覆盖原有缓存中的事件
      * @return boolean
      */
-    public boolean hSet(String key, String item, Object value, long time) {
+    public  boolean hSet(String key, String item, Object value, long time) {
         try {
             redisTemplate.opsForHash().put(key, item, value);
             if (time > 0) {
@@ -261,7 +263,7 @@ public class RedisUtil {
      * @param key 键 不能为null
      * @param item 项 可以使多个 不能为null
      */
-    public void hdel(String key, Object... item) {
+    public  void hdel(String key, Object... item) {
         redisTemplate.opsForHash().delete(key, item);
     }
 
@@ -271,7 +273,7 @@ public class RedisUtil {
      * @param item 项 不能为null
      * @return true 存在 false不存在
      */
-    public boolean hHasKey(String key, String item) {
+    public  boolean hHasKey(String key, String item) {
         return redisTemplate.opsForHash().hasKey(key, item);
     }
 }

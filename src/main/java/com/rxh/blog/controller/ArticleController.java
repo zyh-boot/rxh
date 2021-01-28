@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -58,7 +59,8 @@ public class ArticleController extends ApiController {
      */
     @GetMapping("{id}")
     public R selectOne(@PathVariable Serializable id) {
-
+        Article byId = this.articleService.getById(id);
+        LocalDateTime createTime = byId.getCreateTime();
         return success(this.articleService.getById(id));
     }
 
@@ -116,5 +118,14 @@ public class ArticleController extends ApiController {
     @DeleteMapping
     public R delete(@RequestParam("idList") List<Long> idList) {
         return success(this.articleService.removeByIds(idList));
+    }
+
+    @RequestMapping("setTop/{id}")
+    public JsonResult setTop(@PathVariable String id){
+        JsonResult<Object> result = new JsonResult<>();
+        boolean b = articleService.setTop(id);
+        result.code(200);
+        result.setMsg(b? "置顶成功" : "置顶失败");
+        return result;
     }
 }
