@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rxh.blog.mapper.ArticleMapper">
+
+    <resultMap type="com.rxh.blog.entity.Article" id="ArticleMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="abstractTxt" column="abstract_txt" jdbcType="VARCHAR"/>
+        <result property="original" column="original" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="author" column="author" jdbcType="VARCHAR"/>
+        <result property="authorId" column="author_id" jdbcType="VARCHAR"/>
+        <result property="enclosure" column="enclosure" jdbcType="VARCHAR"/>
+        <result property="comments" column="comments" jdbcType="VARCHAR"/>
+        <result property="readVolume" column="read_volume" jdbcType="VARCHAR"/>
+        <result property="collection" column="collection" jdbcType="VARCHAR"/>
+        <result property="likesNum" column="likes_num" jdbcType="VARCHAR"/>
+        <result property="showType" column="show_type" jdbcType="VARCHAR"/>
+        <result property="topStatus" column="top_status" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <collection property="labels" column="id"  select="com.rxh.blog.mapper.LabelsMapper.findByArticleId"/>
+        <collection property="category" column="id" ofType="com.rxh.blog.entity.Sorts" select="com.rxh.blog.mapper.SortsMapper.findByArticleId"/>
+
+    </resultMap>
+    <!--设置置顶-->
+    <update id="setTop">
+        UPDATE article c1,article c2
+        SET c1.top_status = '1', c2.`top_status`='0'
+        WHERE c2.`top_status` = '1' AND c1.`id` = #{id}
+    </update>
+    <select id="getTop" resultMap="ArticleMap">
+        SELECT * FROM article WHERE top_status = '1' AND author_id = #{userID}
+    </select>
+    <!--查询单个-->
+    <select id="queryById" resultMap="ArticleMap">
+        select id,
+               title,
+               abstract_txt,
+               original,
+               content,
+               author,
+               author_id,
+               enclosure,
+               comments,
+               read_volume,
+               collection,
+               likes_num,
+               show_type,
+               top_status,
+               create_time,
+               update_time,
+               status
+        from blog.article
+        where id = #{id}
+    </select>
+
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="ArticleMap">
+        select
+        id, title, abstract_txt, original, content, author, author_id, enclosure, comments, read_volume, collection,
+        likes_num, show_type, top_status, create_time, update_time, status
+        from blog.article
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="abstractTxt != null and abstractTxt != ''">
+                and abstract_txt = #{abstractTxt}
+            </if>
+            <if test="original != null and original != ''">
+                and original = #{original}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="author != null and author != ''">
+                and author = #{author}
+            </if>
+            <if test="authorId != null and authorId != ''">
+                and author_id = #{authorId}
+            </if>
+            <if test="enclosure != null and enclosure != ''">
+                and enclosure = #{enclosure}
+            </if>
+            <if test="comments != null and comments != ''">
+                and comments = #{comments}
+            </if>
+            <if test="readVolume != null and readVolume != ''">
+                and read_volume = #{readVolume}
+            </if>
+            <if test="collection != null and collection != ''">
+                and collection = #{collection}
+            </if>
+            <if test="likesNum != null and likesNum != ''">
+                and likes_num = #{likesNum}
+            </if>
+            <if test="showType != null and showType != ''">
+                and show_type = #{showType}
+            </if>
+            <if test="topStatus != null and topStatus != ''">
+                and top_status = #{topStatus}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
+            select REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into blog.article(id, title, abstract_txt, original, content, author, author_id, enclosure, comments,
+        read_volume, collection, likes_num, show_type, top_status, create_time, update_time, status)
+        values (#{id}, #{title}, #{abstractTxt}, #{original}, #{content}, #{author}, #{authorId}, #{enclosure},
+        #{comments}, #{readVolume}, #{collection}, #{likesNum}, #{showType}, #{topStatus}, #{createTime}, #{updateTime},
+        #{status})
+    </insert>
+
+    <insert id="insertBatch" useGeneratedKeys="true">
+        <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
+            select REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into blog.article(id, title, abstract_txt, original, content, author, author_id, enclosure, comments,
+        read_volume, collection, likes_num, show_type, top_status, create_time, update_time, status)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.id}, #{entity.title}, #{entity.abstractTxt}, #{entity.original}, #{entity.content},
+            #{entity.author}, #{entity.authorId}, #{entity.enclosure}, #{entity.comments}, #{entity.readVolume},
+            #{entity.collection}, #{entity.likesNum}, #{entity.showType}, #{entity.topStatus}, #{entity.createTime},
+            #{entity.updateTime}, #{entity.status})
+        </foreach>
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update blog.article
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="abstractTxt != null and abstractTxt != ''">
+                abstract_txt = #{abstractTxt},
+            </if>
+            <if test="original != null and original != ''">
+                original = #{original},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="author != null and author != ''">
+                author = #{author},
+            </if>
+            <if test="authorId != null and authorId != ''">
+                author_id = #{authorId},
+            </if>
+            <if test="enclosure != null and enclosure != ''">
+                enclosure = #{enclosure},
+            </if>
+            <if test="comments != null and comments != ''">
+                comments = #{comments},
+            </if>
+            <if test="readVolume != null and readVolume != ''">
+                read_volume = #{readVolume},
+            </if>
+            <if test="collection != null and collection != ''">
+                collection = #{collection},
+            </if>
+            <if test="likesNum != null and likesNum != ''">
+                likes_num = #{likesNum},
+            </if>
+            <if test="showType != null and showType != ''">
+                show_type = #{showType},
+            </if>
+            <if test="topStatus != null and topStatus != ''">
+                top_status = #{topStatus},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from blog.article
+        where id = #{id}
+    </delete>
+    <!--逻辑删除删除-->
+    <update id="deleteLogic">
+        UPDATE blog.article
+        SET `status`='0'
+        WHERE `id` = #{id}
+    </update>
+</mapper>

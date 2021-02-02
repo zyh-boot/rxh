@@ -60,6 +60,9 @@ public class ImageCheck {
      * @throws IOException
      */
     public static ImageEntity getVerifyImage(String filePath) throws IOException {
+
+
+
         BufferedImage srcImage = ImageIO.read(new File(filePath));
         int locationX = CUT_WIDTH + new Random().nextInt(srcImage.getWidth() - CUT_WIDTH * 3);
         int locationY = CUT_HEIGHT + new Random().nextInt(srcImage.getHeight() - CUT_HEIGHT) / 2;

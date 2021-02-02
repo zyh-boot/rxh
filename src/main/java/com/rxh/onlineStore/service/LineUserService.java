@@ -7,7 +7,7 @@ import com.rxh.onlineStore.entity.SysUser;
 import java.util.List;
 
 /**
- * 运营后台用户表(SysUser)表服务接口
+ * 运营后台用户表(Member)表服务接口
  *
  * @author zyh
  * @Date 2021-01-06 11:25:54

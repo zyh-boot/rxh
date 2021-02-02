@@ -15,7 +15,7 @@ import java.util.List;
  */
 @RestController
 public class TestControllerDemo {
-    @RequestMapping("test")
+//    @RequestMapping("test")
     public Object test(){
         String s = "[{\"id\":\"745DC7A2E89A598C04509CDC6E8FCB60\",\"leadServiceUnid\":\"745DC7A2E89A598C04509CDC6E8FCB60\",\"classOne\":\"公积金一件事\",\"classTwo\":\"公积金一件事\"" +
                 ",'title':'退休提取住房公积金张予辉'}]";

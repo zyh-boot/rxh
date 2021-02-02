@@ -4,8 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  *
@@ -25,6 +24,8 @@ public class JsonResult<T> {
      * 返回状态信息
      */
     private String msg;
+
+    private HashMap param = new HashMap(3);
     /**
      * 返回数据
      */
@@ -89,6 +90,14 @@ public class JsonResult<T> {
         return this;
     }
 
+
+    public JsonResult<T> addParam(String key,T data){
+        if(StringUtils.isNotBlank(key)){
+            this.param.put(key,data);
+        }
+        return this;
+    }
+
     public JsonResult success(T data){
         this.code = HttpStatus.OK.value();
         this.msg = "请求成功!";
@@ -104,9 +113,14 @@ public class JsonResult<T> {
         this.data = (T) new ArrayList<T>();
         return this;
     }
-    public JsonResult error() {
+    public JsonResult error(String... msg) {
         this.code = HttpStatus.NO_CONTENT.value();
-        this.msg = "资源不存在!";
+
+        if(msg == null){
+            this.msg = "资源不存在!";
+        }else{
+            this.msg = msg.toString();
+        }
         return this;
     }
 
@@ -127,5 +141,4 @@ public class JsonResult<T> {
 
         return stringBuffer.toString();
     }
-
 }

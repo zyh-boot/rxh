@@ -1,6 +1,6 @@
 package com.rxh.wechat.controller;
 
-import com.rxh.complat.common.shiro.entity.SysUser;
+import com.rxh.complat.common.shiro.entity.Member;
 import com.rxh.complat.common.util.JsonResult;
 import com.rxh.complat.common.util.RedisUtil;
 import com.rxh.wechat.service.SysUserService;
@@ -48,7 +48,7 @@ public class LoginController {
 
     @PostMapping("dologin")
     @ResponseBody
-    public JsonResult<Object> doLogin(SysUser user, boolean rememberMe, HttpServletRequest request) {
+    public JsonResult<Object> doLogin(Member user, boolean rememberMe, HttpServletRequest request) {
         HashMap<String, String> hashMap = new HashMap<>();
         JsonResult<Object> result = new JsonResult<>();
 
@@ -69,8 +69,8 @@ public class LoginController {
 //            boolean aBoolean = Boolean.getBoolean(erememberMe);
             usernamePasswordToken.setRememberMe(rememberMe);
             subject.login(usernamePasswordToken);
-            SysUser sysUser = (SysUser) subject.getPrincipal();
-            redisUtil.set("user:" + user.getUsername(), sysUser);
+            Member member = (Member) subject.getPrincipal();
+            redisUtil.set("user:" + user.getUsername(), member);
         } catch (UnknownAccountException e) {
             log.error("用户名不存在！", e);
             result.message("用户名不存在！");

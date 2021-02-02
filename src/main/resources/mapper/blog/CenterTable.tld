@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rxh.blog.mapper.ArticleMapper">
+
+    <resultMap type="com.rxh.blog.entity.Article" id="ArticleMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="abstractTxt" column="abstract_txt" jdbcType="VARCHAR"/>
+        <result property="original" column="original" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="author" column="author" jdbcType="VARCHAR"/>
+        <result property="authorId" column="author_id" jdbcType="VARCHAR"/>
+        <result property="enclosure" column="enclosure" jdbcType="VARCHAR"/>
+        <result property="comments" column="comments" jdbcType="VARCHAR"/>
+        <result property="readVolume" column="read_volume" jdbcType="VARCHAR"/>
+        <result property="collection" column="collection" jdbcType="VARCHAR"/>
+        <result property="likesNum" column="likes_num" jdbcType="VARCHAR"/>
+        <result property="showType" column="show_type" jdbcType="VARCHAR"/>
+        <result property="topStatus" column="top_status" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <collection property="labels" column="id"  select="com.rxh.blog.mapper.LabelsMapper.findByArticleId"/>
+        <collection property="category" column="id"  select="com.rxh.blog.mapper.SortsMapper.findByArticleId"/>
+
+    </resultMap>
+
+</mapper>

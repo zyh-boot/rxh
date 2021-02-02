@@ -1,0 +1,33 @@
+{
+  "name" : "AuthName",
+  "preName" : "",
+  "comment" : null,
+  "templateGroupName" : "MybatisPlus",
+  "fullColumn" : [ {
+    "name" : "column1",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "column2",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "column3",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "custom" : false,
+    "ext" : { }
+  } ],
+  "pkColumn" : null,
+  "otherColumn" : null,
+  "savePackageName" : "com.rxh.easycode",
+  "savePath" : "./src/main/java/com/rxh/easycode",
+  "saveModelName" : "wechat-app"
+}

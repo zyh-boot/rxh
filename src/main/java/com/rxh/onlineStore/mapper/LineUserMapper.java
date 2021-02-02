@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * 运营后台用户表(SysUser)表数据库访问层
+ * 运营后台用户表(Member)表数据库访问层
  *
  * @author zyh
  * @Date 2021-01-06 11:25:54

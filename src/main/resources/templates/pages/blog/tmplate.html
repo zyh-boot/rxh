@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<!--文章详情页评论模板-->
+<div class="layui-card-body comment-body" id="comment_replay" th:fragment="comment_replay">
+    <ul th:each="commomt:${contents}">
+        <li class="comment-line-box">
+            <div class="layui-row">
+                <a>
+                    <img src="/static/blog/images/favicon.ico"
+                         class="layui-col-lg1"
+                         style="margin: 5px 5px 0 0;height: 30px;width: 30px">
+                </a>
+                <div class="center">
+                    <a><span th:text="${commomt.userName}">shiro </span></a>
+                    <span>:</span>
+                    <span> </span>
+                    <span th:text="${commomt.content}">测试数据</span>
+                    <span class="date" title="2020-11-09 12:00:49">2月前</span>
+                    <span>
+                    <a class="a" data-type="reply" data-flag="true" th:onclick="replayFun(this,[[${commomt}]])">回复</a>
+                    <a class="a" data-type="reply" data-flag="true" th:onclick="del([[${commomt.id}]])">删除</a>
+
+                    <a class="a">
+                        <span data-type="report">举报</span></a></span>
+                </div>
+            </div>
+        </li>
+        <li class="replay-box" th:each="replay:${commomt.replyComments}">
+            <div class="layui-row">
+                <a>
+                    <img src="/static/blog/images/favicon.ico"
+                         class="layui-col-lg1"
+                         style="margin: 5px 5px 0 0;height: 30px;width: 30px">
+                </a>
+                <div class="center">
+                    <a><span th:text="${replay.userName}">shiro </span></a>
+                    <span style="color: #999;">回复</span>
+                    <span th:text="${replay.replyCommentUserName}"> </span>
+                    <span>:</span>
+
+                    <span th:text="${replay.content}">测试数据</span>
+                    <span class="date" title="2020-11-09 12:00:49">2月前</span>
+                    <span>
+                                                                <a class="a" data-type="reply" data-flag="true"
+                                                                   th:onclick="replayFun(this,[[${replay}]])">回复</a>
+                                                                <a class="a" data-type="reply" data-flag="true"
+                                                                   th:onclick="del([[${replay.id}]])">删除</a>
+                                                                <a class="a">
+                                                                    <span data-type="report">举报</span></a></span>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <div id="demo2">
+
+    </div>
+    <script type="text/javascript" src="/static/layui/layui.all.js"></script>
+    <script type="text/javascript">
+        var laypage = layui.laypage;
+        var length = "[[${total}]]"
+        if (length > 0) {
+            setPage("[[${total}]]", "[[${curpage}]]", "[[${size}]]")
+        }
+
+        function setPage(total, curPage, size) {
+            // curPage == null ? 1 : curPage;
+            // size == null ? 10 : size;
+            var i = 0;
+            laypage.render({
+                elem: 'demo2'
+                , count: total
+                , limit: size
+                // , limits: [3,5,8]
+                , theme: '#1E9FFF'
+                , curr: curPage  //当前页
+                , prev: "<"
+                , next: ">"
+                , layout: ["prev", "page", "next", "count", "skip"] //分页的组件在页面放置的先后顺序
+                , groups: 2
+                , jump: function (obj, first) {
+                    // console.log("first>>>", first)
+                    // console.log("obj>>>", obj)
+                    if (!first) {
+                        if (i == 0) {
+                            showCommon(obj.limit, obj.curr)
+                        }
+                        i += 1;
+                        // console.log("i>>>>>>>>", i)
+                        // console.log(",moinonoinda>>>>>>>>>>")
+                    }
+                }
+            });
+        }
+    </script>
+</div>
+<!--评论框-->
+<form class="layui-form layui-form-pane replay-box" action="" id="comment-form"
+      style="display: block" th:fragment="comment-form">
+    <div class="layui-form-item">
+        <img src="/static/blog/images/favicon.ico" class="layui-col-lg1"
+             style="margin: 5px 5px 0 0;height: 30px;width: 30px">
+        <div class="layui-col-lg11" style="width: 96%">
+                                                     <textarea id="comment" name="comment" lay-verify="comment"
+                                                               placeholder="对作者说点什么"
+                                                               autocomplete="off"
+                                                               class=" comment-close open layui-textarea"
+                                                               maxlength="1000" th:text="${reply}"></textarea>
+        </div>
+        <div style="float: right;margin-top: 5px">
+            <span style="color: #999aaa">还可以输入<nm>1000</nm>字符</span>
+            <button type="button"
+                    class="layui-btn layui-btn-primary  layui-btn-radius"
+                    id="redom-txt">
+                "速评一下"
+            </button>
+            <button type="button"
+                    class="layui-btn layui-btn-danger  layui-btn-radius"
+                    id="submit">
+                发表评论
+            </button>
+        </div>
+        <input type="hidden" id="comment_replyId" name="comment_replyId" th:value="${comment.id}">
+        <input type="hidden" id="comment_userId" name="comment_userId" th:value="${comment.userId}">
+        <input type="hidden" id="comment_userName" name="comment_userName" th:value="${comment.userName}">
+        <input type="hidden" id="parentCommentId" name="parentCommentId"
+               th:value="${comment.parentCommentId} == '' ? ${comment.id} : ${comment.parentCommentId}">
+        <input type="hidden" id="parentCommentUserId" name="parentCommentUserId"
+               th:value="${comment.parentCommentUserId} == '' ? ${comment.userId}:${comment.parentCommentUserId}">
+    </div>
+</form>
+
+<!--个人博客列表页-->
+<!--<script type="text/javascript" src="/static/blog/js/complate.js"></script>-->
+<ul th:fragment="blog_list" id="blog_list">
+    <!--多图模式 置顶设计-->
+    <li>
+        <h1 class="blogtitle" style="font-size: 25px">
+            <a th:href="@{'./articleInfo/'+${topArticle.id}}" target="_blank">
+                <b>【顶】</b>
+                <span th:text="${topArticle.title}">别让这些闹心的套路，毁了你的网页设计!</span>
+            </a>
+        </h1>
+        <span class="bplist">
+            <a th:href="@{'./articleInfo/'+${topArticle.id}}"><img src="/static/blog/images/b02.jpg" alt=""></a>
+            <a th:href="@{'./articleInfo/'+${topArticle.id}}"><img src="/static/blog/images/b03.jpg" alt=""></a>
+            <a th:href="@{'./articleInfo/'+${topArticle.id}}"><img src="/static/blog/images/b04.jpg" alt=""> </a>
+            <a th:href="@{'./articleInfo/'+${topArticle.id}}"><img src="/static/blog/images/b05.jpg" alt=""> </a>
+        </span>
+        <p class="blogtext" th:text="${topArticle.abstractTxt}">
+            如图，要实现上图效果，我采用如下方法：1、首先在数据库模型，增加字段，分别是图片2，图片3。2、增加标签模板，用if，else if
+            来判断，输出。思路已打开，样式调用就可以多样化啦！... </p>
+        <p class="bloginfo"><i class="avatar">
+            <img src="/static/blog/images/avatar.jpg"></i>
+            <span th:text="${topArticle.author}">XXX</span>
+            <span th:text="${topArticle.createTime}">2018-10-28</span>
+            <span>【<a href="/">文章分类</a>】</span>
+        </p>
+    </li>
+    <!--单图-->
+    <li th:each="article:${articles}">
+        <h3 class="blogtitle">
+            <a th:href="@{'./articleInfo/'+${article.id}}" target="_blank" th:text="${article.title}">【个人博客网站制作】自己不会个人博客网站制作，你会选择用什么博客程序源码？</a>
+
+        </h3>
+        <span class="blogpic imgscale">
+            <i><a href="/">原创模板</a></i>
+            <a th:href="@{'./articleInfo/'+${article.id}}" title="">
+                <img  src="/static/blog/images/b01.jpg" alt="">
+            </a>
+        </span>
+        <p class="blogtext" th:text="${article.abstractTxt}">
+            这些开源的博客程序源码，都是经过很多次版本测试的，都有固定的使用人群。我所知道的主流的博客程序有，Z-blog，Emlog，WordPress，Typecho等，免费的cms系统有，织梦cms（dedecms），phpcms，帝国cms（EmpireCMS）！... </p>
+        <p class="bloginfo">
+            <i class="avatar">
+                <img src="/static/blog/images/avatar.jpg">
+            </i>
+            <span th:text="${article.author}">XXX</span>
+            <span th:text="${article.createTime}">2018-10-28</span>
+            <span>【<a href="/">文章分类</a>】</span>
+        </p>
+        <a th:href="@{'./articleInfo/'+${article.id}}" class="viewmore">阅读更多</a>
+    </li>
+    <input type="hidden" id="total" th:value="${total}"/>
+    <!--    <script type="application/javascript">-->
+    <!--        showPage("pagelist",'[[${size}]]','[[${curpage}]]','[[${total}]]',showarticle)-->
+    <!--    </script>-->
+</ul>
+</div>
+</body>
+</html>

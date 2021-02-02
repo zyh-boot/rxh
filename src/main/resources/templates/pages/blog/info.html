@@ -1,0 +1,592 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>文章</title>
+    <meta name="keywords" content="blog"/>
+    <meta name="description" content="blog"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/static/js/jquery.min.js"></script>
+    <link rel="shortcut icon" href="/static/blog/images/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/static/fonts/fontawesome-webfont/css/font-awesome.css">
+    <script type="text/javascript" src="/static/layui/layui.all.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/static/blog/js/modernizr.js"></script>
+    <![endif]-->
+</head>
+<style>
+    .open {
+        height: 64px;
+        background-color: #fff;
+        -webkit-box-shadow: 0 0 6px 0 #5094d5;
+        box-shadow: 0 0 6px 0 #5094d5;
+        border: 1px solid #5094d5;
+        resize: none
+    }
+
+    .divHeight {
+        height: 157px !important;
+    }
+
+    .close {
+        min-height: 39px !important;
+    }
+
+    .comment-close {
+        display: block;
+        width: 100%;
+        padding: 6px 8px;
+        background: rgba(248, 249, 251, 0.8);
+        border: 1px solid #dadde0;
+        border-radius: 4px;
+        resize: none !important;
+        height: 36px !important;
+        font-size: 14px;
+        line-height: 22px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-transition: height .3s ease-in-out;
+        transition: height .3s ease-in-out;
+
+    }
+
+    .a {
+        color: #1E9FFF;
+        cursor: pointer;
+    }
+
+    .a:hover {
+        color: #ff4d4d;
+        cursor: pointer;
+    }
+
+
+    .span:hover {
+        color: #ff4d4d !important;
+        cursor: pointer;
+    }
+
+    .center {
+        height: 36px;
+        padding: 7px 0;
+        font-size: 15px;
+    }
+
+    .replay-box {
+        position: relative;
+        padding: 0 0 0 30px;
+    }
+
+    .title-name {
+        margin-left: 10px;
+    }
+
+    .name {
+        font-size: 22px;
+        margin: 10px;
+        color: #89919a;
+        font-weight: normal;
+        padding-bottom: 10px;
+    }
+
+    .show {
+        color: #ff4d4d;
+    }
+</style>
+<body>
+<!--top begin-->
+<div id="headerTmp">
+</div>
+<!--top end-->
+<div>
+
+    <div style="padding: 20px; background-color: #F2F2F2;">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md3">
+                <div class="layui-card">
+                    <div class="layui-card-header" style="height: 10%">
+                        <div class="layui-row">
+                            <a href="userInfo" id="name" class="layui-col-md12">
+                                <img src="/static/blog/images/hm.jpg"
+                                     style="height: 50px;width: 50px; padding: 10px 10px"
+                                     class="layui-nav-img">
+                                <span class="name">我的名片</span>
+                            </a>
+                        </div>
+
+                    </div>
+                    <div class="layui-card-body">
+                        <div class="layui-row" style="margin-top: 20px">
+                            <span class="layui-col-md2 layui-col-md-offset1">9</span>
+                            <span class="layui-col-md2">13万+</span>
+                            <span class="layui-col-md2">300万+</span>
+                            <span class="layui-col-md2">1024</span>
+                            <span class="layui-col-md2">3</span>
+                        </div>
+                        <div class="layui-row">
+                            <span class="layui-col-md2 layui-col-md-offset1">原创</span>
+                            <span class="layui-col-md2">周排名</span>
+                            <span class="layui-col-md2">总排名</span>
+                            <span class="layui-col-md2">访问</span>
+                            <span class="layui-col-md2">等级</span>
+                        </div>
+
+                        <div class="layui-row" style="margin-top: 20px">
+                            <span class="layui-col-md2 layui-col-md-offset1">9</span>
+                            <span class="layui-col-md2">13万+</span>
+                            <span class="layui-col-md2">300万+</span>
+                            <span class="layui-col-md2">1024</span>
+                            <span class="layui-col-md2">3</span>
+                        </div>
+                        <div class="layui-row">
+                            <span class="layui-col-md2 layui-col-md-offset1">原创</span>
+                            <span class="layui-col-md2">周排名</span>
+                            <span class="layui-col-md2">总排名</span>
+                            <span class="layui-col-md2">访问</span>
+                            <span class="layui-col-md2">等级</span>
+                        </div>
+
+                        <div class="layui-row" style="margin-top: 10px">
+                            <!--                      <button type="button" class="layui-btn layui-btn-normal layui-btn-radius">私信</button>-->
+                            <div class="layui-col-md3">
+                                <button type="button" class="layui-btn layui-btn-normal   layui-btn-radius"
+                                        style="width: 300px">关注
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card">
+                    <div class="layui-card-body">
+                        <div class="layui-form-item">
+
+                            <form class="layui-form layui-form-pane" action="">
+                                <div class="layui-input-inline">
+                                    <input style="width: 208px" type="text" name="username" lay-verify="required"
+                                           placeholder="请输入"
+                                           autocomplete="off" class="layui-input">
+                                </div>
+                                <label class="layui-form-label">
+                                    <i class="layui-icon layui-icon-search" style="font-size: 30px;"></i>
+                                </label>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card">
+                    <div class="layui-card-header">热门文章</div>
+                    <div class="layui-card-body" id="hotArticle">
+                        <div>
+                            <span>ElasticSearch之排序使用-ES常用排序方法</span>
+                            <i class="fa fa-eye" aria-hidden="true" style="color: #999"></i>
+                            <span style="color: #999">10240</span>
+                        </div>
+                        <div>
+                            <span> Elasticsearch之高亮进阶-高性能高亮器， 让Elasticsearch飞一会儿</span>
+                            <i class="fa fa-eye" aria-hidden="true" style="color: #999"></i>
+                            <span style="color: #999">8242</span>
+                        </div>
+                        <div>
+                            <span> ElasticSerach之分词器进阶-短语搜索不准确bug及修复实现</span>
+                            <i class="fa fa-eye" aria-hidden="true" style="color: #999"></i>
+                            <span style="color: #999">3933</span>
+                        </div>
+                        <div>
+                            <span> ElasticSearch之分词器进阶-修复ansj分词器bug</span>
+                            <i class="fa fa-eye" aria-hidden="true" style="color: #999"></i>
+                            <span style="color: #999">3843</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md9">
+                <div class="layui-card">
+                    <!--          <div class="layui-card-header">卡片面板</div>-->
+                    <div class="layui-card-body">
+                        <!--lbox begin-->
+                        <div class="content_box whitebg">
+                            <h1 class="con_tilte" th:text="${article.title}">个人博客，属于我的小世界！</h1>
+                            <p class="bloginfo"></p>
+                            <!--                            <p class="con_info">-->
+                            <div class="con_info">
+                                <div class="layui-row">
+                                    <img class="layui-col-md1" src="/static/blog/images/abbg.png"
+                                         style="height: 50px;width: 50px;">
+                                    <a class="layui-col-md1 title-name span" th:text="${article.author}">超级管理员</a>
+                                    <span class="layui-col-md2" style="cursor: pointer" id="time" th:text="${article.createTime}">2020-0304</span>
+
+                                    <span class="layui-col-md1" style="cursor: pointer">
+                                         <i class="fa fa-eye" aria-hidden="true" style="color: #999"></i>
+                                         <span style="color: #999" id="ask" th:text="${article.readVolume}">8242</span>
+                                    </span>
+                                    <span class="layui-col-md2 span" style="cursor: pointer;" id="save">
+                                        <i class="layui-icon layui-icon-star-fill" aria-hidden="true"
+                                           th:class="${flag} ? 'layui-icon layui-icon-star-fill show' : 'layui-icon layui-icon-star-fill'"></i>
+                                        <span th:text="${flag} ? '已收藏' : '收藏'">收藏</span>
+                                        <span th:text="${article.collection}">908</span>
+                                    </span>
+                                    <input type="hidden" id="user" th:value="${article.authorId}">
+                                </div>
+                                <div class="layui-row cloud">
+                                    <span class="layui-col-md1">分类专栏:</span>
+                                    <span class="layui-col-md3">
+                                        <ul>
+                                            <a style="cursor: pointer" id="category" th:onclick='showCategory([[${category.sortId}]])' th:each="category:${article.category}" th:text="${category.sortName}">
+                                                 随笔</a>
+                                        </ul>
+                                    </span>
+                                    <span class="layui-col-md1">文章标签:</span>
+                                    <div class="layui-col-md7">
+                                        <ul id="label">
+                                            <a href="" target="_blank" th:onclick='showLabel([[${label.labelId}]])' th:each="label:${article.labels}" th:text="${label.labelName}">个人博客模板</a>
+<!--                                            <a href="" target="_blank">css动画</a>-->
+<!--                                            <a href="" target="_blank">布局</a>-->
+<!--                                            <a href="" target="_blank">今夕何夕</a>-->
+<!--                                            <a href="" target="_blank">SEO</a>-->
+<!--                                            <a href="" target="_blank">女程序员</a>-->
+<!--                                            <a href="" target="_blank">小世界</a>-->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--文章主体-->
+                        <div class="con_text" style="padding: 0px 21px" th:utext="${article.content}">
+                        </div>
+                        <hr>
+
+                        <div class="layui-row" style="padding: 10px 20px;background: #f7f7f7;">
+                            <div class="layui-col-md1">
+                                <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                                <span>
+                                    点赞
+                                </span>
+                            </div>
+                            <div class="layui-col-md1">
+                                <i class="layui-icon layui-icon-reply-fill" aria-hidden="true"></i>
+                                <span>
+                                    评论
+                                </span>
+                            </div>
+                            <div class="layui-col-md1">
+                                <i class="layui-icon layui-icon-share" aria-hidden="true"></i>
+                                <span>
+                                    分享
+                                </span>
+                            </div>
+                            <div class="layui-col-md1">
+                                <i class="layui-icon layui-icon-star-fill" aria-hidden="true"></i>
+                                <span>
+                                    收藏
+                                </span>
+                            </div>
+
+                        </div>
+                        <hr style="height: 3px;background-color: #f7f7f7">
+                        <div class="layui-row">
+                            <div class="layui-col-md12">
+                                <div class="layui-card">
+                                    <div class="layui-card-header" id="com-show">
+                                        <form class="layui-form layui-form-pane" action="">
+                                            <div class="layui-form-item">
+                                                <img src="/static/blog/images/favicon.ico" class="layui-col-lg1"
+                                                     style="margin: 5px 5px 0 0;height: 30px;width: 30px">
+                                                <div class="layui-col-lg10">
+                                                        <textarea id="text" name="comment" lay-verify="comment"
+                                                                  placeholder="对作者说点什么" autocomplete="off"
+                                                                  class="layui-textarea comment-close close"></textarea>
+                                                </div>
+
+                                                <label class="layui-form-label" id="comm-label"
+                                                       style="background-color: #ccccd7;cursor: pointer;">
+                                                    <span>评论</span>
+                                                </label>
+
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="layui-card-body comment-body" id="comment_replay"></div>
+                                </div>
+                            </div>
+
+                            <!--                            <p class="share"><b>转载：</b>感谢您对XXX个人博客网站平台的认可，以及对我们原创作品以及文章的青睐，非常欢迎各位朋友分享到个人站长或者朋友圈，但转载请说明文章出处“来源杨青个人博客”。-->
+                            <!--                            </p>-->
+                        </div>
+                        <div class="whitebg">
+                            <h2 class="htitle">相关文章</h2>
+                            <ul class="otherlink" id="otherlink">
+                                <li><a href="/download/div/2018-04-22/815.html" title="html5个人博客模板《黑色格调》">html5个人博客模板《黑色格调》</a>
+                                </li>
+                                <li><a href="/download/div/2018-04-18/814.html" title="html5个人博客模板主题《清雅》">html5个人博客模板主题《清雅》</a>
+                                </li>
+                                <li><a href="/download/div/2018-03-18/807.html"
+                                       title="html5个人博客模板《绅士》">html5个人博客模板《绅士》</a></li>
+                                <li><a href="/download/div/2018-02-22/798.html" title="html5时尚个人博客模板-技术门户型">html5时尚个人博客模板-技术门户型</a>
+                                </li>
+                                <li><a href="/download/div/2017-09-08/789.html" title="html5个人博客模板主题《心蓝时间轴》">html5个人博客模板主题《心蓝时间轴》</a>
+                                </li>
+                                <li><a href="/download/div/2017-07-16/785.html"
+                                       title="古典个人博客模板《江南墨卷》">古典个人博客模板《江南墨卷》</a></li>
+                                <li><a href="/download/div/2017-07-13/783.html" title="古典风格-个人博客模板">古典风格-个人博客模板</a>
+                                </li>
+                                <li><a href="/download/div/2015-06-28/748.html" title="个人博客《草根寻梦》—手机版模板">个人博客《草根寻梦》—手机版模板</a>
+                                </li>
+                                <li><a href="/download/div/2015-04-10/746.html" title="【活动作品】柠檬绿兔小白个人博客模板">【活动作品】柠檬绿兔小白个人博客模板</a>
+                                </li>
+                                <li><a href="/jstt/bj/2015-01-09/740.html" title="【匆匆那些年】总结个人博客经历的这四年…">【匆匆那些年】总结个人博客经历的这四年…</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!--lbox end-->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</article>
+
+
+</article>
+
+<a href="#">
+    <!--    <div class="top">-->
+    <!--        <i class="layui-icon layui-icon-top" style="font-size: 40px;background-color: #9F9F9F;color: " aria-hidden="true"></i>-->
+    <!--    </div>-->
+    <ul class="layui-fixbar">
+        <li class="layui-icon layui-fixbar-top" lay-type="top" style="display: list-item;"></li>
+    </ul>
+</a>
+</body>
+
+<script type="text/javascript" src="/static/blog/js/load.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        var layer = layui.layer;
+        var laypage = layui.laypage;
+
+        // getInfo();
+        $("#text").on("focus", function () {
+            formHide()
+        })
+        $("#comm-label").on("click", function () {
+            formHide()
+        })
+        showCommon()
+
+        $("#save").on("click", function () {
+            let collection = $("#save span")[0]
+            if($(collection).html() == "已收藏"){
+                layer.alert("已收藏该文章!",{icon:6})
+            }else{
+                sendCollection()
+            }
+
+        })
+
+    })
+
+    //添加收藏
+    function sendCollection(){
+        let saves = $("#save span")[1]
+        saves = $(saves).html();
+        let val = $("#user").val();
+        $.get("/article/update", {
+            collection: saves,
+            id: "[[${id}]]",
+            author: val
+        }, function (result) {
+            console.log(">>>>>>>>>>", result)
+            if (result.data) {
+                let span = $("#save span")[0];
+                $(span).html("已收藏");
+                $("#save i").addClass("show");
+                let spam = $("#save span")[1];
+                $(spam).html(Number(saves) + 1)
+            }
+        })
+    }
+
+    //html模板展示评论输入框
+    function replayFun(that, ele) {
+        showReplayinput(that, ele)
+    }
+    function showReplayinput(that, ele) {
+        let parents = $(that).parents("li");
+        formHide(parents, ele)
+        // console.log(parents)
+    }
+
+    //为标签绑定对应的操作 这些标签都是请求回来的模板标签
+    function bindFun(flag) {
+        closeBlur("redom-txt");
+        closeBlur("submit");
+        $("#comment").on("blur", function () {
+            formShow(flag)
+        })
+        $("#redom-txt").on("click", function () {
+            $(this).html("\"换一条\"");
+            quickReview()
+        })
+        $("#submit").on("click", function () {
+            submitForm(flag)
+        })
+    }
+
+    //评论输入框失去焦点关闭
+    function closeBlur(id) {
+        $("#" + id).on("mousedown", function (e) {
+            if (e && e.preventDefault) {
+                e.preventDefault();
+            } else {
+                window.event.returnValue = false;
+            }
+            return false;
+        })
+    }
+
+    //设置速评语句
+    function quickReview() {
+        console.log("123123")
+        $.get("/comment/quickReview", function (result) {
+            console.log(result)
+            $("#comment").val($("#comment").val() + result.param.review.review);
+        })
+    }
+
+    //提交评价
+    function submitForm(flag) {
+        let comment = $("#comment").val();
+        if (comment.length == 0) {
+            layer.open({
+                content: '填写评价'
+            });
+            return
+        }
+        $.ajax({
+            url: "/comment",
+            type: 'POST',
+            data: {
+                articleId: "[[${id}]]",
+                articleTitle: $(".con_tilte").html(),
+                content: $("#comment").val(),
+                commentLevel: flag ? 1 : 2,
+                replyCommentId: $("#comment_replyId").val(),
+                replyCommentUserId: $("#comment_userId").val(),
+                replyCommentUserName: $("#comment_userName").val(),
+                parentCommentId: $("#parentCommentId").val(),
+                parentCommentUserId: $("#parentCommentUserId").val(),
+            },
+            // async: false,
+            cache: false,  //是否缓存 可以为false
+            success: function (data) {
+
+                console.log("打他>>>>>>>>>>", data)
+                layer.alert(data.msg);
+                formShow()
+                showCommon()
+            },
+            error: function (data) {
+                console.log("error>>>>>>>>>>", data)
+                //  alert(JSON.stringify(data));
+            }
+        });
+    }
+
+    //评论输入框互斥展示,页面内只有一个
+    function formHide(parent, ele) {
+        var flag = false
+        $("#com-show").removeClass("divHeight")
+        $("#comment-form").remove()
+        console.log("hide>>>>>>>>>>>>>>>", JSON.stringify(ele))
+        $.post("/blog/replayTmp", {
+            reply: $("text").val(),
+            comment: JSON.stringify(ele)
+        }, function (result) {
+            if (parent != null || parent == "") {
+                $("#text").val("")
+                $(result).appendTo($(parent))
+            } else {
+                $("#com-show").addClass("divHeight")
+                $("#com-show").find("form").hide()
+                $(result).appendTo($("#com-show"))
+                $("#comment-form").removeClass("replay-box")
+                flag = true;
+            }
+            bindFun(flag)
+        })
+    }
+
+    //输入评论框展示(直接评论文章 非回复)
+    function formShow(type) {
+        if (type) {
+            $("#text").val($("#comment").val());
+        }
+        $("#com-show").removeClass("divHeight");
+        let form = $("#com-show").find("form");
+        $("#comment-form").remove()
+        $(form[0]).show()
+    }
+
+    //获取文章详情 暂时废弃 采用了html的模板语言自动展示
+    function getInfo() {
+        $.get("/article/[[${id}]]", {}, function (result) {
+            console.log(result)
+            $(".con_text").html(result.data.content)
+            $(".con_tilte").html(result.data.title)
+            $(".title-name").html(result.data.author)
+            $("#time").html(result.data.createTime)
+            $("#ask").html(result.data.readVolume == null ? 0 : result.data.readVolume)
+            let saveElement = $("#save span")[1];
+            $(saveElement).html(result.data.collection == null ? 0 : result.data.collection)
+
+            let labelHtml = ""
+            for (const label of result.data.labels) {
+                labelHtml += " <a href=\"\" target=\"_blank\" onclick='showLabel(" + label.labelId + ")'>" + label.labelName + "</a>";
+            }
+            ;
+            $("#label").html(labelHtml);
+            $("#user").val(result.data.authorId);
+        })
+    }
+
+    //展示评论
+    function showCommon(size, page) {
+        $.get("/blog/replay", {
+            size: size == null ? 5 : size,
+            curPage: page == null ? 1 : page,
+            id: "[[${id}]]"
+        }, function (result) {
+            $("#comment_replay").html(result)
+            // console.log(result)
+        })
+    }
+
+    function otherLink() {
+        //查询elsearch 获取前10个分词检索结果
+    }
+
+    function createCommon(data) {
+
+    }
+
+    //删除评论
+    function del(id) {
+        $.ajax({
+            url: "/comment/del",
+            data: {
+                id: id,
+            },
+            type: "get",
+            success: function (result) {
+                layer.alert(result.msg)
+                showCommon()
+            }
+        })
+    }
+
+</script>
+</html>

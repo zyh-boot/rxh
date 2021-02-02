@@ -2,7 +2,7 @@ package com.rxh.complat.common.shiro;
 
 import com.rxh.complat.common.shiro.entity.SysPermission;
 import com.rxh.complat.common.shiro.entity.SysRole;
-import com.rxh.complat.common.shiro.entity.SysUser;
+import com.rxh.complat.common.shiro.entity.Member;
 import com.rxh.complat.common.util.RedisUtil;
 import com.rxh.wechat.service.SysUserService;
 import org.apache.shiro.SecurityUtils;
@@ -42,13 +42,13 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 
         Subject subject = SecurityUtils.getSubject();
-        SysUser sysUser = (SysUser) subject.getPrincipal();
-        if(sysUser != null){
+        Member member = (Member) subject.getPrincipal();
+        if(member != null){
             SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
             Collection<String> sysRoleCollection = new HashSet<>();
             Collection<String> sysPermissionCollection = new HashSet<>();
 
-            Set<SysRole> sysRoles = sysUser.getSysRoles();
+            Set<SysRole> sysRoles = member.getSysRoles();
             for(SysRole role : sysRoles){
                 Set<SysPermission> sysPermissions = role.getSysPermissions();
                 sysRoleCollection.add(role.getRoleName());
@@ -77,13 +77,13 @@ public class UserRealm extends AuthorizingRealm {
         String username = token.getUsername();
 //        Object o = redisUtil.get("user:" + username);
 
-        SysUser sysUser = userService.queryByName(username);
-        if(sysUser == null){
+        Member member = userService.queryByName(username);
+        if(member == null){
             throw new UnknownAccountException();
         }
 
-        ByteSource bytes = ByteSource.Util.bytes(sysUser.getUsername());
-        return new SimpleAuthenticationInfo(sysUser,sysUser.getPassword(),bytes,sysUser.getUsername());
+        ByteSource bytes = ByteSource.Util.bytes(member.getUsername());
+        return new SimpleAuthenticationInfo(member, member.getPassword(),bytes, member.getUsername());
 
     }
 

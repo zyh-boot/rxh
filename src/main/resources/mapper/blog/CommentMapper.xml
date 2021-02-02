@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rxh.blog.mapper.CommentMapper">
+
+    <resultMap type="com.rxh.blog.entity.Comment" id="CommentMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <result property="articleId" column="article_id" jdbcType="VARCHAR"/>
+        <result property="articleTitle" column="article_title" jdbcType="VARCHAR"/>
+        <result property="parentCommentId" column="parent_comment_id" jdbcType="VARCHAR"/>
+        <result property="parentCommentUserId" column="parent_comment_user_id" jdbcType="VARCHAR"/>
+        <result property="replyCommentId" column="reply_comment_id" jdbcType="VARCHAR"/>
+        <result property="replyCommentUserId" column="reply_comment_user_id" jdbcType="VARCHAR"/>
+        <result property="replyCommentUserName" column="reply_comment_user_name" jdbcType="VARCHAR"/>
+        <result property="commentLevel" column="comment_level" jdbcType="INTEGER"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="praiseNum" column="praise_num" jdbcType="INTEGER"/>
+        <result property="topStatus" column="top_status" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="OTHER"/>
+        <result property="updateTime" column="update_time" jdbcType="OTHER"/>
+    </resultMap>
+    <resultMap type="com.rxh.blog.entity.Comment" id="ReplayMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <result property="articleId" column="article_id" jdbcType="VARCHAR"/>
+        <result property="articleTitle" column="article_title" jdbcType="VARCHAR"/>
+        <result property="parentCommentId" column="parent_comment_id" jdbcType="VARCHAR"/>
+        <result property="parentCommentUserId" column="parent_comment_user_id" jdbcType="VARCHAR"/>
+        <result property="replyCommentId" column="reply_comment_id" jdbcType="VARCHAR"/>
+        <result property="replyCommentUserId" column="reply_comment_user_id" jdbcType="VARCHAR"/>
+        <result property="replyCommentUserName" column="reply_comment_user_name" jdbcType="VARCHAR"/>
+        <result property="commentLevel" column="comment_level" jdbcType="INTEGER"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="praiseNum" column="praise_num" jdbcType="INTEGER"/>
+        <result property="topStatus" column="top_status" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="OTHER"/>
+        <result property="updateTime" column="update_time" jdbcType="OTHER"/>
+        <collection property="replyComments" ofType="com.rxh.blog.entity.Comment">
+            <result property="id" column="id1" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id1" jdbcType="VARCHAR"/>
+            <result property="userName" column="user_name1" jdbcType="VARCHAR"/>
+            <result property="articleId" column="article_id1" jdbcType="VARCHAR"/>
+            <result property="articleTitle" column="article_title1" jdbcType="VARCHAR"/>
+            <result property="parentCommentId" column="parent_comment_id1" jdbcType="VARCHAR"/>
+            <result property="parentCommentUserId" column="parent_comment_user_id1" jdbcType="VARCHAR"/>
+            <result property="replyCommentId" column="reply_comment_id1" jdbcType="VARCHAR"/>
+            <result property="replyCommentUserId" column="reply_comment_user_id1" jdbcType="VARCHAR"/>
+            <result property="replyCommentUserName" column="reply_comment_user_name1" jdbcType="VARCHAR"/>
+            <result property="commentLevel" column="comment_level1" jdbcType="INTEGER"/>
+            <result property="content" column="content1" jdbcType="VARCHAR"/>
+            <result property="status" column="status1" jdbcType="INTEGER"/>
+            <result property="praiseNum" column="praise_num1" jdbcType="INTEGER"/>
+            <result property="topStatus" column="top_status1" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time1" jdbcType="OTHER"/>
+            <result property="updateTime" column="update_time1" jdbcType="OTHER"/>
+        </collection>
+    </resultMap>
+    <!--查询单个-->
+    <select id="queryById" resultMap="CommentMap">
+        select id,
+               user_id,
+               user_name,
+               article_id,
+               article_title,
+               parent_comment_id,
+               parent_comment_user_id,
+               reply_comment_id,
+               reply_comment_user_id,
+               reply_comment_user_name,
+               comment_level,
+               content,
+               status,
+               praise_num,
+               top_status,
+               create_time,
+               update_time
+        from blog.comment
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryReplay" resultMap="ReplayMap">
+        SELECT a.*,
+               b.id                      id1,
+               b.user_id                 user_id1,
+               b.user_name               user_name1,
+               b.article_id              article_id1,
+               b.article_title           article_title1,
+               b.parent_comment_id       parent_comment_id1,
+               b.parent_comment_user_id  parent_comment_user_id1,
+               b.reply_comment_id        reply_comment_id1,
+               b.reply_comment_user_id   reply_comment_user_id1,
+               b.reply_comment_user_name reply_comment_user_name1,
+               b.comment_level           comment_level1,
+               b.content                 content1,
+               b.status                  status1,
+               b.praise_num              praise_num1,
+               b.top_status              top_status1,
+               b.create_time             create_time1,
+               b.update_time             update_time1
+        FROM COMMENT a
+                 LEFT JOIN COMMENT b
+                           ON b.`parent_comment_id` = a.`id` AND b.`status` = '1'
+        WHERE a.`comment_level` = '1'
+          AND a.`status` = '1'
+        AND a.`article_id` = #{id}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="CommentMap">
+        select
+        id, user_id, user_name, article_id, article_title, parent_comment_id, parent_comment_user_id, reply_comment_id,
+        reply_comment_user_id, reply_comment_user_name, comment_level, content, status, praise_num, top_status,
+        create_time, update_time
+        from blog.comment
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="userId != null and userId != ''">
+                and user_id = #{userId}
+            </if>
+            <if test="userName != null and userName != ''">
+                and user_name = #{userName}
+            </if>
+            <if test="articleId != null and articleId != ''">
+                and article_id = #{articleId}
+            </if>
+            <if test="articleTitle != null and articleTitle != ''">
+                and article_title = #{articleTitle}
+            </if>
+            <if test="parentCommentId != null and parentCommentId != ''">
+                and parent_comment_id = #{parentCommentId}
+            </if>
+            <if test="parentCommentUserId != null and parentCommentUserId != ''">
+                and parent_comment_user_id = #{parentCommentUserId}
+            </if>
+            <if test="replyCommentId != null and replyCommentId != ''">
+                and reply_comment_id = #{replyCommentId}
+            </if>
+            <if test="replyCommentUserId != null and replyCommentUserId != ''">
+                and reply_comment_user_id = #{replyCommentUserId}
+            </if>
+            <if test="replyCommentUserName != null and replyCommentUserName != ''">
+                and reply_comment_user_name = #{replyCommentUserName}
+            </if>
+            <if test="commentLevel != null">
+                and comment_level = #{commentLevel}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="praiseNum != null">
+                and praise_num = #{praiseNum}
+            </if>
+            <if test="topStatus != null">
+                and top_status = #{topStatus}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" useGeneratedKeys="true">
+        <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
+            select REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into blog.comment(id, user_id, user_name, article_id, article_title, parent_comment_id,
+        parent_comment_user_id, reply_comment_id, reply_comment_user_id, reply_comment_user_name, comment_level,
+        content, praise_num, top_status)
+        values (#{id}, #{userId}, #{userName}, #{articleId}, #{articleTitle}, #{parentCommentId},
+        #{parentCommentUserId}, #{replyCommentId}, #{replyCommentUserId}, #{replyCommentUserName}, #{commentLevel},
+        #{content}, #{praiseNum}, #{topStatus})
+    </insert>
+
+    <insert id="insertBatch" useGeneratedKeys="true">
+        <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
+            select REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into blog.comment(id, user_id, user_name, article_id, article_title, parent_comment_id,
+        parent_comment_user_id, reply_comment_id, reply_comment_user_id, reply_comment_user_name, comment_level,
+        content, status, praise_num, top_status, create_time, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.id}, #{entity.userId}, #{entity.userName}, #{entity.articleId}, #{entity.articleTitle},
+            #{entity.parentCommentId}, #{entity.parentCommentUserId}, #{entity.replyCommentId},
+            #{entity.replyCommentUserId}, #{entity.replyCommentUserName}, #{entity.commentLevel}, #{entity.content},
+            #{entity.status}, #{entity.praiseNum}, #{entity.topStatus}, #{entity.createTime}, #{entity.updateTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into blog.comment(user_id, user_name, article_id, article_title, parent_comment_id,
+        parent_comment_user_id, reply_comment_id, reply_comment_user_id, reply_comment_user_name, comment_level,
+        content, status, praise_num, top_status, create_time, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.userName}, #{entity.articleId}, #{entity.articleTitle},
+            #{entity.parentCommentId}, #{entity.parentCommentUserId}, #{entity.replyCommentId},
+            #{entity.replyCommentUserId}, #{entity.replyCommentUserName}, #{entity.commentLevel}, #{entity.content},
+            #{entity.status}, #{entity.praiseNum}, #{entity.topStatus}, #{entity.createTime}, #{entity.updateTime})
+        </foreach>
+        on duplicate key update
+        user_id = values(user_id) , user_name = values(user_name) , article_id = values(article_id) , article_title =
+        values(article_title) , parent_comment_id = values(parent_comment_id) , parent_comment_user_id =
+        values(parent_comment_user_id) , reply_comment_id = values(reply_comment_id) , reply_comment_user_id =
+        values(reply_comment_user_id) , reply_comment_user_name = values(reply_comment_user_name) , comment_level =
+        values(comment_level) , content = values(content) , status = values(status) , praise_num = values(praise_num) ,
+        top_status = values(top_status) , create_time = values(create_time) , update_time = values(update_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update blog.comment
+        <set>
+            <if test="userId != null and userId != ''">
+                user_id = #{userId},
+            </if>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName},
+            </if>
+            <if test="articleId != null and articleId != ''">
+                article_id = #{articleId},
+            </if>
+            <if test="articleTitle != null and articleTitle != ''">
+                article_title = #{articleTitle},
+            </if>
+            <if test="parentCommentId != null and parentCommentId != ''">
+                parent_comment_id = #{parentCommentId},
+            </if>
+            <if test="parentCommentUserId != null and parentCommentUserId != ''">
+                parent_comment_user_id = #{parentCommentUserId},
+            </if>
+            <if test="replyCommentId != null and replyCommentId != ''">
+                reply_comment_id = #{replyCommentId},
+            </if>
+            <if test="replyCommentUserId != null and replyCommentUserId != ''">
+                reply_comment_user_id = #{replyCommentUserId},
+            </if>
+            <if test="replyCommentUserName != null and replyCommentUserName != ''">
+                reply_comment_user_name = #{replyCommentUserName},
+            </if>
+            <if test="commentLevel != null">
+                comment_level = #{commentLevel},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="praiseNum != null">
+                praise_num = #{praiseNum},
+            </if>
+            <if test="topStatus != null">
+                top_status = #{topStatus},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from blog.comment
+        where id = #{id}
+    </delete>
+    <!--逻辑删除删除-->
+    <update id="deleteLogic">
+        UPDATE COMMENT c1
+            LEFT JOIN COMMENT c2
+        ON c1.`id` = c2.`reply_comment_id`
+            SET c1.`status`='0', c2.`status`='0'
+        WHERE c1.`id` = #{id}
+    </update>
+</mapper>

@@ -1,6 +1,6 @@
 package com.rxh.wechat.service.impl;
 
-import com.rxh.complat.common.shiro.entity.SysUser;
+import com.rxh.complat.common.shiro.entity.Member;
 import com.rxh.wechat.mapper.SysUserMapper;
 import com.rxh.wechat.service.SysUserService;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 /**
- * 运营后台用户表(SysUser)表服务实现类
+ * 运营后台用户表(Member)表服务实现类
  *
  * @author zyh
  * @since 2020-11-06 11:02:17
@@ -27,13 +27,13 @@ public class SysUserServiceImpl implements SysUserService {
      */
 
     @Override
-    public SysUser queryByName(String name) {
+    public Member queryByName(String name) {
         return this.sysUserDao.queryByName(name);
     }
 
     @Override
-    public String addUser(SysUser sysUser) {
-        String s = this.sysUserDao.addUser(sysUser);
+    public String addUser(Member member) {
+        String s = this.sysUserDao.addUser(member);
         return s;
     }
 

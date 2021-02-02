@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rxh.blog.mapper.QuickReviewMapper">
+
+    <resultMap type="com.rxh.blog.entity.QuickReview" id="QuickReviewMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="review" column="review" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="OTHER"/>
+        <result property="updateTime" column="update_time" jdbcType="OTHER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="QuickReviewMap">
+        select id,
+               review,
+               create_time,
+               update_time
+        from blog.quick_review
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="QuickReviewMap">
+        select id,
+               review,
+               create_time,
+               update_time
+        from blog.quick_review limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="QuickReviewMap">
+        select
+        id, review, create_time, update_time
+        from blog.quick_review
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="review != null and review != ''">
+                and review = #{review}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" useGeneratedKeys="true">
+        <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
+            select REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into blog.quick_review(id, review, create_time, update_time)
+        values (#{id}, #{review}, #{createTime}, #{updateTime})
+    </insert>
+
+    <insert id="insertBatch" useGeneratedKeys="true">
+        <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
+            select REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into blog.quick_review(id, review, create_time, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.id}, #{entity.review}, #{entity.createTime}, #{entity.updateTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into blog.quick_review(review, create_time, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.review}, #{entity.createTime}, #{entity.updateTime})
+        </foreach>
+        on duplicate key update
+        review = values(review) , create_time = values(create_time) , update_time = values(update_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update blog.quick_review
+        <set>
+            <if test="review != null and review != ''">
+                review = #{review},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from blog.quick_review
+        where id = #{id}
+    </delete>
+
+</mapper>

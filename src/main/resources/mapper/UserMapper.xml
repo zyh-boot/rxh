@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rxh.wechat.mapper.SysUserMapper">
 
-    <resultMap id="SysUserMap" type="com.rxh.complat.common.shiro.entity.SysUser">
+    <resultMap id="SysUserMap" type="com.rxh.complat.common.shiro.entity.Member">
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="username" column="username" jdbcType="VARCHAR"/>
         <result property="password" column="password" jdbcType="VARCHAR"/>
