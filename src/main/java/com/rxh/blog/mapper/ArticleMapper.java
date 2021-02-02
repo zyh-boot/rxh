@@ -15,4 +15,5 @@ import org.springframework.stereotype.Repository;
 public interface ArticleMapper extends BaseMapper<Article> {
     boolean setTop(String id);
     Article getTop(String id);
+    Article queryById(String id);
 }

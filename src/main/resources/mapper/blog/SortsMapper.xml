@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rxh.blog.mapper.SortsMapper">
+
+    <resultMap type="com.rxh.blog.entity.Sorts" id="SortsMap">
+        <result property="sortId" column="sort_id" jdbcType="VARCHAR"/>
+        <result property="sortName" column="sort_name" jdbcType="VARCHAR"/>
+        <result property="sortAlias" column="sort_alias" jdbcType="VARCHAR"/>
+        <result property="sortDescription" column="sort_description" jdbcType="VARCHAR"/>
+        <result property="parentSortId" column="parent_sort_id" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+    </resultMap>
+    <select id="findByArticleId" resultMap="SortsMap">
+        SELECT *
+        FROM sorts
+        WHERE sorts.`sort_id` IN
+              (
+                  SELECT set_article_sort.`sort_id`
+                  FROM set_article_sort
+                  WHERE set_article_sort.`article_id` = #{id}
+              )
+    </select>
+    <!--查询单个-->
+    <select id="queryById" resultMap="SortsMap">
+        select sort_id,
+               sort_name,
+               sort_alias,
+               sort_description,
+               parent_sort_id,
+               create_time,
+               update_time,
+               status
+        from blog.sorts
+        where sort_id = #{sortId}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="SortsMap">
+        select
+        sort_id, sort_name, sort_alias, sort_description, parent_sort_id, create_time, update_time, status
+        from blog.sorts
+        <where>
+            <if test="sortId != null and sortId != ''">
+                and sort_id = #{sortId}
+            </if>
+            <if test="sortName != null and sortName != ''">
+                and sort_name = #{sortName}
+            </if>
+            <if test="sortAlias != null and sortAlias != ''">
+                and sort_alias = #{sortAlias}
+            </if>
+            <if test="sortDescription != null and sortDescription != ''">
+                and sort_description = #{sortDescription}
+            </if>
+            <if test="parentSortId != null and parentSortId != ''">
+                and parent_sort_id = #{parentSortId}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" useGeneratedKeys="true">
+        <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
+            select REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into blog.sorts(sort_id, sort_name, sort_alias, sort_description, parent_sort_id, create_time,
+        update_time, status)
+        values (#{sortId}, #{sortName}, #{sortAlias}, #{sortDescription}, #{parentSortId}, #{createTime}, #{updateTime},
+        #{status})
+    </insert>
+
+    <insert id="insertBatch" useGeneratedKeys="true">
+        <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
+            select REPLACE(UUID(),'-','')
+        </selectKey>
+        insert into blog.sorts(sort_id, sort_name, sort_alias, sort_description, parent_sort_id, create_time,
+        update_time, status)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.sortId}, #{entity.sortName}, #{entity.sortAlias}, #{entity.sortDescription},
+            #{entity.parentSortId}, #{entity.createTime}, #{entity.updateTime}, #{entity.status})
+        </foreach>
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update blog.sorts
+        <set>
+            <if test="sortName != null and sortName != ''">
+                sort_name = #{sortName},
+            </if>
+            <if test="sortAlias != null and sortAlias != ''">
+                sort_alias = #{sortAlias},
+            </if>
+            <if test="sortDescription != null and sortDescription != ''">
+                sort_description = #{sortDescription},
+            </if>
+            <if test="parentSortId != null and parentSortId != ''">
+                parent_sort_id = #{parentSortId},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        where sort_id = #{sortId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from blog.sorts
+        where sort_id = #{sortId}
+    </delete>
+    <!--逻辑删除删除-->
+    <update id="deleteLogic">
+        UPDATE blog.sorts
+        SET `status`='0'
+        WHERE `id` = #{id}
+    </update>
+</mapper>

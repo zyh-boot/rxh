@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="author" content="order by dede58.com/"/>
@@ -44,11 +44,11 @@
                     <span style="position: absolute;right: 20px;bottom: 10px">仗剑天涯，从你的摘要开始</span>
                 </ol>
                 <div class="row" style="margin-top: 10%">
-                    <a href="#" class="col-md-3 col-md-offset-2" style="text-align: right">
+                    <a id="show" th:href="@{'/blog/articleInfo/'+${article.id}}" class="col-md-3 col-md-offset-2" style="text-align: right">
                         <i class="fa fa-check-square" aria-hidden="true" style="color: #00CC00"></i>
                         发布成功并查看文章></a>
 <!--                    <a href="#" class="col-md-2 copy" id="copy" data-clipboard-text="我是100美元">复制金额</a>-->
-                    <a href="javaScript:void(0)" id="copy" class="col-md-2 copy" data-clipboard-text=[[${article.id}]]>复制链接</a>
+                    <a href="javaScript:void(0)" id="copy" class="col-md-2 copy" data-clipboard-text="" >复制链接</a>
 <!--                    <span class="copy" data-clipboard-text="https://baidu.com">复制地址</span>-->
 
 <!--                    -->
@@ -78,20 +78,24 @@
 <!--</nav>-->
 
 <!--<script src="/static/blog/js/load.js" type="text/javascript"></script>-->
+<script src="/static/layui/layui.all.js">
+</script>
+<link rel="stylesheet" href="/static/layui/css/layui.css">
 </head>
 <script type="text/javascript">
     $(function(){
-        console.log("[[${article}]]")
+        var layer = layui.layer;
+        let path = window.location.host + $("#show").attr("href")
+        $("#copy").attr("data-clipboard-text",path)
 
         var clipboard = new Clipboard('.copy');
         clipboard.on('success', function(e) {
             console.log();
-            alert("复制成功！链接地址: "+e.text)
+            layer.alert("复制成功！<br>链接地址: <span style='color: deepskyblue'>"+e.text+"</span>")
         });
         clipboard.on('error', function(e) {
             document.querySelector('.copy');
-            console.log("复制成功！链接地址: ",e.text);
-            alert("复制成功！链接地址: "+e.text)
+            layer.alert("复制成功！<br>链接地址: "+e.text+"")
         });
     });
 </script>

@@ -18,12 +18,13 @@ import org.springframework.stereotype.Service;
  */
 @Service("articleService")
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
-        @Autowired
-        ArticleMapper articleMapper;
-        public Page selectPage(Page page){
-            Page page1 = articleMapper.selectPage(page, new LambdaQueryWrapper<Article>());
-            return page1;
-        }
+    @Autowired
+    ArticleMapper articleMapper;
+
+    public Page selectPage(Page page) {
+        Page page1 = articleMapper.selectPage(page, new LambdaQueryWrapper<Article>());
+        return page1;
+    }
 
     @Override
     public boolean setTop(String id) {
@@ -34,5 +35,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public Article getTop(String id) {
         return articleMapper.getTop(id);
+    }
+
+    @Override
+    public Article queryById(String id) {
+        return this.baseMapper.queryById(id);
     }
 }

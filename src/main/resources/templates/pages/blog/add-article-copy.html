@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="order by dede58.com/"/>
+    <title>个人中心模板</title>
+    <!--    <link href="/static/blog/style/common.css" type="text/css" rel="stylesheet">-->
+    <link href="/static/blog/style/user.css" type="text/css" rel="stylesheet">
+    <!--    <link href="/static/blog/style/bootstrap.min.css" type="text/css" rel="stylesheet">-->
+    <!--    <link href="/static/blog/style/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">-->
+    <!--    <link href="/static/blog/style/edit/css/wangEditor.min.css" type="text/css" rel="stylesheet">-->
+    <link rel="shortcut icon" href="/static/blog/images/favicon.ico" type="image/x-icon"/>
+    <script src="/static/blog/js/jquery.min.js" type="application/javascript"></script>
+    <script src="/static/layui/layui.all.js" type="application/javascript"></script>
+    <link href="/static/layui/css/layui.css" rel="stylesheet" type="text/css">
+    <style>
+        .layui-row .layui-anim.layui-icon {
+            display: none;
+        }
+
+        .text-color {
+            color: #e33e33;
+            background: #fcecea;
+            text-align: center;
+        }
+
+        .text-color div {
+            margin-left: 10px;
+        }
+
+        .layui-btn-sm {
+            font-size: 14px;
+        }
+
+        .label {
+            margin-top: 4px;
+            border-radius: 6px;
+            color: #267dcc;
+            background: rgba(38, 125, 204, .05);
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="layui-card" style="background: white">
+    <div class="layui-card-header" style="font-weight: bolder">
+        发布文章
+    </div>
+    <div class="layui-card-body">
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">文章标签</label>
+                <div class="layui-input-block">
+                    <div style="font-size: 14px" id="lable">
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" id="showType"
+                                style="margin-top: 4px;border-radius: 6px">
+                            <i class="layui-icon">&#xe654;</i> 添加文章标签
+                        </button>
+                    </div>
+
+                    <!--标签弹出层-->
+                    <div class="layui-card" id="type-form"
+                         style="font-size: 14px;border:1px solid  #e6e6e6;position: absolute;z-index: 999; width: 100% ;height: 200px;display: none">
+                        <div class="layui-card-header layui-fluid">
+                            <span>还可添加三个分类 </span>
+                            <i style=" margin: 0 0 0 67%;  cursor: pointer" onclick="closeEle(this)"
+                               class="layui-icon  ">&#x1006;</i>
+                        </div>
+                        <div class="layui-card-body">
+                            <input type="text" name="title" placeholder="请输入标题"
+                                   autocomplete="off" class="layui-input" style="border-radius: 10px">
+                            <div class="layui-row" style="margin-top: 5px" id="label-flow">
+                                <input type="radio" name="label" lay-filter="label" value="公开" title="公开"
+                                       checked="">
+                                <input type="radio" name="label" lay-filter="label" value="私密" title="私密">
+                                <input type="radio" name="label" lay-filter="label" value="粉丝" title="粉丝可见">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">分类专栏</label>
+                <div class="layui-input-block">
+                    <div id="type-article">
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary"
+                                style="margin-top: 4px;border-radius: 6px">
+                            <i class="layui-icon">&#xe654;</i> 添加文章分类
+                        </button>
+                    </div>
+                    <div class="layui-card" style="border:1px solid  #e6e6e6; margin-top: 5px">
+                        <div class="layui-card-header">最多三个分类</div>
+                        <div class="layui-card-body" id="categories">
+                            <input type="checkbox" name="type-article" title="写作" lay-filter="checkbox"
+                                   lay-skin="primary" value="随笔1">
+                            <input type="checkbox" name="type-article" title="写作" lay-filter="checkbox"
+                                   lay-skin="primary" value="随笔2">
+                            <input type="checkbox" name="type-article" title="写作" lay-filter="checkbox"
+                                   lay-skin="primary" value="随笔3">
+                            <input type="checkbox" name="type-article" title="写作" lay-filter="checkbox"
+                                   lay-skin="primary" value="随笔4">
+                            <input type="checkbox" name="type-article" title="写作" lay-filter="checkbox"
+                                   lay-skin="primary" value="随笔5">
+                            <input type="checkbox" name="type-article" title="写作" lay-filter="checkbox"
+                                   lay-skin="primary" value="随笔6">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">文章类型</label>
+                <div class="layui-input-inline">
+                    <select name="interest">
+                        <option value=""></option>
+                        <option value="0">原创</option>
+                        <option value="1">转载</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">发布形式</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="type" value="1" title="公开" checked="">
+                    <input type="radio" name="type" value="0" title="私密">
+                    <input type="radio" name="type" value="2" title="粉丝可见">
+                </div>
+            </div>
+            <!--                <div class="layui-form-item">-->
+            <!--                    <div class="layui-input-block">-->
+            <!--                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">发布文章</button>-->
+            <!--                        <button type="reset" class="layui-btn layui-btn-primary">取消</button>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+        </form>
+    </div>
+</div>
+
+
+<script src="/static/blog/js/load.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/static/blog/editormd/css/editormd.css"/>
+</head>
+<script src="/static/blog/editormd/editormd.min.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        var layer = layui.layer;
+        var form = layui.form;
+        var flow = layui.flow;
+
+        form.render();
+
+
+        flow.load({
+            elem: '#label-flow' //流加载容器
+            , done: function (page, next) { //执行下一页的回调
+                //模拟数据插入
+                setTimeout(function () {
+                    var lis = [];
+                    $.get("/labels", {
+                        curPage: page,
+                        // size: 2
+                    }, function (result) {
+                        let records = result.data.records;
+                        $.each(records, function (index, item) {
+                            lis.push('<input type="radio" name="label" lay-filter="label" value="'+item.labelId+'"  title="'+item.labelName+'"  >');
+                        })
+
+                        //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+                        //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+                        next(lis.join(''), page < result.data.pages)
+                        form.render();
+                    })
+                }, 500);
+            }
+        });
+
+        form.on("checkbox(checkbox)", function (data) {
+            let child = $("#type-article").children();
+            if (child.length > 3) {
+                layer.open({
+                    type: 0,
+                    content: '最多选取三个分类专栏' //这里content是一个普通的String
+                });
+                return
+            }
+            addHtml("type-article", data.value,$(data.elem).attr("title"))
+        })
+        form.on('radio(label)', function (data) {
+            let child = $("#lable").children();
+            if (child.length > 5) {
+                layer.open({
+                    type: 0,
+                    content: '最多选取5个标签' //这里content是一个普通的String
+                });
+                return
+            }
+
+            let children = $(this).parent().children("div .text-color");
+            if (children.length > 0) {
+                $(children).removeClass("text-color")
+            }
+            let nextElement = $(this).next()[0];
+            $(nextElement).addClass("text-color")
+            addHtml("lable", data.value,$(data.elem).attr("title"))
+            // closeEle(this)
+        })
+
+
+        $("#showType").on("click", function () {
+            $("#type-form").show()
+        })
+
+        $.get("/sorts", function (result) {
+
+            let html = "";
+            let records = result.data.records;
+            $.each(records, function (index, item) {
+                html += " <input type=\"checkbox\" name=\"type-article\" title=\""+item.sortName+"\" lay-filter=\"checkbox\"\n" +
+                    "                                   lay-skin=\"primary\" value=\""+item.sortId+"\">";
+            })
+            $("#categories").html(html)
+        })
+
+    });
+
+
+
+    function closeEle(that) {
+        $(that).parent().parent().hide()
+    }
+
+    function addHtml(id, val,title) {
+        let html = "<a class=\"layui-btn layui-btn-sm layui-btn-primary label\"  >\n" +
+            "                                <span value='"+val+"'>" + title + "</span> <i style=\"margin-right: 3px\" class=\"layui-icon layui-icon-close\"></i>\n" +
+            "                            </a>";
+        $("#" + id).prepend(html)
+        bindFun()
+    }
+
+    function bindFun() {
+        $(".layui-icon-close").on("mouseenter", function () {
+            $(this).addClass("layui-icon-close-fill")
+            $(this).removeClass("layui-icon-close")
+            $(".layui-icon-close-fill").on("mouseleave", function () {
+                $(this).attr("font-size", "18px!important")
+                $(this).removeClass("layui-icon-close-fill")
+                $(this).addClass("layui-icon-close")
+            })
+            $(".layui-icon-close-fill").on("click", function () {
+                $(this).parent().remove()
+            })
+        })
+    }
+</script>
+</body>
+</html>

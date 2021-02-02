@@ -78,15 +78,20 @@
         padding: 0 0 0 30px;
     }
 
-    .title-name{
+    .title-name {
         margin-left: 10px;
     }
+
     .name {
         font-size: 22px;
         margin: 10px;
         color: #89919a;
         font-weight: normal;
         padding-bottom: 10px;
+    }
+
+    .show {
+        color: #ff4d4d;
     }
 </style>
 <body>
@@ -201,45 +206,53 @@
                     <div class="layui-card-body">
                         <!--lbox begin-->
                         <div class="content_box whitebg">
-                            <h1 class="con_tilte">个人博客，属于我的小世界！</h1>
+                            <h1 class="con_tilte" th:text="${article.title}">个人博客，属于我的小世界！</h1>
                             <p class="bloginfo"></p>
                             <!--                            <p class="con_info">-->
                             <div class="con_info">
                                 <div class="layui-row">
                                     <img class="layui-col-md1" src="/static/blog/images/abbg.png"
                                          style="height: 50px;width: 50px;">
-                                    <a class="layui-col-md1 title-name span"  >超级管理员</a>
-                                    <span class="layui-col-md2" style="cursor: pointer" id="time">2020-0304</span>
+                                    <a class="layui-col-md1 title-name span" th:text="${article.author}">超级管理员</a>
+                                    <span class="layui-col-md2" style="cursor: pointer" id="time" th:text="${article.createTime}">2020-0304</span>
 
                                     <span class="layui-col-md1" style="cursor: pointer">
                                          <i class="fa fa-eye" aria-hidden="true" style="color: #999"></i>
-                                         <span style="color: #999" id="ask">8242</span>
+                                         <span style="color: #999" id="ask" th:text="${article.readVolume}">8242</span>
                                     </span>
-                                    <span class="layui-col-md1 span" style="cursor: pointer;">
-                                        <i class="layui-icon layui-icon-star-fill" aria-hidden="true"></i>
-                                        收藏 <span id="sava">908</span>
+                                    <span class="layui-col-md2 span" style="cursor: pointer;" id="save">
+                                        <i class="layui-icon layui-icon-star-fill" aria-hidden="true"
+                                           th:class="${flag} ? 'layui-icon layui-icon-star-fill show' : 'layui-icon layui-icon-star-fill'"></i>
+                                        <span th:text="${flag} ? '已收藏' : '收藏'">收藏</span>
+                                        <span th:text="${article.collection}">908</span>
                                     </span>
+                                    <input type="hidden" id="user" th:value="${article.authorId}">
                                 </div>
-                                <div class="layui-row">
-                                    <span class="layui-col-md1 ">分类专栏:</span>
-                                    <span class="layui-col-md1">
-                                        <span style="cursor: pointer">随笔</span>
+                                <div class="layui-row cloud">
+                                    <span class="layui-col-md1">分类专栏:</span>
+                                    <span class="layui-col-md3">
+                                        <ul>
+                                            <a style="cursor: pointer" id="category" th:onclick='showCategory([[${category.sortId}]])' th:each="category:${article.category}" th:text="${category.sortName}">
+                                                 随笔</a>
+                                        </ul>
                                     </span>
                                     <span class="layui-col-md1">文章标签:</span>
-                                    <span class="layui-col-md9">
-                                        <span style="margin-right: 5px;cursor: pointer" class="span">java</span>
-                                        <span style="margin-right: 5px;cursor: pointer" class="span">java</span>
-                                        <span style="margin-right: 5px;cursor: pointer" class="span">java</span>
-                                        <span style="margin-right: 5px;cursor: pointer" class="span">java</span>
-                                        <span style="margin-right: 5px;cursor: pointer" class="span">java</span>
-                                        <span style="margin-right: 5px;cursor: pointer" class="span">java</span>
-                                        <span style="margin-right: 5px;cursor: pointer" class="span">java</span>
-                                    </span>
+                                    <div class="layui-col-md7">
+                                        <ul id="label">
+                                            <a href="" target="_blank" th:onclick='showLabel([[${label.labelId}]])' th:each="label:${article.labels}" th:text="${label.labelName}">个人博客模板</a>
+<!--                                            <a href="" target="_blank">css动画</a>-->
+<!--                                            <a href="" target="_blank">布局</a>-->
+<!--                                            <a href="" target="_blank">今夕何夕</a>-->
+<!--                                            <a href="" target="_blank">SEO</a>-->
+<!--                                            <a href="" target="_blank">女程序员</a>-->
+<!--                                            <a href="" target="_blank">小世界</a>-->
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!--                            </p>-->
-                        <div class="con_text">
+                        <!--文章主体-->
+                        <div class="con_text" style="padding: 0px 21px" th:utext="${article.content}">
                         </div>
                         <hr>
 
@@ -354,7 +367,8 @@
     $(function () {
         var layer = layui.layer;
         var laypage = layui.laypage;
-        getInfo();
+
+        // getInfo();
         $("#text").on("focus", function () {
             formHide()
         })
@@ -362,24 +376,51 @@
             formHide()
         })
         showCommon()
+
+        $("#save").on("click", function () {
+            let collection = $("#save span")[0]
+            if($(collection).html() == "已收藏"){
+                layer.alert("已收藏该文章!",{icon:6})
+            }else{
+                sendCollection()
+            }
+
+        })
+
     })
 
-
-    function replayFun(that, ele) {
-        console.log(ele)
-        // submit(ele)
-        // formHide()
-        showReplayinput(that, ele)
+    //添加收藏
+    function sendCollection(){
+        let saves = $("#save span")[1]
+        saves = $(saves).html();
+        let val = $("#user").val();
+        $.get("/article/update", {
+            collection: saves,
+            id: "[[${id}]]",
+            author: val
+        }, function (result) {
+            console.log(">>>>>>>>>>", result)
+            if (result.data) {
+                let span = $("#save span")[0];
+                $(span).html("已收藏");
+                $("#save i").addClass("show");
+                let spam = $("#save span")[1];
+                $(spam).html(Number(saves) + 1)
+            }
+        })
     }
 
+    //html模板展示评论输入框
+    function replayFun(that, ele) {
+        showReplayinput(that, ele)
+    }
     function showReplayinput(that, ele) {
         let parents = $(that).parents("li");
         formHide(parents, ele)
-
-        console.log(parents)
+        // console.log(parents)
     }
 
-
+    //为标签绑定对应的操作 这些标签都是请求回来的模板标签
     function bindFun(flag) {
         closeBlur("redom-txt");
         closeBlur("submit");
@@ -395,6 +436,7 @@
         })
     }
 
+    //评论输入框失去焦点关闭
     function closeBlur(id) {
         $("#" + id).on("mousedown", function (e) {
             if (e && e.preventDefault) {
@@ -406,6 +448,7 @@
         })
     }
 
+    //设置速评语句
     function quickReview() {
         console.log("123123")
         $.get("/comment/quickReview", function (result) {
@@ -414,6 +457,7 @@
         })
     }
 
+    //提交评价
     function submitForm(flag) {
         let comment = $("#comment").val();
         if (comment.length == 0) {
@@ -441,7 +485,7 @@
             success: function (data) {
 
                 console.log("打他>>>>>>>>>>", data)
-                alert(data.msg);
+                layer.alert(data.msg);
                 formShow()
                 showCommon()
             },
@@ -452,6 +496,7 @@
         });
     }
 
+    //评论输入框互斥展示,页面内只有一个
     function formHide(parent, ele) {
         var flag = false
         $("#com-show").removeClass("divHeight")
@@ -475,6 +520,7 @@
         })
     }
 
+    //输入评论框展示(直接评论文章 非回复)
     function formShow(type) {
         if (type) {
             $("#text").val($("#comment").val());
@@ -485,25 +531,34 @@
         $(form[0]).show()
     }
 
+    //获取文章详情 暂时废弃 采用了html的模板语言自动展示
     function getInfo() {
         $.get("/article/[[${id}]]", {}, function (result) {
-            console.log(result.data.createTime)
+            console.log(result)
             $(".con_text").html(result.data.content)
             $(".con_tilte").html(result.data.title)
             $(".title-name").html(result.data.author)
             $("#time").html(result.data.createTime)
-            $("#ask").html(result.data.readVolume)
-            $("#time").html(result.data.collection)
-            // $(".diggit").html("很赞哦！ ("+result.data.likesNum+")")
+            $("#ask").html(result.data.readVolume == null ? 0 : result.data.readVolume)
+            let saveElement = $("#save span")[1];
+            $(saveElement).html(result.data.collection == null ? 0 : result.data.collection)
 
+            let labelHtml = ""
+            for (const label of result.data.labels) {
+                labelHtml += " <a href=\"\" target=\"_blank\" onclick='showLabel(" + label.labelId + ")'>" + label.labelName + "</a>";
+            }
+            ;
+            $("#label").html(labelHtml);
+            $("#user").val(result.data.authorId);
         })
     }
 
+    //展示评论
     function showCommon(size, page) {
         $.get("/blog/replay", {
             size: size == null ? 5 : size,
             curPage: page == null ? 1 : page,
-            id:"[[${id}]]"
+            id: "[[${id}]]"
         }, function (result) {
             $("#comment_replay").html(result)
             // console.log(result)
@@ -518,6 +573,7 @@
 
     }
 
+    //删除评论
     function del(id) {
         $.ajax({
             url: "/comment/del",
@@ -526,7 +582,7 @@
             },
             type: "get",
             success: function (result) {
-                alert(result.msg)
+                layer.alert(result.msg)
                 showCommon()
             }
         })

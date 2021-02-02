@@ -2,6 +2,7 @@ package com.rxh.blog.controller;
 
 import com.rxh.blog.entity.Article;
 import com.rxh.blog.service.ArticleService;
+import com.rxh.blog.service.CollectionService;
 import com.rxh.blog.service.CommentService;
 import com.rxh.complat.common.shiro.entity.Member;
 import com.rxh.complat.common.util.SessionUtils;
@@ -25,6 +26,9 @@ public class BlogViewController {
     ArticleService articleService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private CollectionService collectionService;
+
 
     @RequestMapping("index")
     public String index() {
@@ -70,7 +74,13 @@ public class BlogViewController {
     public ModelAndView addArticle() {
         ModelAndView view = new ModelAndView("pages/blog/add-article");
         Member user = SessionUtils.getUser();
-
+        view.addObject("userName", user.getNickname());
+        return view;
+    }
+    @RequestMapping("setLabel")
+    public ModelAndView setLabel() {
+        ModelAndView view = new ModelAndView("pages/blog/add-article-copy");
+        Member user = SessionUtils.getUser();
         view.addObject("userName", user.getNickname());
         return view;
     }
@@ -94,8 +104,11 @@ public class BlogViewController {
     public ModelAndView articleInfo(@PathVariable("id") String id) {
         ModelAndView view = new ModelAndView("pages/blog/info");
         view.addObject("id", id);
-//        List<Comment> list = commentService.queryAllByLimit("0","10");
-//        view.addObject("contents", list);
+        boolean collection = collectionService.isCollection(id);
+        view.addObject("flag",collection);
+        Article article = articleService.queryById(id);
+        view.addObject("article",article);
+
         return view;
     }
 
@@ -111,6 +124,7 @@ public class BlogViewController {
         ModelAndView view = new ModelAndView("pages/blog/add-success");
         Article article = articleService.getById(id);
         view.addObject("article", article);
+
         return view;
     }
 

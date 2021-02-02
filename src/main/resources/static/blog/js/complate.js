@@ -32,5 +32,9 @@ function showPage(ele, size, curPage, total,callBack) {
     });
 }
 
+function showLabel(id){
+    window.location.href = "/blog/label/"+id
+}
+
 
 
