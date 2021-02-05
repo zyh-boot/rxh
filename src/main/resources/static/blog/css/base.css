@@ -1,9 +1,9 @@
 @charset "utf-8";
 /* css */
 * { margin: 0; padding: 0 }
-body { font: 15px "Microsoft YaHei", Arial, Helvetica, sans-serif; color: #333; background: #E9EAED; line-height: 1.5; overflow-x: hidden; }
+body { font: 15px "Microsoft YaHei", Arial, Helvetica, sans-serif; color: #333; background: #f2f2f2; line-height: 1.5; overflow-x: hidden; }
 img { border: 0; display: block }
-ul, li { list-style: none; }
+ul, li { list-style: none; list-style-type: none !important;}
 a { text-decoration: none; color: #333; }
 a:hover { color: #000; text-decoration: none; }
 .clear { clear: both; width: 100%; overflow: hidden; height: 20px }
@@ -291,6 +291,22 @@ a.curPage { color: #19585d; font-weight: bold; }
 .cloud ul a:first-child { background: #c1e2b3 }
 .cloud ul a:last-child { background: #0B9443}
 .cloud ul a:hover { border-radius: 0; text-shadow: #000 1px 1px 1px }
+/*
+/*cloud*/
+.cloud label {
+    line-height: 24px; height: 24px; cursor: pointer;  background: #999;  padding: 3px 10px; margin: 0 5px 10px 0; border-radius: 3px; -moz-transition: all 0.5s; -webkit-transition: all 0.5s; -o-transition: all 0.5s; transition: all 0.5s; color: #FFF }
+.cloud label:nth-child(8n-7) { background: #8A9B0F }
+.cloud label:nth-child(8n-6) { background: #EB6841 }
+.cloud label:nth-child(8n-5) { background: #3FB8AF }
+.cloud label:nth-child(8n-4) { background: #FE4365 }
+.cloud label:nth-child(8n-3) { background: #FC9D9A }
+.cloud label:nth-child(8n-2) { background: #EDC951 }
+.cloud label:nth-child(8n-1) { background: #C8C8A9 }
+.cloud label:nth-child(8n) { background: #83AF9B }
+.cloud label:first-child { background: #00c1de }
+.cloud label:last-child { background: #0B9443}
+.cloud label:hover { border-radius: 3px;  }
+.cloud label i:hover { border-radius: 3px; background: #FF5722  }
 /*
 
 daohang.html

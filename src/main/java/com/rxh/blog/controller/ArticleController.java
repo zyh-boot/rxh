@@ -1,6 +1,7 @@
 package com.rxh.blog.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
@@ -44,10 +45,6 @@ public class ArticleController extends ApiController {
     @Autowired
     private SetArticleSortService articleSortService;
 
-    @RequestMapping("test")
-    public Object test(String id) {
-        return articleService.queryById(id);
-    }
 
     /**
      * 分页查询所有数据
@@ -64,7 +61,7 @@ public class ArticleController extends ApiController {
         page.setCurrent(Integer.parseInt(curPage));
 //        Page<Article> page1 = this.articleService.page(page);
 //        return success(this.articleService.page(page));
-        Page page1 = articleService.selectPage(page);
+        Page page1 = articleService.selectPage(page,new LambdaQueryWrapper());
         return success(page1);
     }
 

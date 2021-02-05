@@ -68,16 +68,16 @@
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" useGeneratedKeys="true">
-        <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="labelId">
+        <selectKey keyProperty="labelId" resultType="java.lang.String" order="BEFORE">
             select REPLACE(UUID(),'-','')
         </selectKey>
         insert into blog.labels(label_id, label_name, label_alias, label_description, create_time, update_time, status)
         values (#{labelId}, #{labelName}, #{labelAlias}, #{labelDescription}, #{createTime}, #{updateTime}, #{status})
     </insert>
 
-    <insert id="insertBatch" useGeneratedKeys="true">
-        <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="labelId">
+        <selectKey keyProperty="labelId" resultType="java.lang.String" order="BEFORE">
             select REPLACE(UUID(),'-','')
         </selectKey>
         insert into blog.labels(label_id, label_name, label_alias, label_description, create_time, update_time, status)

@@ -33,6 +33,7 @@
     <select id="getTop" resultMap="ArticleMap">
         SELECT * FROM article WHERE top_status = '1' AND author_id = #{userID}
     </select>
+
     <!--查询单个-->
     <select id="queryById" resultMap="ArticleMap">
         select id,
@@ -55,7 +56,51 @@
         from blog.article
         where id = #{id}
     </select>
+    <!--分页查询全部-->
+    <select id="findByPage" resultMap="ArticleMap">
+        select id,
+               title,
+               abstract_txt,
+               original,
+               content,
+               author,
+               author_id,
+               enclosure,
+               comments,
+               read_volume,
+               collection,
+               likes_num,
+               show_type,
+               top_status,
+               create_time,
+               update_time,
+               status
+        from blog.article
+        <if test="ew.emptyOfWhere == false">
+            ${ew.customSqlSegment}
+        </if>
+    </select>
+    <select id="findByPageInfo" resultMap="ArticleMap">
+        select id,
+               title,
+               abstract_txt,
+               original,
+               content,
+               author,
+               author_id,
+               enclosure,
+               comments,
+               read_volume,
+               collection,
+               likes_num,
+               show_type,
+               top_status,
+               create_time,
+               update_time,
+               status
+        from blog.article
 
+    </select>
 
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="ArticleMap">

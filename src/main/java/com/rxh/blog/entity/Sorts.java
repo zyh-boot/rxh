@@ -23,8 +23,8 @@ public class Sorts extends BaseEntity implements Serializable {
     private String sortAlias;
     //分类描述
     private String sortDescription;
-    //父分类ID
-    private String parentSortId;
+    //用户ID
+    private String userId;
 
 
     public String getSortId() {
@@ -57,14 +57,6 @@ public class Sorts extends BaseEntity implements Serializable {
 
     public void setSortDescription(String sortDescription) {
         this.sortDescription = sortDescription;
-    }
-
-    public String getParentSortId() {
-        return parentSortId;
-    }
-
-    public void setParentSortId(String parentSortId) {
-        this.parentSortId = parentSortId;
     }
 
 

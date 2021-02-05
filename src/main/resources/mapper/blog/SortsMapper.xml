@@ -7,7 +7,7 @@
         <result property="sortName" column="sort_name" jdbcType="VARCHAR"/>
         <result property="sortAlias" column="sort_alias" jdbcType="VARCHAR"/>
         <result property="sortDescription" column="sort_description" jdbcType="VARCHAR"/>
-        <result property="parentSortId" column="parent_sort_id" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="status" column="status" jdbcType="INTEGER"/>
@@ -28,7 +28,7 @@
                sort_name,
                sort_alias,
                sort_description,
-               parent_sort_id,
+               user_id,
                create_time,
                update_time,
                status
@@ -36,10 +36,11 @@
         where sort_id = #{sortId}
     </select>
 
+
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="SortsMap">
         select
-        sort_id, sort_name, sort_alias, sort_description, parent_sort_id, create_time, update_time, status
+        sort_id, sort_name, sort_alias, sort_description, user_id, create_time, update_time, status
         from blog.sorts
         <where>
             <if test="sortId != null and sortId != ''">
@@ -54,8 +55,8 @@
             <if test="sortDescription != null and sortDescription != ''">
                 and sort_description = #{sortDescription}
             </if>
-            <if test="parentSortId != null and parentSortId != ''">
-                and parent_sort_id = #{parentSortId}
+            <if test="userId != null and userId != ''">
+                and user_id = #{userId}
             </if>
             <if test="createTime != null">
                 and create_time = #{createTime}
@@ -70,26 +71,26 @@
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" useGeneratedKeys="true">
-        <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="sortId">
+        <selectKey keyProperty="sortId" resultType="java.lang.String" order="BEFORE">
             select REPLACE(UUID(),'-','')
         </selectKey>
-        insert into blog.sorts(sort_id, sort_name, sort_alias, sort_description, parent_sort_id, create_time,
-        update_time, status)
-        values (#{sortId}, #{sortName}, #{sortAlias}, #{sortDescription}, #{parentSortId}, #{createTime}, #{updateTime},
+        insert into blog.sorts(sort_id, sort_name, sort_alias, sort_description, user_id, create_time, update_time,
+        status)
+        values (#{sortId}, #{sortName}, #{sortAlias}, #{sortDescription}, #{userId}, #{createTime}, #{updateTime},
         #{status})
     </insert>
 
-    <insert id="insertBatch" useGeneratedKeys="true">
-        <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="sortId">
+        <selectKey keyProperty="sortId" resultType="java.lang.String" order="BEFORE">
             select REPLACE(UUID(),'-','')
         </selectKey>
-        insert into blog.sorts(sort_id, sort_name, sort_alias, sort_description, parent_sort_id, create_time,
-        update_time, status)
+        insert into blog.sorts(sort_id, sort_name, sort_alias, sort_description, user_id, create_time, update_time,
+        status)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.sortId}, #{entity.sortName}, #{entity.sortAlias}, #{entity.sortDescription},
-            #{entity.parentSortId}, #{entity.createTime}, #{entity.updateTime}, #{entity.status})
+            (#{entity.sortId}, #{entity.sortName}, #{entity.sortAlias}, #{entity.sortDescription}, #{entity.userId},
+            #{entity.createTime}, #{entity.updateTime}, #{entity.status})
         </foreach>
     </insert>
 
@@ -106,8 +107,8 @@
             <if test="sortDescription != null and sortDescription != ''">
                 sort_description = #{sortDescription},
             </if>
-            <if test="parentSortId != null and parentSortId != ''">
-                parent_sort_id = #{parentSortId},
+            <if test="userId != null and userId != ''">
+                user_id = #{userId},
             </if>
             <if test="createTime != null">
                 create_time = #{createTime},

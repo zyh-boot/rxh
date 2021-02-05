@@ -4,6 +4,7 @@ import com.rxh.blog.entity.Article;
 import com.rxh.blog.service.ArticleService;
 import com.rxh.blog.service.CollectionService;
 import com.rxh.blog.service.CommentService;
+import com.rxh.blog.service.SortsService;
 import com.rxh.complat.common.shiro.entity.Member;
 import com.rxh.complat.common.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class BlogViewController {
     private CommentService commentService;
     @Autowired
     private CollectionService collectionService;
+    @Autowired
+    private SortsService sortsService;
 
 
     @RequestMapping("index")
@@ -62,6 +65,8 @@ public class BlogViewController {
 
     @RequestMapping("list3")
     public String list3() {
+
+
         return "pages/blog/list3";
     }
 
