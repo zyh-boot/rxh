@@ -195,6 +195,7 @@
 
 <!--分类-->
 <li class="layui-timeline-item" th:fragment="categories" th:each=" category,categoryStat : ${categories}">
+    <input type="hidden" id="pages" th:value="${pages}">
     <i class="layui-icon layui-timeline-axis" th:text="${flag && categoryStat.index == 0 ? '&#xe756;': '&#xe63f;'}" th:onclick="getArticle([[${category.sortId}]])"></i>
     <div class="layui-timeline-content layui-text" >
         <div class="layui-timeline-title">
@@ -204,11 +205,15 @@
 </li>
 <!--分类下 文章列表-->
 <li class="layui-timeline-item" th:fragment="categoryArticles" th:each="article,articleStat : ${articles}">
+    <input type="hidden" id="flag" th:value="${isNull}">
+    <input type="hidden" id="pages" th:value="${pages}">
     <i class="layui-icon layui-timeline-axis" th:text="${flag && articleStat.index == 0 ? '&#xe756;': '&#xe63f;'}"></i>
     <div class="layui-timeline-content layui-text">
         <h3 class="layui-timeline-title" th:text="${article.createTime}">8月18日</h3>
         <div class="layui-card" style="background: #E9EAED">
-            <div class="layui-card-header" th:text="${article.title}">标题</div>
+            <div class="layui-card-header" >
+                <a th:href="@{'./articleInfo/'+${article.id}}" th:text="${article.title}"></a>
+            </div>
             <div class="layui-card-body cloud" >
                 <label th:each="label : ${article.labels}">
                     <span th:text="${label.labelName}"></span>

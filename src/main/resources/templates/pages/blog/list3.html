@@ -19,7 +19,8 @@
 </head>
 <body>
 <style>
-
+    .flow-default{ height: 550px; overflow: auto; font-size: 0;}
+    /*.flow-default li{display: inline-block; margin: 0 5px; font-size: 14px; width: 48%;  margin-bottom: 10px; height: 100px; line-height: 100px; text-align: center; background-color: #eee;}*/
 </style>
 <!--top begin-->
 <div id="headerTmp">
@@ -30,10 +31,10 @@
     <div class="layui-card">
         <input type="hidden" id="id">
         <div class="layui-card-header">分类专栏</div>
-        <div class="layui-card-body" >
+        <div class="layui-card-body">
             <div class="layui-row">
-                <div class="layui-col-md2" >
-                    <ul class="layui-timeline"  id="categorys">
+                <div class="layui-col-md2">
+                    <ul class="layui-timeline flow-default" id="categorys">
                         <!--                    <li class="layui-timeline-item">-->
                         <!--                        <i class="layui-icon layui-anim layui-anim-rotate layui-anim-loop layui-timeline-axis layui-icon-loading-1"></i>-->
                         <!--                        <div class="layui-timeline-content layui-text">-->
@@ -42,24 +43,18 @@
                         <!--                    </li>-->
                     </ul>
                 </div>
-              <div class="layui-col-md10" id="category_load">
-                  <ul class="layui-timeline" id="category_articles">
-                      <div class="layui-fluid">
-                          <div class="layadmin-tips" style="margin-top: 120px">
-                              <i class="layui-icon" face="" style="font-size: 270px">&#xe664;</i>
-                              <div class="layui-text" style="font-size: 20px;">
-                                  好像没有文章哦
-                              </div>
-                          </div>
-                      </div>
-                  </ul>
-              </div>
+                <div class="layui-col-md10" id="category_load">
+                    <ul class="layui-timeline flow-default" id="category_articles">
+
+                    </ul>
+                </div>
+
 
             </div>
         </div>
     </div>
 </article>
-<!--<script type="text/javascript" src="/static/blog/js/load.js"></script>-->
+<script type="text/javascript" src="/static/blog/js/load.js"></script>
 
 </body>
 <script>
@@ -70,25 +65,26 @@
 
         flow.load({
             elem: '#categorys', //流加载容器
-            isAuto:true,
-            done: function(page, next){ //执行下一页的回调
+            isAuto: true,
+            done: function (page, next) { //执行下一页的回调
                 //模拟数据插入
-                setTimeout(function(){
+                setTimeout(function () {
                     // var lis = [];
                     // for(var i = 0; i < 8; i++){
                     //     lis.push('<li>'+ ( (page-1)*8 + i + 1 ) +'</li>')
                     // }
-                    let b = $("#categorys").children("li").length>0;
-                    console.log(">>>>>>>>>>>>>",b)
+                    let b = $("#categorys").children("li").length > 0;
+                    console.log(">>>>>>>>>>>>>", b)
                     $.get("/blog/categories", {
-                        isFirst: $("#categorys").children("li").length>0 ? false : true
+                        isFirst: $("#categorys").children("li").length > 0 ? false : true
                     }, function (result) {
                         // $("#categorys").html(result)
-                        next(result, page < 10);
+                        let pages = $(result).find("#pages").val();
+                        next(result, page<pages);
                     })
                     //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
                     //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
-                   //假设总页数为 10
+                    //假设总页数为 10
                 }, 500);
             }
         });
@@ -96,25 +92,33 @@
         $(child).find("i").click()
 
         flow.load({
-            elem: '#category_load', //流加载容器
-            isAuto:true,
-            done: function(page, next){ //执行下一页的回调
+            elem: '#category_articles', //流加载容器
+            isAuto: true,
+            end:" ",
+            done: function (page, next) { //执行下一页的回调
                 //模拟数据插入
-                setTimeout(function(){
-                    // var lis = [];
-                    // for(var i = 0; i < 8; i++){
-                    //     lis.push('<li>'+ ( (page-1)*8 + i + 1 ) +'</li>')
-                    // }
-                    let b = $("#categorys").children("li").length>0;
-                    console.log(">>>>>>>>>>>>>",b)
+                setTimeout(function () {
                     $.get("/blog/categoryArticles", {
                         isFirst: $("#categorys").children().length > 0 ? false : true,
                         category: $("#id").val()
                     }, function (result) {
                         // if(result != ""){
-                        console.log(result)
-                        next(result, page < 10);
-
+                        let val = $(result).find("#flag").val();
+                        if(val == "true"){
+                            result = " <div class=\"layui-fluid\">\n" +
+                                "                          <div class=\"layadmin-tips\" style=\"margin-top: 120px\">\n" +
+                                "                              <i class=\"layui-icon\" face=\"\" style=\"font-size: 270px\">&#xe664;</i>\n" +
+                                "                              <div class=\"layui-text\" style=\"font-size: 20px;\">\n" +
+                                "                                  好像没有文章哦\n" +
+                                "                              </div>\n" +
+                                "                          </div>\n" +
+                                "                      </div>";
+                        }
+                        // $("#category_articles").html(result)
+                        let pages = $(result).find("#pages").val();
+                        next(result, page<pages);
+                        //清除layui自动提示信息
+                        // $('#category_articles .layui-flow-more').html("")
                     })
                     //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
                     //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
@@ -124,15 +128,6 @@
         });
 
 
-
-
-        // $.get("/blog/categories", {
-        //     isFirst: length > 0 ? false : true
-        // }, function (result) {
-        //     $("#categorys").html(result)
-        //     let child = $("#categorys").children()[0];
-        //     $(child).find("i").click()
-        // })
     })
 
     function getArticle(id) {
@@ -141,7 +136,21 @@
             isFirst: $("#categorys").children().length > 0 ? false : true,
             category: id
         }, function (result) {
+            let val = $(result).find("#flag").val();
+            console.log("<><><><><><<><><",val)
+            if(val == "true"){
+                result = " <div class=\"layui-fluid\">\n" +
+                    "                          <div class=\"layadmin-tips\" style=\"margin-top: 120px\">\n" +
+                    "                              <i class=\"layui-icon\" face=\"\" style=\"font-size: 270px\">&#xe664;</i>\n" +
+                    "                              <div class=\"layui-text\" style=\"font-size: 20px;\">\n" +
+                    "                                  好像没有文章哦\n" +
+                    "                              </div>\n" +
+                    "                          </div>\n" +
+                    "                      </div>";
+            }
+
             $("#category_articles").html(result)
+
         })
     }
 

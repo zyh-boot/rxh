@@ -112,6 +112,7 @@ public class TemplateController {
         Page<Sorts> page1 = this.sortsService.page(page);
         model.addAttribute("categories", page1.getRecords());
         model.addAttribute("flag", isFirst);
+        model.addAttribute("pages", page1.getPages());
         return "pages/blog/tmplate::categories";
     }
 
@@ -125,8 +126,10 @@ public class TemplateController {
         wrapper.eq(SetArticleSort::getSortId, category);
         List<SetArticleSort> records = articleSortService.list(wrapper);
         if(records == null || records.size() == 0){
-            model.addAttribute("articles", "");
+            model.addAttribute("articles", new Article());
             model.addAttribute("flag", isFirst);
+            model.addAttribute("pages", 1);
+            model.addAttribute("isNull", true);
             return "pages/blog/tmplate::categoryArticles";
         }
         ArrayList<String> ids = new ArrayList<>();
@@ -144,7 +147,9 @@ public class TemplateController {
         Page<Article> articlePage = this.articleService.findByPage(page,wrapper1);
 
         model.addAttribute("articles", articlePage.getRecords());
+        model.addAttribute("pages", articlePage.getPages());
         model.addAttribute("flag", isFirst);
+        model.addAttribute("isNull", false);
 
         return "pages/blog/tmplate::categoryArticles";
     }
