@@ -13,7 +13,7 @@
 
 Application Version: ${ruoyi.version}
 Spring Boot Version: ${spring-boot.version}
-////////////////////////////////////////////////////////////////////
+/static/backstage//static/backstage///////////////////////////////////////////////////
 //                          _ooOoo_                               //
 //                         o8888888o                              //
 //                         88" . "88                              //

@@ -5,14 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageInfo;
-import com.rxh.blog.entity.Article;
-import com.rxh.blog.entity.Comment;
-import com.rxh.blog.entity.SetArticleSort;
-import com.rxh.blog.entity.Sorts;
-import com.rxh.blog.service.ArticleService;
-import com.rxh.blog.service.CommentService;
-import com.rxh.blog.service.SetArticleSortService;
-import com.rxh.blog.service.SortsService;
+import com.rxh.blog.entity.*;
+import com.rxh.blog.service.*;
 import com.rxh.complat.common.shiro.entity.Member;
 import com.rxh.complat.common.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +35,8 @@ public class TemplateController {
     SortsService sortsService;
     @Autowired
     SetArticleSortService articleSortService;
+    @Autowired
+    MessageBoardService boardService;
 
 
     /**
@@ -65,12 +61,40 @@ public class TemplateController {
     }
 
     /**
+     * @Description 留言板列表分页
+     * @author Zhang YuHui
+     * @date 2021/2/25
+     *
+     * @param size
+     * @param curPage
+     * @param model
+     * @return java.lang.String
+     */
+    @RequestMapping("boardList")
+    public String boardList(String size, String curPage, Model model) {
+        Page<MessageBoard> page = new Page<>();
+        page.setCurrent(Integer.parseInt(curPage));
+        page.setSize(Integer.parseInt(size));
+
+        LambdaQueryWrapper<MessageBoard> wrapper = new LambdaQueryWrapper<>();
+//        wrapper.eq(MessageBoard::getId,"033a4ae777e711ebb3490250f2000002");
+
+        PageInfo<MessageBoard> boards = boardService.findBoards(curPage, size);
+        model.addAttribute("messageBoards", boards.getList());
+        model.addAttribute("pages", boards.getPages());
+        model.addAttribute("total", boards.getTotal());
+        model.addAttribute("curpage", curPage);
+        model.addAttribute("size", size);
+        return "pages/blog/tmplate::msgBoardList";
+    }
+
+    /**
      * @Description 评论框内容
      * @author Zhang YuHui
      * @date 2021/1/27
      *
      * @param reply
-     * @param comment 当前这条评论详情
+     * @param comment Comment的Json字符串 当前这条评论详情
      * @param model
      * @return java.lang.String
      */
@@ -83,6 +107,27 @@ public class TemplateController {
         }
         model.addAttribute("comment", object);
         return "pages/blog/tmplate::comment-form";
+    }
+
+    /**
+     * @Description 留言板输入框
+     * @author Zhang YuHui
+     * @date 2021/2/25
+     *
+     * @param reply
+     * @param comment MessageBoard的Json字符串,用来传递评论详情
+     * @param model
+     * @return java.lang.String
+     */
+    @RequestMapping("msgBoard")
+    public String msgBoard(String reply, String comment, Model model) {
+        model.addAttribute("reply", reply);
+        MessageBoard messageBoard = new MessageBoard();
+        if (StringUtils.isNotBlank(comment)) {
+            messageBoard = JSONObject.parseObject(comment, MessageBoard.class);
+        }
+        model.addAttribute("comment", messageBoard);
+        return "pages/blog/tmplate::msgBoard";
     }
 
     @RequestMapping("article-list")
@@ -125,7 +170,7 @@ public class TemplateController {
         LambdaQueryWrapper<SetArticleSort> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(SetArticleSort::getSortId, category);
         List<SetArticleSort> records = articleSortService.list(wrapper);
-        if(records == null || records.size() == 0){
+        if (records == null || records.size() == 0) {
             model.addAttribute("articles", new Article());
             model.addAttribute("flag", isFirst);
             model.addAttribute("pages", 1);
@@ -144,7 +189,7 @@ public class TemplateController {
 
         LambdaQueryWrapper<Article> wrapper1 = new LambdaQueryWrapper<>();
         wrapper1.in(Article::getId, ids);
-        Page<Article> articlePage = this.articleService.findByPage(page,wrapper1);
+        Page<Article> articlePage = this.articleService.findByPage(page, wrapper1);
 
         model.addAttribute("articles", articlePage.getRecords());
         model.addAttribute("pages", articlePage.getPages());

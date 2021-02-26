@@ -32,7 +32,7 @@ import java.util.HashSet;
  *
  */
 public class ReptileUtils {
-    public static final String webUrl = "http://demo.kangjingept.com:8020/cssthemes6/1.06ZF24/";
+    public static final String webUrl = "https://www.layui.com/admin/std/dist/views/";
 
 //    public static void main(String[] args) {
 //        String name = "daohang.html";

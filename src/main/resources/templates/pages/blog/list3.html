@@ -74,7 +74,6 @@
                     //     lis.push('<li>'+ ( (page-1)*8 + i + 1 ) +'</li>')
                     // }
                     let b = $("#categorys").children("li").length > 0;
-                    console.log(">>>>>>>>>>>>>", b)
                     $.get("/blog/categories", {
                         isFirst: $("#categorys").children("li").length > 0 ? false : true
                     }, function (result) {
@@ -137,7 +136,6 @@
             category: id
         }, function (result) {
             let val = $(result).find("#flag").val();
-            console.log("<><><><><><<><><",val)
             if(val == "true"){
                 result = " <div class=\"layui-fluid\">\n" +
                     "                          <div class=\"layadmin-tips\" style=\"margin-top: 120px\">\n" +
@@ -148,9 +146,7 @@
                     "                          </div>\n" +
                     "                      </div>";
             }
-
             $("#category_articles").html(result)
-
         })
     }
 

@@ -14,26 +14,17 @@ import com.rxh.complat.common.util.JsonResult;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.util.Base64Utils;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  *
- * @Description:
+ * @Description: 爬取模板之家专用
  * @Author Zhang YuHui 
  * @Date 2021/1/8 10:48
  *
@@ -45,12 +36,61 @@ public class ReptileController {
 
     public static final HashSet<String> others = new HashSet();
 
+    @RequestMapping("other")
+    public void other() {
+        getBlog1("https://www.layui.com/admin/std/dist/views/", "C:\\Users\\zyh\\Desktop\\layui", new HashSet<>());
+    }
+
+    private static void getBlog1(String utl, String savePath, HashSet<String> href) {
+        String path = "C:\\Users\\zyh\\Desktop\\model\\";
+        path = savePath;
+
+        System.out.println(href);
+
+        long start = System.currentTimeMillis();
+
+        byte[] bytes = ReptileUtils.extractTags(utl);
+        if (bytes == null) {
+            return;
+        }
+//        System.out.println(new String(bytes));
+
+        HashSet<String> tagAttrHtml = ReptileUtils.getTagAttrHtml(new String(bytes), "dd > a", "lay-href");
+
+        ArrayList<Object> objects = new ArrayList<>();
+        ArrayList<Object> objects1 = new ArrayList<>();
+
+        for (String s : tagAttrHtml) {
+            s = s.replace(".html","");
+            if("".equals(s)){
+                continue;
+            }
+            String[] split = s.split("/");
+           String name = split[split.length - 1].substring(0,1).toUpperCase() +  split[split.length - 1].substring(1, split[split.length - 1].length());
+
+            String s1 = split[split.length-2]+name;
+
+
+            String method = " @RequestMapping(\""+s+"\")\n" +
+                    "    public String "+s1+"() {\n" +
+                    "        return \"/pages/backstage/"+s+"\";\n" +
+                    "    }";
+            objects.add(method);
+        }
+        System.out.println(objects.size());
+        System.out.println(objects);
+        long end = System.currentTimeMillis();
+
+        System.out.println("下载完成; 用时: " + (end - start) + "s");
+    }
+
+
     @RequestMapping("file")
     public void ss() throws IOException {
-        Map<String,Object> imgMap = new HashMap<>();
+        Map<String, Object> imgMap = new HashMap<>();
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 
-        try{
+        try {
             Resource[] resources = resolver.getResources("classpath:/static/images/check/*.jpg");
             for (Resource resource : resources) {
 //                byte[] bytes = FileCopyUtils.copyToByteArray(resource.getInputStream());
@@ -61,7 +101,7 @@ public class ReptileController {
             }
 
 
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -73,7 +113,7 @@ public class ReptileController {
         JsonResult<Object> result = new JsonResult<>();
         JSONObject htmlList = getHtmlList(url);
         String baseUrl = htmlList.getString("baseUrl");
-        ReptileUtils.createFile(savePath+"/loadPath.txt",baseUrl.getBytes());
+        ReptileUtils.createFile(savePath + "/loadPath.txt", baseUrl.getBytes());
 
         HashSet<String> list = htmlList.getObject("list", HashSet.class);
         getBlog(baseUrl, savePath, list);
@@ -134,7 +174,6 @@ public class ReptileController {
         url = url.substring(url.indexOf("url=") + 4, url.indexOf("&id="));
         String baseUrl = url.substring(0, url.lastIndexOf("/") + 1);
         System.out.println(baseUrl);
-
         //获取这套模板需要的HTML列表
         byte[] bytes = ReptileUtils.extractTags(baseUrl + "/_menu.json");
         JSONObject parse = JSONObject.parseObject(new String(bytes), JSONObject.class);
@@ -142,7 +181,6 @@ public class ReptileController {
         HashSet<String> hashSet = new HashSet<>();
         if ("success".equals(code)) {
             JSONArray data = JSONObject.parseObject(parse.getString("data"), JSONArray.class);
-
             for (int i = 0; i < data.size(); i++) {
                 JSONObject o = JSONObject.parseObject(data.get(i).toString());
 //                System.out.println( data.get(i));
@@ -177,7 +215,7 @@ public class ReptileController {
 
         long start = System.currentTimeMillis();
         for (String name : href) {
-            byte[] bytes = ReptileUtils.extractTags(utl+name);
+            byte[] bytes = ReptileUtils.extractTags(utl + name);
             if (bytes == null) {
                 continue;
             }
@@ -200,6 +238,7 @@ public class ReptileController {
     private static void loadFile(String path, String html, String tagName, String attrName, String webUrl) {
         HashSet<String> href = ReptileUtils.getTagAttrHtml(html, tagName, attrName);
         for (String name : href) {
+            name = name.replace("..","");
             byte[] bytes1 = ReptileUtils.extractTags(webUrl + name);
             boolean file = ReptileUtils.createFile(path + name, bytes1);
 

@@ -96,6 +96,14 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!--阿里巴巴nacos服务注册插件-->
+        <dependency>
+            <groupId>com.alibaba.boot</groupId>
+            <artifactId>nacos-config-spring-boot-starter</artifactId>
+            <version>0.2.7</version>
+        </dependency>
+
+
         <!--模板引擎-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -192,6 +200,15 @@
             <artifactId>jsoup</artifactId>
             <version>1.8.3</version>
         </dependency>
+
+        <!-- 转驼峰依赖-->
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>30.1-jre</version>
+        </dependency>
+
     </dependencies>
 
     <build>

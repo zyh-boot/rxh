@@ -33,6 +33,7 @@ public class BlogViewController {
     private SortsService sortsService;
 
 
+
     @RequestMapping("index")
     public String index() {
         return "pages/blog/index";
@@ -65,15 +66,18 @@ public class BlogViewController {
 
     @RequestMapping("list3")
     public String list3() {
-
-
         return "pages/blog/list3";
+    }
+    @RequestMapping("messageBoard")
+    public String messageBoard() {
+        return "pages/blog/message-board";
     }
 
     @RequestMapping("article")
     public String article() {
         return "pages/blog/article";
     }
+
 
     @RequestMapping("addArticle")
     public ModelAndView addArticle() {

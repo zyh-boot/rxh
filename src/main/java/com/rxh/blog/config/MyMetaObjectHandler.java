@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 /**
  * @Description mybatis-plus 自动添加床架时间和修改时间
+ *              在Mapper.xml文件中不要再添加这鞋默认字段,mybatis-plus会自动添加,xml如果有这些字段 可能会造成默认值不对
  * @author Zhang YuHui
  * @date 2021/1/26
  *

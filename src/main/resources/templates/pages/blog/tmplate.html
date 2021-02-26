@@ -1,10 +1,15 @@
+<!--
+    模板文件: 将系统中多次重复使用的小页面封装成组件,便于复用.
+    使用方法: 参考一下thymeleaf模板语法
+-->
+
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
 </head>
 <body>
 <!--文章详情页评论模板-->
@@ -28,7 +33,8 @@
                     <a class="a" data-type="reply" data-flag="true" th:onclick="del([[${commomt.id}]])">删除</a>
 
                     <a class="a">
-                        <span data-type="report">举报</span></a></span>
+                        <span data-type="report">举报</span></a>
+                    </span>
                 </div>
             </div>
         </li>
@@ -130,11 +136,99 @@
         <input type="hidden" id="comment_userId" name="comment_userId" th:value="${comment.userId}">
         <input type="hidden" id="comment_userName" name="comment_userName" th:value="${comment.userName}">
         <input type="hidden" id="parentCommentId" name="parentCommentId"
-               th:value="${comment.parentCommentId} == '' ? ${comment.id} : ${comment.parentCommentId}">
+               th:value="${comment.parentCommentId} == '' or ${comment.parentCommentId} == null ? ${comment.id} : ${comment.parentCommentId}">
         <input type="hidden" id="parentCommentUserId" name="parentCommentUserId"
-               th:value="${comment.parentCommentUserId} == '' ? ${comment.userId}:${comment.parentCommentUserId}">
+               th:value="${comment.parentCommentUserId} == '' or ${comment.parentCommentUserId} == null ? ${comment.userId}:${comment.parentCommentUserId}">
     </div>
 </form>
+<!--留言板-->
+<form th:fragment="msgBoard" class="layui-form" id="board_dorm">
+    <div class="layui-form-item layui-form-text">
+        <div class="layui-input-block">
+            <textarea name="desc" id="boardTmp"  placeholder="请输入内容" class="layui-textarea"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item" style="overflow: hidden;">
+        <div class="layui-input-block layui-input-right">
+            <button class="layui-btn" type="button" id="submit1" onclick="submitBoard(false)">发表</button>
+        </div>
+        <div class="layadmin-messag-icon">
+            <a href="javascript:;"><i class="layui-icon layui-icon-face-smile-b"></i></a>
+            <a href="javascript:;"><i class="layui-icon layui-icon-picture"></i></a>
+            <a href="javascript:;"><i class="layui-icon layui-icon-link"></i></a>
+        </div>
+    </div>
+    <input type="hidden" id="comment_replyId1" name="comment_replyId" th:value="${comment.id}">
+    <input type="hidden" id="comment_userId1" name="comment_userId" th:value="${comment.userId}">
+    <input type="hidden" id="comment_userName1" name="comment_userName" th:value="${comment.userName}">
+    <input type="hidden" id="parentCommentId1" name="parentCommentId"
+           th:value="${comment.parentCommentId} == null or ${comment.parentCommentId} == '' ? ${comment.id} : ${comment.parentCommentId}">
+    <input type="hidden" id="parentCommentUserId1" name="parentCommentUserId"
+           th:value="${comment.parentCommentUserId} == null or ${comment.parentCommentUserId} == ''  ? ${comment.userId}:${comment.parentCommentUserId}">
+</form>
+<!--留言列表-->
+<div th:fragment="msgBoardList">
+    <div class="media-body" th:each="msgBoard : ${messageBoards}">
+        <input type="hidden" id="boards_pages" th:value="${pages}">
+        <a href="javascript:;" class="media-left" style="float: left;">
+            <img src="/static/blog/images/1.jpg" height="46px" width="46px">
+        </a>
+        <div class="pad-btm">
+            <p class="fontColor">
+                <a href="javascript:;" th:text="${msgBoard.userName}">胡歌</a>
+            </p>
+            <p class="min-font">
+              <span class="layui-breadcrumb" lay-separator="-" style="visibility: visible;">
+                <a href="javascript:;" class="layui-icon layui-icon-notice"></a>
+                <a href="javascript:;">&nbsp-&nbsp </a>
+                <a href="javascript:;" th:text="${msgBoard.updateTime}">11分钟前</a>
+              </span>
+                    <a class="a" style="color: #1E9FFF;padding-left: 10px" th:onclick="formHide(this,[[${msgBoard}]])">回复</a>
+                    <a class="a" style="color: #1E9FFF" data-flag="true" th:onclick="delBoard([[${msgBoard.id}]])">删除</a>
+
+                    <a class="a" style="color: #1E9FFF">
+                        <span data-type="report">举报</span>
+                    </a>
+            </p>
+        </div>
+        <p class="message-text" th:text="${msgBoard.content}">历经打磨，@索尼中国
+            再献新作品—OLED电视A8F完美诞生。很开心一起参加了A8F的“首映礼”！[鼓掌]正如我们演员对舞台的热爱，索尼对科技与艺术的追求才创造出了让人惊喜的作品。作为A1兄弟款，A8F沿袭了黑科技“屏幕发声技术”和高清画质，色彩的出众表现和高端音质，让人在体验的时候如同身临其境。A8F，这次的“视帝”要颁发给你！
+            索尼官网预售： O网页链接 索尼旗舰店预售：</p>
+
+        <div class="layadmin-homepage-list-imgtxt message-content" th:each="item : ${msgBoard.messageBoards}">
+            <div class="media-body" >
+                <a href="javascript:;" class="media-left" style="float: left;">
+                    <img src="/static/blog/images/1.jpg" height="46px" width="46px">
+                </a>
+                <div class="pad-btm">
+                    <p class="fontColor">
+                        <a href="javascript:;" th:text="${item.userName}">胡歌</a>
+                        <span style="color: #999;">回复</span>
+                        <a href="javascript:;" th:text="${item.replyCommentUserName}">胡歌</a>
+                    </p>
+                    <p class="min-font">
+
+              <span class="layui-breadcrumb " lay-separator="-" style="visibility: visible;">
+                <a href="javascript:;" class="layui-icon layui-icon-notice"></a>
+                <a href="javascript:;">&nbsp-&nbsp </a>
+                <a href="javascript:;" th:text="${item.updateTime}">11分钟前</a>
+              </span>
+                    <a class="a" style="color: #1E9FFF;padding-left: 10px" th:onclick="formHide(this,[[${item}]])">回复</a>
+                    <a class="a" style="color: #1E9FFF" th:data-flag="true" th:onclick="delBoard([[${item.id}]])">删除</a>
+                    <a class="a" style="color: #1E9FFF">
+                        <span data-type="report">举报</span></a>
+                    </span>
+                    </p>
+                </div>
+                <p class="message-text" th:text="${item.content}">历经打磨，@索尼中国
+                    再献新作品—OLED电视A8F完美诞生。很开心一起参加了A8F的“首映礼”！[鼓掌]正如我们演员对舞台的热爱，索尼对科技与艺术的追求才创造出了让人惊喜的作品。作为A1兄弟款，A8F沿袭了黑科技“屏幕发声技术”和高清画质，色彩的出众表现和高端音质，让人在体验的时候如同身临其境。A8F，这次的“视帝”要颁发给你！
+                    索尼官网预售： O网页链接 索尼旗舰店预售：</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!--个人博客列表页-->
 <!--<script type="text/javascript" src="/static/blog/js/complate.js"></script>-->
